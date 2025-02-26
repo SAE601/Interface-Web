@@ -1,4 +1,4 @@
 # Interface-Web
 
-Je m'appelle Adil 
-C'est bien frère
+Idée du Dashboard que ça pourrait donner.
+Ajout du script météo pour afficher les infos concernant les conditions météo de la Garde
