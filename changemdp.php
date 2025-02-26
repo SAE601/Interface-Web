@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <br>
     
-        <a class="btn btn-primary" href="dashboard.php" role="button"><i class="bi bi-arrow-left"></i></a>
+        <a class="btn btn-primary" href="dashboard.php" role="button">Retour<i class="bi bi-arrow-left"></i></a>
     </div>
 </body>
 
