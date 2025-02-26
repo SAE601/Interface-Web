@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Informations de connexion à la base de données
 $host = 'localhost';
-$dbname = 'optiplant';
+$dbname = 'optiplant_fillupdate';
 $username = 'root';
 $password = '';
 
@@ -51,6 +51,28 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Page d'Accueil</title>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <style>
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .user-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+            color: white;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -164,7 +186,18 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <!-- Carte pour les recettes -->
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Les Recettes</h5>
+                    <p class="card-text">Cliquez pour accéder aux recettes </p>
+                    <a href="recettes.php" class="btn btn-success btn-lg shadow">Voir les Recettes</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Dernière ligne : Infos utilisateur + bouton de déconnexion -->
