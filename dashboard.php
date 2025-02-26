@@ -24,7 +24,6 @@ $pdo->exec("SET time_zone = '+01:00'");
 $queryHour = "SELECT CURRENT_TIME AS time";
 $stmt = $pdo->prepare($queryHour);
 $stmt->execute();
-
 // Résultat
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -36,10 +35,9 @@ $stmt->execute();
 $bacs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour filtrer les données
-$sql = "SELECT * FROM `irrigation` WHERE `idBac` = 2 ORDER BY dateHeure DESC;";
+$sql = "SELECT * FROM `irrigation` ORDER BY dateHeure DESC;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-
 // Récupération des résultats
 $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -52,29 +50,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Page d'Accueil</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <style>
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .user-info {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logout-btn {
-            background-color: #dc3545;
-            color: white;
-        }
-        .logout-btn:hover {
-            background-color: #c82333;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body class="bg-light">
 
@@ -119,7 +95,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="row">
         <div class="col-12">
             <div class="text-center my-4">
-                <h1 class="text-primary">Dashboard - Page d'Accueil</h1>
+                <h1 class="text-primary">Dashboard</h1>
             </div>
         </div>
     </div>
@@ -127,7 +103,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Ligne 3 : 4 blocs pour les bacs -->
     <div class="row text-center">
         <div class="col-md-3">
-            <div class="card" data-toggle="collapse" href="#bacInfo1" aria-expanded="true" aria-controls="bacInfo1">
+            <div class="card" data-toggle="collapse" href="#bacInfo1" role="button" aria-expanded="true" aria-controls="bacInfo1">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
                         Bac 1
@@ -138,30 +114,46 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="card-text"><?php echo "Énergie consommée : " . $bacs[0]['energieconsommee'] . " kWh"; ?></p>
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">En savoir plus</button>
-                    <div class="container py-4">
-                        <h4 class="text-center">Données d'Irrigation</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Date et Heure</th>
-                                <th>Recette</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (!empty($irrigations)): ?>
-                                <?php foreach ($irrigations as $irrigation): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
-                                </tr>
-                            <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="modal fade show bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalBac1">Informations sur le bac 1</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container py-4">
+                                        <h4 class="text-center">Données d'Irrigation</h4>
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Date et Heure</th>
+                                                <th>Recette</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if (!empty($irrigations)): ?>
+                                                <?php foreach ($irrigations as $irrigation): ?>
+                                                    <tr>
+                                                        <?php if ($irrigation['idBac'] == 1) { ?>
+                                                            <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
+                                                            <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
+                                                        <?php } ?>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,30 +170,46 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="card-text"><?php echo "Énergie consommée : " . $bacs[1]['energieconsommee'] . " kWh"; ?></p>
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">En savoir plus</button>
-                    <div class="container py-4">
-                        <h4 class="text-center">Données d'Irrigation</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Date et Heure</th>
-                                <th>Recette</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (!empty($irrigations)): ?>
-                                <?php foreach ($irrigations as $irrigation): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
-                                </tr>
-                            <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="modal fade show bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalBac2">Informations sur le bac 1</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container py-4">
+                                        <h4 class="text-center">Données d'Irrigation</h4>
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Date et Heure</th>
+                                                <th>Recette</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if (!empty($irrigations)): ?>
+                                                <?php foreach ($irrigations as $irrigation): ?>
+                                                    <tr>
+                                                        <?php if ($irrigation['idBac'] == 2) { ?>
+                                                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
+                                                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
+                                                        <?php } ?>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -218,30 +226,46 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="card-text">Informations sur le bac 3.</p>
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">En savoir plus</button>
-                    <div class="container py-4">
-                        <h4 class="text-center">Données d'Irrigation</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Date et Heure</th>
-                                <th>Recette</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (!empty($irrigations)): ?>
-                                <?php foreach ($irrigations as $irrigation): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
-                                </tr>
-                            <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="modal fade show bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalBac3">Informations sur le bac 1</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                    <div class="modal-body">
+                                        <div class="container py-4">
+                                            <h4 class="text-center">Données d'Irrigation</h4>
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Date et Heure</th>
+                                                    <th>Recette</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php if (!empty($irrigations)): ?>
+                                                    <?php foreach ($irrigations as $irrigation): ?>
+                                                        <tr>
+                                                            <?php if ($irrigation['idBac'] == 3) { ?>
+                                                                <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
+                                                                <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
+                                                            <?php } ?>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="2" class="text-center">Aucune donnée trouvée</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -258,30 +282,46 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <p class="card-text"><?php echo "Énergie consommée : " . $bacs[0]['energieconsommee'] . " kWh"; ?></p>
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">En savoir plus</button>
-                    <div class="container py-4">
-                        <h4 class="text-center">Données d'Irrigation</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Date et Heure</th>
-                                <th>Recette</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (!empty($irrigations)): ?>
-                                <?php foreach ($irrigations as $irrigation): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
-                                </tr>
-                            <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="modal fade show bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalBac4">Informations sur le bac 4</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container py-4">
+                                        <h4 class="text-center">Données d'Irrigation</h4>
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Date et Heure</th>
+                                                <th>Recette</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if (!empty($irrigations)): ?>
+                                                <?php foreach ($irrigations as $irrigation): ?>
+                                                    <tr>
+                                                        <?php if ($irrigation['idBac'] == 4) { ?>
+                                                            <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
+                                                            <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
+                                                        <?php } ?>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="2" class="text-center">Aucune donnée trouvée</td>
+                                                </tr>
+                                            <?php endif; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -333,6 +373,15 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </div>
 </div>
+
+<script>
+    // Empêcher la fermeture du collapse
+    document.getElementById('bacInfo1').addEventListener('hide.bs.collapse', function (event) {
+        event.preventDefault(); // Empêche l'action de fermeture
+        alert("Le collapse ne peut pas être fermé !");
+    });
+</script>
+
 
 
 <!-- Intégration de Bootstrap JS -->
