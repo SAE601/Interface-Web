@@ -28,14 +28,14 @@ $stmt->execute();
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Requête SQL pour récupérer les données
-$sql = "SELECT * FROM bacs";
+$sql = "SELECT * FROM trays";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
 $bacs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour filtrer les données
-$sql = "SELECT * FROM `irrigation` ORDER BY dateHeure DESC;";
+$sql = "SELECT * FROM `irrigation` ORDER BY dateTime DESC;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
@@ -132,10 +132,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </h5>
                 </div>
                 <div class="collapse" id="bacInfo1">
-                    <div class="card-body">
-                        <p class="card-text"><?php echo "Énergie consommée : " . $bacs[0]['energieconsommee'] . " kWh"; ?></p>
-                    </div>
-                    <a class="btn btn-primary" href="essai.php?bac=1">En savoir plus</a>
+                    <a class="btn btn-primary" href="essai.php?trays=1">En savoir plus</a>
                 </div>
             </div>
         </div>
@@ -147,10 +144,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </h5>
                 </div>
                 <div class="collapse" id="bacInfo2">
-                    <div class="card-body">
-                        <p class="card-text"><?php echo "Énergie consommée : " . $bacs[1]['energieconsommee'] . " kWh"; ?></p>
-                    </div>
-                    <a class="btn btn-primary" href="essai.php?bac=2">En savoir plus</a>
+                    <a class="btn btn-primary" href="essai.php?trays=2">En savoir plus</a>
                 </div>
             </div>
         </div>
@@ -162,10 +156,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </h5>
                 </div>
                 <div class="collapse" id="bacInfo3">
-                    <div class="card-body">
-                        <p class="card-text"><?php echo "Énergie consommée : " . $bacs[0]['energieconsommee'] . " kWh"; ?></p>
-                    </div>
-                    <a class="btn btn-primary" href="essai.php?bac=3">En savoir plus</a>
+                    <a class="btn btn-primary" href="essai.php?trays=3">En savoir plus</a>
                 </div>
             </div>
         </div>
@@ -177,10 +168,7 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </h5>
                 </div>
                 <div class="collapse" id="bacInfo4">
-                    <div class="card-body">
-                        <p class="card-text"><?php echo "Énergie consommée : " . $bacs[0]['energieconsommee'] . " kWh"; ?></p>
-                    </div>
-                    <a class="btn btn-primary" href="essai.php?bac=4">En savoir plus</a>
+                    <a class="btn btn-primary" href="essai.php?trays=4">En savoir plus</a>
                 </div>
             </div>
         </div>

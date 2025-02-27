@@ -26,15 +26,12 @@ try {
     $sql = "
         SELECT 
             r.*, 
-            g.nom AS nomGroupe, 
-            p.nom AS nomPeriode, 
-            i.idBac 
+            i.idTray 
         FROM 
-            recettes r
-        INNER JOIN groupe g ON r.idGroupe = g.idGroupe
-        INNER JOIN periode p ON r.idPeriode = p.idPeriode
-        LEFT JOIN irrigation i ON r.idRecette = i.idRecette  -- LEFT JOIN pour inclure toutes les recettes
-        ORDER BY r.idRecette ASC  -- Trie les recettes par idRecette
+            recipes r
+        INNER JOIN periods p ON r.idPeriod = p.idPeriod
+        LEFT JOIN irrigation i ON r.idRecipe = i.idRecipe  -- LEFT JOIN pour inclure toutes les recettes
+        ORDER BY r.idRecipe ASC  -- Trie les recettes par idRecette
     ";
 
 
@@ -129,7 +126,7 @@ try {
                         <div class="card-body d-flex flex-column">
                             <!-- Titre de la Recette -->
                             <h5 class="card-title">
-                                Recette  : N°<?= isset($recette['idRecette']) ? htmlspecialchars($recette['idRecette']) : 'Non disponible' ?>
+                                Recette  : N°<?= isset($recette['idRecipe']) ? htmlspecialchars($recette['idRecipe']) : 'Non disponible' ?>
                             </h5>
 
                             <!-- Description de la Recette -->
@@ -144,31 +141,31 @@ try {
                                 <strong>Période : </strong>
                                 <?= isset($recette['nomPeriode']) ? htmlspecialchars($recette['nomPeriode']) : 'Non défini'; ?><br>
                                 <strong>Bac associé :</strong> Bac
-                                <?= isset($recette['idBac']) ? htmlspecialchars($recette['idBac']) : 'Non défini'; ?>
+                                <?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : 'Non défini'; ?>
                             </p>
 
                             <!-- Informations Complètes -->
                             <p>
                                 <strong>Arrosage : </strong>
-                                <?= isset($recette['eauArrosage']) ? htmlspecialchars($recette['eauArrosage']) : 'N/A'; ?><br>
+                                <?= isset($recette['watering']) ? htmlspecialchars($recette['watering']) : 'N/A'; ?><br>
                                 <strong>Arrosage du jour : </strong>
-                                <?= isset($recette['arrosage_jour']) ? htmlspecialchars($recette['arrosage_jour']) : 'Non définie'; ?><br>
+                                <?= isset($recette['dailyWatering']) ? htmlspecialchars($recette['dailyWatering']) : 'Non définie'; ?><br>
                                 <strong>Fréquence : </strong>
-                                <?= isset($recette['quotidien']) && $recette['quotidien'] ? 'Quotidien' : 'Non quotidien'; ?><br>
+                                <?= isset($recette['daily']) && $recette['daily'] ? 'Quotidien' : 'Non quotidien'; ?><br>
                                 <strong>Azote : </strong>
-                                <?= isset($recette['azote']) ? htmlspecialchars($recette['azote']) : 'Non définie'; ?><br>
+                                <?= isset($recette['nitrogen']) ? htmlspecialchars($recette['nitrogen']) : 'Non définie'; ?><br>
                                 <strong>Phosphore : </strong>
-                                <?= isset($recette['phosphore']) ? htmlspecialchars($recette['phosphore']) : 'Non définie'; ?><br>
+                                <?= isset($recette['phosphorus']) ? htmlspecialchars($recette['phosphorus']) : 'Non définie'; ?><br>
                                 <strong>Potassium : </strong>
                                 <?= isset($recette['potassium']) ? htmlspecialchars($recette['potassium']) : 'Non définie'; ?><br>
                                 <strong>Seuil d'humidité : </strong>
-                                <?= isset($recette['seuilHumidite']) ? htmlspecialchars($recette['seuilHumidite']) : 'Non définie'; ?>
+                                <?= isset($recette['humidityThreshold']) ? htmlspecialchars($recette['humidityThreshold']) : 'Non définie'; ?>
                             </p>
 
-                            <?php if (isset($recette['idBac']) && !empty($recette['idBac'])): ?>
+                            <?php if (isset($recette['idTray']) && !empty($recette['idTray'])): ?>
                                 <!-- Si un bac est associé -->
-                                <a href="dashboard.php?bac=<?= htmlspecialchars($recette['idBac']) ?>" class="btn btn-en-savoir-plus">
-                                    En savoir plus sur le Bac <?= htmlspecialchars($recette['idBac']) ?>
+                                <a href="dashboard.php?tray=<?= htmlspecialchars($recette['idTray']) ?>" class="btn btn-en-savoir-plus">
+                                    En savoir plus sur le Bac <?= htmlspecialchars($recette['idTray']) ?>
                                 </a>
                             <?php else: ?>
                                 <!-- Si aucun bac n'est associé -->

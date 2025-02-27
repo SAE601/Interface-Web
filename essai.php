@@ -18,14 +18,14 @@ $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $passw
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Requête SQL pour récupérer les données
-$sql = "SELECT * FROM bacs";
+$sql = "SELECT * FROM trays";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
 $bacs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour filtrer les données
-$sql = "SELECT * FROM `irrigation` ORDER BY dateHeure DESC;";
+$sql = "SELECT * FROM `irrigation` ORDER BY dateTime DESC;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
@@ -58,9 +58,9 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php if (!empty($irrigations)): ?>
             <?php foreach ($irrigations as $irrigation): ?>
                 <tr>
-                    <?php if ($irrigation['idBac'] == $_GET['bac']) { ?>
-                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
-                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
+                    <?php if ($irrigation['idTray'] == $_GET['trays']) { ?>
+                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                        <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
                     <?php } ?>
                 </tr>
             <?php endforeach; ?>
