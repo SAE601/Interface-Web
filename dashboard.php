@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Informations de connexion à la base de données
 $host = 'localhost';
-$dbname = 'optiplant_fillupdate';
+$dbname = 'optiplant';
 $username = 'root';
 $password = '';
 
@@ -41,7 +41,12 @@ $stmt->execute();
 // Récupération des résultats
 $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
+// Requête SQL pour récupérer les 5 dernières alertes
+$sql = "SELECT message, dateTime FROM alerts ORDER BY dateTime DESC LIMIT 5";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+// Récupérer les alertes
+$alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -187,6 +192,29 @@ $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <!-- Alert box -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Dernières Alertes</h5>
+                    <ul class="mb-0">
+                        <?php if (!empty($alerts)): ?>
+                            <?php foreach ($alerts as $alert): ?>
+                                <li>
+                                    <?php echo htmlspecialchars($alert['message']); ?>
+                                    <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>Aucune alerte pour le moment.</p>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Dernière ligne : Infos utilisateur + bouton de déconnexion -->
     <div class="row">

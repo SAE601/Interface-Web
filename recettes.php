@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Informations de connexion à la base de données
 $host = 'localhost';
-$dbname = 'optiplant_fillupdate';
+$dbname = 'optiplant';
 $username = 'root';
 $password = '';
 

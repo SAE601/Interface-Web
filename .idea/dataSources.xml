@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:mysql://localhost:3306/compte_utilisateur</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="optiplant_fillupdate@localhost" uuid="949a69d4-f88c-4e46-adb1-fa7b37a729a6">
+    <data-source source="LOCAL" name="optiplant@localhost" uuid="cec92399-a453-4105-a9e1-d41073a2c59a">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/optiplant_fillupdate</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/optiplant</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

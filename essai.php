@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Informations de connexion à la base de données
 $host = 'localhost';
-$dbname = 'optiplant_fillupdate';
+$dbname = 'optiplant';
 $username = 'root';
 $password = '';
 
@@ -43,9 +43,15 @@ $stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtIrrigation->execute();
 $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
 
+// Requête SQL pour récupérer les alertes spécifiques au bac
+$sql = "SELECT message, dateTime FROM alerts WHERE idTray = :idTray ORDER BY dateTime DESC LIMIT 5";
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmt->execute();
+// Récupérer les alertes
+$alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -54,6 +60,19 @@ $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <style>
+        .alert-item {
+            margin-bottom: 10px; /* Espace entre chaque alerte */
+            font-size: 14px; /* Taille de la police pour toutes les alertes */
+            line-height: 1.5; /* Meilleure lisibilité */
+            padding: 5px 0; /* Espacement interne (haut/bas) */
+            border-bottom: 1px dotted #ddd; /* Ligne légère pour séparer les alertes */
+        }
+
+        .alert-item:last-child {
+            border-bottom: none; /* Retire la bordure pour la dernière alerte */
+        }
+    </style>
 </head>
 <body>
 
@@ -65,9 +84,8 @@ $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
     <li class="nav-item">
         <a class="nav-link" id="tab2-tab" data-bs-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="true">Summary</a>
     </li>
-
     <li class="nav-item">
-        <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab2" aria-selected="true">Datas</a>
+        <a class="nav-link" id="tab3-tab" data-bs-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="true">Datas</a>
     </li>
 </ul>
 
@@ -75,7 +93,7 @@ $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
 <div class="tab-content mt-3">
     <!-- Onglet 1 -->
     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-
+        <!-- Contenu spécifique Onglet Photos -->
     </div>
 
     <!-- Onglet 2 -->
@@ -100,12 +118,10 @@ $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
                         <tbody>
                         <?php if (!empty($irrigations)): ?>
                             <?php foreach ($irrigations as $index => $irrigation): ?>
-                                <?php if ($irrigation['idTray'] == $_GET['trays']): ?>
-                                    <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
-                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
-                                    </tr>
-                                <?php endif; ?>
+                                <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
+                                    <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                    <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
@@ -116,10 +132,53 @@ $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
                     </table>
                 </div>
             </div>
+
+            <!-- Section des alertes -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dernières Alertes</h5>
+                            <ul class="mb-0">
+                                <?php if (!empty($alerts)): ?>
+                                    <!-- Affichage des 3 premières alertes -->
+                                    <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
+                                        <li class="alert-item">
+                                            <?php echo htmlspecialchars($alert['message']); ?>
+                                            <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
+                                <?php endif; ?>
+                            </ul>
+
+                            <!-- Contenu caché pour les alertes restantes -->
+                            <?php if (count($alerts) > 3): ?>
+                                <div class="collapse" id="allAlerts">
+                                    <ul class="mt-2">
+                                        <?php foreach (array_slice($alerts, 3) as $alert): ?>
+                                            <li class="alert-item">
+                                                <?php echo htmlspecialchars($alert['message']); ?>
+                                                <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                                <!-- Bouton pour dérouler les alertes -->
+                                <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
+                                    <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Footer -->
 <footer class="footer mt-auto py-3 bg-light">
     <div class="container">
         <div class="row">
@@ -137,4 +196,3 @@ $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
