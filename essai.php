@@ -17,28 +17,35 @@ $password = '';
 $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Requête SQL pour récupérer les données
-$sql = "SELECT * FROM trays";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-// Récupération des résultats
-$bacs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Récupération du paramètre 'trays'
+$idTray = isset($_GET['trays']) ? intval($_GET['trays']) : null;
 
-// Requête SQL pour filtrer les données
-$sql = "SELECT * FROM `irrigation` ORDER BY dateTime DESC;";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-// Récupération des résultats
-$irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if (!$idTray) {
+    die('<div class="alert alert-danger">Bac introuvable.</div>');
+}
 
-// Requête SQL pour filtrer les données
-$sql = "SELECT * FROM `periods`";
+// Requête SQL pour récupérer les informations du bac correspondant
+$sql = "SELECT * FROM trays WHERE idTray = :idTray";
 $stmt = $pdo->prepare($sql);
+$stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
-// Récupération des résultats
-$periode = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$bac = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Si aucun bac n’est trouvé, afficher un message
+if (!$bac) {
+    die('<div class="alert alert-warning">Aucune information disponible pour ce bac.</div>');
+}
+
+// Requête pour récupérer les données d'irrigation liées à ce bac
+$sqlIrrigation = "SELECT * FROM irrigation WHERE idTray = :idTray ORDER BY dateTime DESC";
+$stmtIrrigation = $pdo->prepare($sqlIrrigation);
+$stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmtIrrigation->execute();
+$irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
+
 
 <!DOCTYPE html>
 <html>

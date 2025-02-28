@@ -162,23 +162,24 @@ try {
                                 <?= isset($recette['humidityThreshold']) ? htmlspecialchars($recette['humidityThreshold']) : 'Non définie'; ?>
                             </p>
 
+                            <!-- Bouton En savoir plus -->
                             <?php if (isset($recette['idTray']) && !empty($recette['idTray'])): ?>
                                 <!-- Si un bac est associé -->
-                                <a href="dashboard.php?tray=<?= htmlspecialchars($recette['idTray']) ?>" class="btn btn-en-savoir-plus">
-                                    En savoir plus sur le Bac <?= htmlspecialchars($recette['idTray']) ?>
+                                <a href="essai.php?trays=<?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : '' ?>"
+                                   class="btn btn-en-savoir-plus mt-auto">
+                                    En savoir plus sur le bac <?= htmlspecialchars($recette['idTray']) ?>
                                 </a>
                             <?php else: ?>
                                 <!-- Si aucun bac n'est associé -->
                                 <p class="text-muted">Aucun bac associé pour cette recette.</p>
                             <?php endif; ?>
-
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-
 </div>
+<script src="/js/bootstrap.js"></script>
 </body>
 </html>
