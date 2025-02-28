@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Informations de connexion à la base de données
 $host = 'localhost';
-$dbname = 'optiplant';
+$dbname = 'optiplant_fillupdate';
 $username = 'root';
 $password = '';
 
@@ -18,21 +18,21 @@ $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $passw
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Requête SQL pour récupérer les données
-$sql = "SELECT * FROM bacs";
+$sql = "SELECT * FROM trays";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
 $bacs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour filtrer les données
-$sql = "SELECT * FROM `irrigation` ORDER BY dateHeure DESC;";
+$sql = "SELECT * FROM `irrigation` ORDER BY dateTime DESC;";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
 $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour filtrer les données
-$sql = "SELECT * FROM 'periode';";
+$sql = "SELECT * FROM `periods`";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
@@ -93,10 +93,10 @@ $periode = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tbody>
                         <?php if (!empty($irrigations)): ?>
                             <?php foreach ($irrigations as $index => $irrigation): ?>
-                                <?php if ($irrigation['idBac'] == $_GET['bac']): ?>
+                                <?php if ($irrigation['idTray'] == $_GET['trays']): ?>
                                     <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
-                                        <td><?php echo htmlspecialchars($irrigation['dateHeure']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecette']); ?></td>
+                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                        <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
                                     </tr>
                                 <?php endif; ?>
                             <?php endforeach; ?>
