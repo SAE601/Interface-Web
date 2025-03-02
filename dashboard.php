@@ -1,49 +1,38 @@
 <?php
 session_start();
 
+include("config.php");
+
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
 
-// Informations de connexion à la base de données
-$host = 'localhost';
-$dbname = 'optiplant';
-$username = 'root';
-$password = '';
-
-// Connexion à la base de données
-$pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-// Configuration du fuseau horaire pour la session MySQL
-$pdo->exec("SET time_zone = '+01:00'");
-
 // Récupérer l'heure actuelle dans le fuseau horaire 'Europe/Paris'
 $queryHour = "SELECT CURRENT_TIME AS time";
-$stmt = $pdo->prepare($queryHour);
+$stmt = $pdo_optiplant->prepare($queryHour);
 $stmt->execute();
 // Résultat
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Requête SQL pour récupérer les données
 $sql = "SELECT * FROM trays";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo_optiplant->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
 $bacs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour filtrer les données
 $sql = "SELECT * FROM `irrigation` ORDER BY dateTime DESC;";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo_optiplant->prepare($sql);
 $stmt->execute();
 // Récupération des résultats
 $irrigations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour récupérer les 5 dernières alertes
 $sql = "SELECT message, dateTime FROM alerts ORDER BY dateTime DESC LIMIT 5";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo_optiplant->prepare($sql);
 $stmt->execute();
 // Récupérer les alertes
 $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
