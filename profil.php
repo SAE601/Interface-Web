@@ -169,7 +169,6 @@ try {
     <div class="dashboard-container">
         <h2>Section Administrateur</h2>
         <p>Cette section est uniquement accessible aux administrateurs.</p>
-
         <!-- Liste des utilisateurs -->
         <h3>Liste des utilisateurs</h3>
         <?php
@@ -178,9 +177,8 @@ try {
             $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login FROM users");
             $stmt->execute();
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
             if ($users) {
-                echo "<table class='table table-bordered'>";
+                echo "<table class='table table-striped table-dark'>";
                 echo "<thead><tr><th>ID</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
                 echo "<tbody>";
                 foreach ($users as $user) {
