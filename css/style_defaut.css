@@ -47,7 +47,7 @@ body {
 
 /* Conteneurs */
 .dashboard-container {
-    max-width: 800px;
+    max-width: 80%; /* Conteneur plus large */
     margin: 50px auto;
     background-color: #fff;
     padding: 20px 30px;
@@ -56,7 +56,7 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 600px; /* Conteneur plus large */
     margin: 50px auto;
     background-color: #fff;
     padding: 20px;
@@ -205,6 +205,7 @@ hr {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+
 .user-info {
     background-color: #f8f9fa;
     padding: 20px;
@@ -213,10 +214,12 @@ hr {
     align-items: center;
     justify-content: space-between;
 }
+
 .logout-btn {
     background-color: #dc3545;
     color: white;
 }
+
 .logout-btn:hover {
     background-color: #c82333;
     color: white;

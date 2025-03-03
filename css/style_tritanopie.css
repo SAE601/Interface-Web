@@ -47,7 +47,7 @@ body {
 
 /* Conteneurs */
 .dashboard-container {
-    max-width: 800px;
+    max-width: 80%; /* Conteneur plus large */
     margin: 50px auto;
     background-color: #fff;
     padding: 20px 30px;
@@ -56,7 +56,7 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 600px; /* Conteneur plus large */
     margin: 50px auto;
     background-color: #fff;
     padding: 20px;
