@@ -36,8 +36,11 @@ if (!$bac) {
     die('<div class="alert alert-warning">Aucune information disponible pour ce bac.</div>');
 }
 
-// Requête pour récupérer les données d'irrigation liées à ce bac
-$sqlIrrigation = "SELECT * FROM irrigation WHERE idTray = :idTray ORDER BY dateTime DESC";
+// Requête pour récupérer les données d'irrigation des dernières 24 heures liées à ce bac
+$sqlIrrigation = "SELECT *, TIMESTAMPDIFF(HOUR, dateTime, NOW()) AS hoursAgo 
+                  FROM irrigation 
+                  WHERE idTray = :idTray AND dateTime >= NOW() - INTERVAL 24 HOUR 
+                  ORDER BY dateTime DESC";
 $stmtIrrigation = $pdo->prepare($sqlIrrigation);
 $stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtIrrigation->execute();
@@ -121,11 +124,17 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
                                     <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
                                     <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                    <td>
+                                        <?php
+                                        $hoursAgo = (int) $irrigation['hoursAgo'];
+                                        echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                        ?>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="2" class="text-center">Aucune donnée trouvée</td>
+                                <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
                             </tr>
                         <?php endif; ?>
                         </tbody>
