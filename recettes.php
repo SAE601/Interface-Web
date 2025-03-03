@@ -1,24 +1,12 @@
 <?php
 session_start();
 
+include('config.php');
+
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
-}
-
-// Informations de connexion à la base de données
-$host = 'localhost';
-$dbname = 'optiplant';
-$username = 'root';
-$password = '';
-
-try {
-    // Connexion à la base de données
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die('<div class="alert alert-danger text-center" role="alert">Erreur de connexion à la base de données : ' . htmlspecialchars($e->getMessage()) . '</div>');
 }
 
 try {
@@ -35,7 +23,7 @@ try {
     ";
 
 
-    $stmt = $pdo->prepare($sql);
+    $stmt = $pdo_optiplant->prepare($sql);
     $stmt->execute();
     $recettes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
