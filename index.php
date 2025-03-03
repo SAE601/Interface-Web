@@ -22,9 +22,18 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
+        
         session_start();
         $_SESSION['user_id'] = $user['id'];
+    
+    
+        $update_sql = "UPDATE users SET last_login = NOW() WHERE id = :user_id";
+        $update_stmt = $pdo->prepare($update_sql);
+        $update_stmt->execute(['user_id' => $user['id']]);
+    
+   
         header('Location: dashboard.php');
+        exit();
     } else {
         $message = 'Identifiant ou mot de passe incorrect';
     }
