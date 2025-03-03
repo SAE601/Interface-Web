@@ -29,26 +29,39 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de bord</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style_defaut.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
-    <style>
-        .profile-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .modify-button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+    <?php
+
+// Prendre en compte le mode de couleur de l'utilisateur
+try {
+    $id = $_SESSION['user_id'];
+    $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user['mode'] == 'deuteranopie') {
+        echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+    } elseif ($user['mode'] == 'tritanopie') {
+        echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+    } elseif ($user['mode'] == 'protanopie') {
+        echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+    } elseif ($user['mode'] == 'achromatopsie') {
+        echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+    } elseif ($user['mode'] == 'contrast') {
+        echo '<link rel="stylesheet" href="css/style_contrast.css">';
+    } elseif ($user['mode'] == 'darkside') {
+        echo '<link rel="stylesheet" href="css/style_darkside.css">';
+    } else {
+        echo '<link rel="stylesheet" href="css/style_defaut.css">';
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+?>
 </head>
 
 <body>
