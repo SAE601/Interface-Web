@@ -56,19 +56,37 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <style>
-        .alert-item {
-            margin-bottom: 10px; /* Espace entre chaque alerte */
-            font-size: 14px; /* Taille de la police pour toutes les alertes */
-            line-height: 1.5; /* Meilleure lisibilité */
-            padding: 5px 0; /* Espacement interne (haut/bas) */
-            border-bottom: 1px dotted #ddd; /* Ligne légère pour séparer les alertes */
-        }
+    <?php
 
-        .alert-item:last-child {
-            border-bottom: none; /* Retire la bordure pour la dernière alerte */
+    // Prendre en compte le mode de couleur de l'utilisateur
+    try {
+        $id = $_SESSION['user_id'];
+        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user['mode'] == 'deuteranopie') {
+            echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+        } elseif ($user['mode'] == 'tritanopie') {
+            echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+        } elseif ($user['mode'] == 'protanopie') {
+            echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+        } elseif ($user['mode'] == 'achromatopsie') {
+            echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+        } elseif ($user['mode'] == 'contrast') {
+            echo '<link rel="stylesheet" href="css/style_contrast.css">';
+        } elseif ($user['mode'] == 'darkside') {
+            echo '<link rel="stylesheet" href="css/style_darkside.css">';
+        } else {
+            echo '<link rel="stylesheet" href="css/style_defaut.css">';
         }
-    </style>
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
+    ?>
 </head>
 <body>
 
