@@ -15,7 +15,12 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch();
 
+foreach ($user as $key => $value) {
+    echo "Clé: $key, Valeur: $value <br>";
+}
+
 $color_mode = $user['mode'];
+echo($color_mode);
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 ?>
 
@@ -126,12 +131,12 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
                 $mode = isset($color_mode) ? $color_mode : 'defaut';
                 ?>
                 <option value="defaut" <?php echo ($mode === 'defaut') ? 'selected' : ''; ?>>Défaut</option>
-                <option value="deuteranope" <?php echo ($mode === 'deuteranope') ? 'selected' : ''; ?>>Deutéranope</option>
-                <option value="tritanope" <?php echo ($mode === 'tritanope') ? 'selected' : ''; ?>>Tritanope</option>
-                <option value="protanope" <?php echo ($mode === 'protanope') ? 'selected' : ''; ?>>Protanope</option>
-                <option value="noir et blanc" <?php echo ($mode === 'noir et blanc') ? 'selected' : ''; ?>>Noir et Blanc</option>
-                <option value="contraste élevé" <?php echo ($mode === 'contraste élevé') ? 'selected' : ''; ?>>Contraste Élevé</option>
-                <option value="sombre" <?php echo ($mode === 'sombre') ? 'selected' : ''; ?>>Sombre</option>
+                <option value="deuteranopie" <?php echo ($mode === 'deuteranopie') ? 'selected' : ''; ?>>Deutéranopie</option>
+                <option value="tritanopie" <?php echo ($mode === 'tritanopie') ? 'selected' : ''; ?>>Tritanopie</option>
+                <option value="protanopie" <?php echo ($mode === 'protanopie') ? 'selected' : ''; ?>>Protanopie</option>
+                <option value="achromatopsie" <?php echo ($mode === 'achromatopsie') ? 'selected' : ''; ?>>Achromatopsie</option>
+                <option value="contrast" <?php echo ($mode === 'contrast') ? 'selected' : ''; ?>>Contraste</option>
+                <option value="darkside" <?php echo ($mode === 'darkside') ? 'selected' : ''; ?>>Darkside</option>
             </select>
         </form>
 

@@ -51,12 +51,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Prendre en compte le mode de couleur de l'utilisateur
     try {
-        $bdd = new PDO('mysql:host=localhost;port=3306;dbname=compte_utilisateur', 'root', '');
-        $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $bdd->exec("set names utf8");
-
         $id = $_SESSION['user_id'];
-        $stmt = $bdd->prepare("SELECT mode FROM users WHERE id = :id");
+        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -133,10 +129,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
     try {
-        $bdd = new PDO('mysql:host=localhost;port=3306;dbname=compte_utilisateur', 'root', '');
-        $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $bdd->exec("set names utf8");
-
         // Récupérer l'ID de l'utilisateur
         $id = $_SESSION['user_id'];
 
@@ -145,7 +137,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $mode = $_GET['mode'];
 
             // Mettre à jour la valeur du mode dans la base de données
-            $stmt = $bdd->prepare("UPDATE users SET mode = :mode WHERE id = :id");
+            $stmt = $pdo->prepare("UPDATE users SET mode = :mode WHERE id = :id");
             $stmt->bindParam(':mode', $mode, PDO::PARAM_STR);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
@@ -302,16 +294,11 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php
 
                 try {
-                    // Connect to the database
-                    $bdd = new PDO('mysql:host=localhost;port=3306;dbname=compte_utilisateur', 'root', '');
-                    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $bdd->exec("set names utf8");
-
                     // Get the user ID from the session
                     $id = $_SESSION['user_id'];
 
                     // Prepare the SQL query with a placeholder
-                    $stmt = $bdd->prepare("SELECT username, email FROM users WHERE id = :id");
+                    $stmt = $pdo->prepare("SELECT username, email FROM users WHERE id = :id");
                     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
                     // Execute the query
