@@ -159,6 +159,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     ?>
 
+
     <div class="dashboard-container">
         <!-- Ligne 1 : Deux colonnes pour la météo -->
         <div class="row">
@@ -281,8 +282,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php if (!empty($alerts)): ?>
                                 <?php foreach ($alerts as $alert): ?>
                                     <li>
+                                        <small>(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
                                         <?php echo htmlspecialchars($alert['message']); ?>
-                                        <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>

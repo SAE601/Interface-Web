@@ -33,6 +33,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .bouton-centre-header {
@@ -49,7 +50,7 @@ body {
 
 /* Conteneurs */
 .dashboard-container, .container {
-    max-width: 800px;
+    max-width: 80%; /* Conteneurs plus larges */
     margin: 50px auto;
     background-color: var(--container-bg);
     padding: 20px 30px;
@@ -59,7 +60,7 @@ body {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 800px; /* Conteneurs plus larges */
 }
 
 /* Typographie */
@@ -122,10 +123,10 @@ input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #555;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: #222;
-    color: #fff;
+    background-color: var(--container-bg);
+    color: var(--text-color);
 }
 
 /* Modale */
@@ -189,4 +190,25 @@ input[type="password"] {
 
 hr {
     color: #666;
+}
+
+/* Styles pour les cartes */
+.card {
+    background-color: var(--container-bg); /* Utilisez la variable pour le fond sombre */
+    border: 1px solid var(--border-color); /* Bordure discrète */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 20px; /* Espacement intérieur */
+    margin-bottom: 20px; /* Marge en bas pour séparer les cartes */
+    color: var(--text-color); /* Texte clair pour la lisibilité */
+}
+
+.card-title {
+    color: var(--primary-color); /* Titre en bleu pour le contraste */
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.card-content {
+    font-size: 1.1em;
+    line-height: 1.6;
 }

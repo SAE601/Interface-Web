@@ -200,3 +200,24 @@ input[type="password"] {
 hr {
     color: black;
 }
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+.user-info {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logout-btn {
+    background-color: #dc3545;
+    color: white;
+}
+.logout-btn:hover {
+    background-color: #c82333;
+    color: white;
+}
