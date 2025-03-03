@@ -90,6 +90,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="boutoun-droite-header">
+            <a name="profil" id="profil_utilisateur" class="btn btn-primary" href="profil.php" role="button">Profil</a>
             <a name="parametre" id="open-modal" class="btn btn-primary" href="#" role="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-palette-fill" viewBox="0 0 16 16">

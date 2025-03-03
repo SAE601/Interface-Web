@@ -15,12 +15,9 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch();
 
-foreach ($user as $key => $value) {
-    echo "Clé: $key, Valeur: $value <br>";
-}
 
 $color_mode = $user['mode'];
-echo($color_mode);
+
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 ?>
 
@@ -32,7 +29,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de bord</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style1.css">
+    <link rel="stylesheet" href="css/style_defaut.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
     <style>
