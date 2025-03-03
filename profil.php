@@ -65,7 +65,14 @@ try {
 </head>
 
 <body>
-
+    
+        <?php
+            if(isset($_SESSION['message'])) {
+                echo "<div class=\"dashboard-container\" ><p>". $_SESSION['message'] ."</p></div>";
+                $_SESSION['message'] = NULL;
+            }
+        ?>
+    
     <div class="dashboard-container" >
         <h2>Paramètres</h2>
         <p>Vous pouvez gérer votre profil et modifier les paramètres de motb de passe de photo de profil etc.</p>
