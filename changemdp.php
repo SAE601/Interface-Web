@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("config.php") ;
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
@@ -9,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Connexion à la base de données
 try {
-    $bdd = new PDO('mysql:host=localhost;port=3306;dbname=compte_utilisateur', 'root', '');
+    $bdd = $pdo ;
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $bdd->exec("set names utf8");
 } catch (PDOException $e) {
@@ -31,6 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Tous les champs sont obligatoires.";
     } elseif ($nouveau_mdp !== $confirmer_mdp) {
         $error = "Les nouveaux mots de passe ne correspondent pas.";
+    } elseif (strlen($nouveau_mdp) < 8) {
+        $error = 'Le mot de passe doit contenir au moins 8 caractères.';
+    } elseif (preg_match('/\s/', $nouveau_mdp)) {
+        $error = 'Le mot de passe ne doit pas contenir d\'espaces.';
+    } elseif (!preg_match('/\d/', $nouveau_mdp)) {
+        $error = 'Le mot de passe doit contenir au moins un chiffre.';
     } else {
         // Récupérer l'ID de l'utilisateur connecté
         $id = $_SESSION['user_id'];
@@ -68,66 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Changer le mot de passe</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style1.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
-
-        h2 {
-            color: #333;
-            text-align: center;
-        }
-
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-
-        .success {
-            color: green;
-            margin-bottom: 10px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
+    <link rel="stylesheet" href="css/style1.css">
+    <link rel="stylesheet" href="css/login.css"> <!-- Lien vers le fichier CSS externe -->
     </style>
 </head>
 
@@ -158,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <br>
     
-        <a class="btn btn-primary" href="dashboard.php" role="button">Retour<i class="bi bi-arrow-left"></i></a>
+        <a class="btn btn-primary" href="profil.php" role="button"><i class="bi bi-arrow-left"></i></a>
     </div>
 </body>
 
