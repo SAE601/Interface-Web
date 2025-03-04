@@ -64,6 +64,11 @@ body {
 }
 
 /* Typographie */
+
+h1 {
+    color: var(--text-color);
+}
+
 h2 {
     color: var(--text-color);
     text-align: center;

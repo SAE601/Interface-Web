@@ -197,7 +197,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="row">
             <div class="col-12">
                 <div class="text-center my-4">
-                    <h1 class="text-primary">Dashboard</h1>
+                    <h1>Dashboard</h1>
                 </div>
             </div>
         </div>
