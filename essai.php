@@ -52,15 +52,16 @@ $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Requête SQL pour récupérer les informations des capteurs associés au bac
-$sqlSensors = "SELECT type, unit, freq 
-               FROM sensor 
-               WHERE idTray = :idTray 
-               ORDER BY type ASC";
-$stmtSensors = $pdo_optiplant->prepare($sqlSensors);
-$stmtSensors->bindParam(':idTray', $idTray, PDO::PARAM_INT);
-$stmtSensors->execute();
-$sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
+// Requête SQL pour récupérer les informations des capteurs avec leurs dernières valeurs
+$sqlSensorsWithData = "SELECT sensor.idSensor, sensor.type, sensor.unit, sensor.freq, data.value
+                       FROM sensor
+                       LEFT JOIN data ON sensor.idSensor = data.idSensor
+                       WHERE sensor.idTray = :idTray 
+                       ORDER BY sensor.type ASC";
+$stmtSensorsWithData = $pdo_optiplant->prepare($sqlSensorsWithData);
+$stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmtSensorsWithData->execute();
+$sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -195,41 +196,37 @@ $sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Dernières Alertes</h5>
-                                <ul class="mb-0">
-                                    <?php if (!empty($alerts)): ?>
-                                        <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
-                                            <li class="alert-item">
-                                                <?php echo htmlspecialchars($alert['message']); ?>
-                                                <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
-                                    <?php endif; ?>
-                                </ul>
-
-                                <?php if (count($alerts) > 3): ?>
-                                    <div class="collapse" id="allAlerts">
-                                        <ul class="mt-2">
-                                            <?php foreach (array_slice($alerts, 3) as $alert): ?>
-                                                <li class="alert-item">
-                                                    <?php echo htmlspecialchars($alert['message']); ?>
-                                                    <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                    <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
-                                        <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
-                                    </button>
-                                <?php endif; ?>
-                            </div>
-                        </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Données des Capteurs</h5>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Valeur</th>
+                                <th>Unité</th>
+                                <th>Fréquence</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (!empty($sensorsWithData)): ?>
+                                <?php foreach ($sensorsWithData as $sensor): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($sensor['type']); ?></td>
+                                        <td>
+                                            <?php echo isset($sensor['value']) ? htmlspecialchars($sensor['value']) : '<span class="text-muted">N/A</span>'; ?>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
+                                        <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
+                                </tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
