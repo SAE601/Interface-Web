@@ -54,6 +54,17 @@ $stmt->execute();
 // Récupérer les alertes
 $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Requête SQL pour récupérer les informations des capteurs associés au bac
+$sqlSensors = "SELECT type, unit, freq 
+               FROM sensor 
+               WHERE idTray = :idTray 
+               ORDER BY type ASC";
+$stmtSensors = $pdo_optiplant->prepare($sqlSensors);
+$stmtSensors->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmtSensors->execute();
+$sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -154,8 +165,10 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- Onglet 3 -->
+    <!-- Ajouter les données des capteurs dans l'onglet Datas -->
     <div class="tab-pane fade show" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
         <div class="container py-4">
+            <!-- Section pour les données d'irrigation -->
             <div class="row">
                 <div class="col-4">
                     <h4 class="text-center">Données d'Irrigation</h4>
@@ -183,6 +196,37 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php else: ?>
                             <tr>
                                 <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+                            </tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Section pour les données des capteurs -->
+            <div class="row mt-4">
+                <div class="col-8">
+                    <h4 class="text-center">Données des Capteurs</h4>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Unité</th>
+                            <th>Fréquence</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if (!empty($sensors)): ?>
+                            <?php foreach ($sensors as $sensor): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($sensor['type']); ?></td>
+                                    <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
+                                    <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
                             </tr>
                         <?php endif; ?>
                         </tbody>
