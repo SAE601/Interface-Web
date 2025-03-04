@@ -139,10 +139,10 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="mt-4">
                             <?php if (!empty($bac['periodName'])): ?>
-                                <h3>État actuel de la plante :</h3>
+                                <h3>Période actuelle de la plante :</h3>
                                 <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
                             <?php else: ?>
-                                <h3>État actuel de la plante :</h3>
+                                <h3>Période actuelle de la plante :</h3>
                                 <p class="text-muted">Période non spécifiée pour cette plante.</p>
                             <?php endif; ?>
                         </div>
