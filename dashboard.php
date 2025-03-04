@@ -89,7 +89,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="bouton-centre-header">
             <a name="dashboard" id="" class="btn btn-primary" href="dashboard.php" role="button">dashboard</a>
             <a name="recettes" id="" class="btn btn-primary" href="recettes.php" role="button">recettes</a>
-            <a name="" id="" class="btn btn-primary" href="logout.php" role="button">Déconnexion</a>
         </div>
 
         <div class="boutoun-droite-header">
@@ -292,41 +291,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- Dernière ligne : Infos utilisateur + bouton de déconnexion -->
-        <div class="row">
-            <div class="dashboard-container">
-                <h2>Informations du compte : </h2>
-                <?php
 
-                try {
-                    // Get the user ID from the session
-                    $id = $_SESSION['user_id'];
-
-                    // Prepare the SQL query with a placeholder
-                    $stmt = $pdo->prepare("SELECT username, email FROM users WHERE id = :id");
-                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-                    // Execute the query
-                    $stmt->execute();
-
-                    // Fetch the result
-                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($user) {
-                        echo "Nom de l'utilisateur : " . $user['username'] . "<br>";
-                        echo "Adresse Email reliée : " . $user['email'] . "<br>";
-                    } else {
-                        echo "Aucun utilisateur trouvé avec cet ID.";
-                    }
-                } catch (PDOException $e) {
-                    echo "Erreur : " . $e->getMessage();
-                }
-                ?>
-                <br>
-                <a class="btn btn-primary" href="changemdp.php" role="button">Changer de mot de passe</a>
-            </div>
-
-        </div>
     </div>
 
     <script>
@@ -344,7 +309,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="js/meteo_script.js"></script>
+    <script src="js/météo_script.js"></script>
 </body>
 
 </html>
