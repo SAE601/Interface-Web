@@ -64,8 +64,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <header>
 
         <div class="animation-container" onclick="this.classList.toggle('active')">
-            <dotlottie-player class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 150px; height: 150px" loop autoplay></dotlottie-player>
-            <dotlottie-player class="moon" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 150px; height: 150px" loop autoplay></dotlottie-player>
+            <dotlottie-player class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay></dotlottie-player>
+            <dotlottie-player class="moon" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay></dotlottie-player>
         </div>
         <h1>SAE Ombrière</h1>
         <nav>
@@ -73,8 +73,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <ul>
                     <li><a href="dashboard.php">Dashboard</a></li>
                     <li><a href="recettes.php">Recettes</a></li>
-                    <li><a href="logout.php">Déconnexion</a></li>
-                    <li class="profile-link"><a href="profil.php">Profil</a></li>
+                    <li><a href="profil.php">Profil</a></li>
+                    <!-- <li class="profile-link"><a href="profil.php">Profil</a></li> -->
                 </ul>
             </div>
             <div class="menu-container">
@@ -90,7 +90,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="logo">
             <a href="profil.php">
                 <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo">
-                <p class="logo-text">Profil</p>
             </a>
         </div>
 
@@ -98,11 +97,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- C'est le main qu'il faut changer !!!!!!! -->
     <main>
-        <div class="dashboard-container">
-            <h2>Bienvenue sur votre tableau de bord</h2>
-            <p>Vous avez maintenant accès à votre tableau de contrôle (dashboard pour les bilingues qui sont pas claqués au TOEIC genre Valentin)</p>
-            <a class="btn btn-primary" href="logout.php" role="button">Se déconnecter</a>
-        </div>
 
         
     <div class="dashboard-container">
@@ -239,42 +233,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
-
-        <!-- Dernière ligne : Infos utilisateur + bouton de déconnexion -->
-        <div class="row">
-            <div class="dashboard-container">
-                <h2>Informations du compte : </h2>
-                <?php
-
-                try {
-                    // Get the user ID from the session
-                    $id = $_SESSION['user_id'];
-
-                    // Prepare the SQL query with a placeholder
-                    $stmt = $pdo->prepare("SELECT username, email FROM users WHERE id = :id");
-                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-                    // Execute the query
-                    $stmt->execute();
-
-                    // Fetch the result
-                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($user) {
-                        echo "Nom de l'utilisateur : " . $user['username'] . "<br>";
-                        echo "Adresse Email reliée : " . $user['email'] . "<br>";
-                    } else {
-                        echo "Aucun utilisateur trouvé avec cet ID.";
-                    }
-                } catch (PDOException $e) {
-                    echo "Erreur : " . $e->getMessage();
-                }
-                ?>
-                <br>
-                <a class="btn btn-primary" href="changemdp.php" role="button">Changer de mot de passe</a>
-            </div>
-
-        </div>
     </div>
 
     <script>
@@ -289,11 +247,10 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
 
     </main>
-    <!-- Fin du main -->
 
     <footer class="footer">
         <div class="image-plant">
-            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 300px; height: 300px; " loop autoplay></dotlottie-player>
+            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 200px; height: 200px; " loop autoplay></dotlottie-player>
         </div>
         <h3> &copy; 2025 Site Web SAE Ombrière. Tous droits réservés.</h3>
     </footer>
@@ -308,6 +265,12 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             document.querySelector('.links').classList.toggle('active');
         });
     </script>
+    <!-- Intégration de Bootstrap JS -->
+    <script src="js/index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/météo_script.js"></script>
 </body>
 
 </html>
