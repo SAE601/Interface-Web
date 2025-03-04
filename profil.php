@@ -33,47 +33,49 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
     <script src="js/promote_script.js"></script>
     <?php
 
-// Prendre en compte le mode de couleur de l'utilisateur
-try {
-    $id = $_SESSION['user_id'];
-    $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt->execute();
+    // Prendre en compte le mode de couleur de l'utilisateur
+    try {
+        $id = $_SESSION['user_id'];
+        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user['mode'] == 'deuteranopie') {
-        echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
-    } elseif ($user['mode'] == 'tritanopie') {
-        echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
-    } elseif ($user['mode'] == 'protanopie') {
-        echo '<link rel="stylesheet" href="css/style_protanopie.css">';
-    } elseif ($user['mode'] == 'achromatopsie') {
-        echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
-    } elseif ($user['mode'] == 'contrast') {
-        echo '<link rel="stylesheet" href="css/style_contrast.css">';
-    } elseif ($user['mode'] == 'darkside') {
-        echo '<link rel="stylesheet" href="css/style_darkside.css">';
-    } else {
-        echo '<link rel="stylesheet" href="css/style_defaut.css">';
+        if ($user['mode'] == 'deuteranopie') {
+            echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+        } elseif ($user['mode'] == 'tritanopie') {
+            echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+        } elseif ($user['mode'] == 'protanopie') {
+            echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+        } elseif ($user['mode'] == 'achromatopsie') {
+            echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+        } elseif ($user['mode'] == 'contrast') {
+            echo '<link rel="stylesheet" href="css/style_contrast.css">';
+        } elseif ($user['mode'] == 'darkside') {
+            echo '<link rel="stylesheet" href="css/style_darkside.css">';
+        } elseif ($user['mode'] == 'enfant') {
+            echo '<link rel="stylesheet" href="css/style_enfant.css">';
+        } else {
+            echo '<link rel="stylesheet" href="css/style_defaut.css">';
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
 
-?>
+    ?>
 </head>
 
 <body>
-    
-        <?php
-            if(isset($_SESSION['message'])) {
-                echo "<div class=\"dashboard-container\" ><p>". $_SESSION['message'] ."</p></div>";
-                $_SESSION['message'] = NULL;
-            }
-        ?>
-    
-    <div class="dashboard-container" >
+
+    <?php
+    if (isset($_SESSION['message'])) {
+        echo "<div class=\"dashboard-container\" ><p>" . $_SESSION['message'] . "</p></div>";
+        $_SESSION['message'] = NULL;
+    }
+    ?>
+
+    <div class="dashboard-container">
         <h2>Paramètres</h2>
         <p>Vous pouvez gérer votre profil et modifier les paramètres de motb de passe de photo de profil etc.</p>
         <a class="btn btn-primary" href="logout.php" role="button">Se déconnecter</a>
@@ -92,22 +94,28 @@ try {
 
     <style>
         .profile-photo {
-            width: 150px; /* Taille souhaitée */
-            height: 150px; /* Taille souhaitée */
-            border-radius: 50%; /* Effet cercle */
-            object-fit: cover; /* Rognage contrôlé */
-            object-position: top; /* Centre l'image */
-            border: 3px solid #ccc; /* Bordure optionnelle */
+            width: 150px;
+            /* Taille souhaitée */
+            height: 150px;
+            /* Taille souhaitée */
+            border-radius: 50%;
+            /* Effet cercle */
+            object-fit: cover;
+            /* Rognage contrôlé */
+            object-position: top;
+            /* Centre l'image */
+            border: 3px solid #ccc;
+            /* Bordure optionnelle */
         }
     </style>
 
     <div class="dashboard-container">
-        <h2>Informations du compte : </h2>  
+        <h2>Informations du compte : </h2>
         <?php
 
         try {
             // Connect to the database
-            $bdd = $pdo ;
+            $bdd = $pdo;
             $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $bdd->exec("set names utf8");
             // Get the user ID from the session
@@ -167,58 +175,58 @@ try {
     </div>
 
     <?php if ($user && $user['lerole'] === 'admin'): ?>
-    <div class="dashboard-container">
-        <h2>Section Administrateur</h2>
-        <p>Cette section est uniquement accessible aux administrateurs.</p>
-        <!-- Liste des utilisateurs -->
-        <h3>Liste des utilisateurs</h3>
-        <?php
-        try {
-            // Récupérer tous les utilisateurs depuis la base de données
-            $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login FROM users");
-            $stmt->execute();
-            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if ($users) {
-                echo "<table class='table table-striped table-dark'>";
-                echo "<thead><tr><th>ID</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
-                echo "<tbody>";
-                foreach ($users as $user) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($user['id']) . "</td>";
-                    echo "<td>" . htmlspecialchars($user['username']) . "</td>";
-                    // Afficher la date et l'heure de dernière connexion si elle n'est pas NULL
-                    echo "<td>";
-                    if ($user['last_login'] !== null) {
-                        echo htmlspecialchars($user['last_login']);
-                    } else {
-                        echo ""; // Affiche rien si last_login est NULL
-                    }
-                    echo "</td>";
-                    echo "<td>" . htmlspecialchars($user['lerole']) . "</td>";
-                    // Ajouter un bouton "Promouvoir" uniquement pour les membres
-                    if ($user['lerole'] === 'membre') {
-                        echo "<td style='display: flex;'>
+        <div class="dashboard-container">
+            <h2>Section Administrateur</h2>
+            <p>Cette section est uniquement accessible aux administrateurs.</p>
+            <!-- Liste des utilisateurs -->
+            <h3>Liste des utilisateurs</h3>
+            <?php
+            try {
+                // Récupérer tous les utilisateurs depuis la base de données
+                $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login FROM users");
+                $stmt->execute();
+                $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($users) {
+                    echo "<table class='table table-striped table-dark'>";
+                    echo "<thead><tr><th>ID</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
+                    echo "<tbody>";
+                    foreach ($users as $user) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($user['id']) . "</td>";
+                        echo "<td>" . htmlspecialchars($user['username']) . "</td>";
+                        // Afficher la date et l'heure de dernière connexion si elle n'est pas NULL
+                        echo "<td>";
+                        if ($user['last_login'] !== null) {
+                            echo htmlspecialchars($user['last_login']);
+                        } else {
+                            echo ""; // Affiche rien si last_login est NULL
+                        }
+                        echo "</td>";
+                        echo "<td>" . htmlspecialchars($user['lerole']) . "</td>";
+                        // Ajouter un bouton "Promouvoir" uniquement pour les membres
+                        if ($user['lerole'] === 'membre') {
+                            echo "<td style='display: flex;'>
                                 <form method='POST' action='promote_user.php' style='display:inline; margin-right: 20px;'>
                                     <input type='hidden' name='user_id' value='" . htmlspecialchars($user['id']) . "'>
                                     <button type='submit' class='btn btn-success'>Promouvoir</button>
                                 </form>
                               </td>";
-                    } else {
-                        echo "<td></td>"; // Pas de bouton pour les autres rôles
+                        } else {
+                            echo "<td></td>"; // Pas de bouton pour les autres rôles
+                        }
+                        echo "</tr>";
                     }
-                    echo "</tr>";
+                    echo "</tbody>";
+                    echo "</table>";
+                } else {
+                    echo "<p>Aucun utilisateur trouvé.</p>";
                 }
-                echo "</tbody>";
-                echo "</table>";
-            } else {
-                echo "<p>Aucun utilisateur trouvé.</p>";
+            } catch (PDOException $e) {
+                echo "<p>Erreur lors de la récupération des utilisateurs : " . $e->getMessage() . "</p>";
             }
-        } catch (PDOException $e) {
-            echo "<p>Erreur lors de la récupération des utilisateurs : " . $e->getMessage() . "</p>";
-        }
-        ?>
-    </div>
-<?php endif; ?>
+            ?>
+        </div>
+    <?php endif; ?>
 
 </body>
 

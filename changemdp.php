@@ -99,6 +99,8 @@ try {
         echo '<link rel="stylesheet" href="css/style_contrast.css">';
     } elseif ($user['mode'] == 'darkside') {
         echo '<link rel="stylesheet" href="css/style_darkside.css">';
+    }  elseif ($user['mode'] == 'enfant') {
+        echo '<link rel="stylesheet" href="css/style_enfant.css">';
     } else {
         echo '<link rel="stylesheet" href="css/style_defaut.css">';
     }
