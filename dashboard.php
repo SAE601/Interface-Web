@@ -213,7 +213,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div class="card-body" id="bacInfo1">
-                        <a class="btn btn-primary" href="essai.php?trays=1">En savoir plus</a>
+                        <a class="btn btn-primary" href="essai.php?trays=1">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
@@ -225,7 +225,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div class="card-body" id="bacInfo2">
-                        <a class="btn btn-primary" href="essai.php?trays=2">En savoir plus</a>
+                        <a class="btn btn-primary" href="essai.php?trays=2">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
@@ -237,7 +237,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div class="card-body" id="bacInfo3">
-                        <a class="btn btn-primary" href="essai.php?trays=3">En savoir plus</a>
+                        <a class="btn btn-primary" href="essai.php?trays=3">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
@@ -249,7 +249,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div class="card-body" id="bacInfo4">
-                        <a class="btn btn-primary" href="essai.php?trays=4">En savoir plus</a>
+                        <a class="btn btn-primary" href="essai.php?trays=4">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
