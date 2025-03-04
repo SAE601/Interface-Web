@@ -229,6 +229,43 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                         </table>
                     </div>
                 </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Dernières Alertes</h5>
+                                <ul class="mb-0">
+                                    <?php if (!empty($alerts)): ?>
+                                        <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
+                                            <li class="alert-item">
+                                                <?php echo htmlspecialchars($alert['message']); ?>
+                                                <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
+                                    <?php endif; ?>
+                                </ul>
+
+                                <?php if (count($alerts) > 3): ?>
+                                    <div class="collapse" id="allAlerts">
+                                        <ul class="mt-2">
+                                            <?php foreach (array_slice($alerts, 3) as $alert): ?>
+                                                <li class="alert-item">
+                                                    <?php echo htmlspecialchars($alert['message']); ?>
+                                                    <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                    <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
+                                        <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
