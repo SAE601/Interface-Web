@@ -89,7 +89,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="bouton-centre-header">
             <a name="dashboard" id="" class="btn btn-primary" href="dashboard.php" role="button">dashboard</a>
             <a name="recettes" id="" class="btn btn-primary" href="recettes.php" role="button">recettes</a>
-            <a name="" id="" class="btn btn-primary" href="#" role="button">compte de menthe et cristaux</a>
+            <a name="" id="" class="btn btn-primary" href="logout.php" role="button">Déconnexion</a>
         </div>
 
         <div class="boutoun-droite-header">

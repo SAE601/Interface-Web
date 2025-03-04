@@ -294,7 +294,7 @@ h3 {
 /*-------Début de la partie du Main-------*/
 
 .dashboard-container {
-    max-width: 800px;
+    max-width: 80%;
     margin: 50px auto;
     background-color: #fff;
     padding: 20px 30px;
@@ -378,3 +378,5 @@ button:hover {
 .btn:hover {
     background-color: #3ee319;
 }
+
+
