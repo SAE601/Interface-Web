@@ -14,9 +14,16 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $stmt_check_username = $pdo->prepare($sql_check_username);
     $stmt_check_username->execute(['username' => $username]);
 
+    //vérifier si l'email existe
+    $sql_check_email = "SELECT id FROM users WHERE email = :email";
+    $stmt_check_email = $pdo->prepare($sql_check_email);
+    $stmt_check_email->execute(['email' => $email]);
+
     if ($stmt_check_username->rowCount() > 0) {
         // Le nom d'utilisateur existe déjà
         $message = 'Ce nom d\'utilisateur est déjà utilisé.';
+    } elseif ($stmt_check_email->rowCount() > 0) {
+        $message = 'Cet email est déjà utilisé.';
     } else {
         // Vérifier les contraintes du mot de passe
         if (strlen($password) < 8) {
