@@ -51,49 +51,37 @@ try {
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f9f9f9;
-        }
-        .page-title {
-            font-size: 2.5rem;
-            color: #007bff;
-            margin-bottom: 30px;
-        }
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: none;
-        }
-        .card-title {
-            font-size: 1.25rem;
-            color: #007bff;
-            font-weight: bold;
-        }
-        .card-text {
-            font-size: 0.95rem;
-            color: #6c757d;
-        }
-        .btn-back {
-            background-color: #6c757d;
-            color: white;
-        }
-        .btn-back:hover {
-            background-color: #5a6268;
-        }
-        .recipes-container {
-            margin-top: 30px;
-            /* Espacement entre les lignes dans la grille */
-            row-gap: 30px;
-        }
-        .btn-en-savoir-plus {
-            margin-top: 20px;
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-en-savoir-plus:hover {
-            background-color: #218838;
-        }
-    </style>
+    <?php
+
+// Prendre en compte le mode de couleur de l'utilisateur
+try {
+    $id = $_SESSION['user_id'];
+    $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user['mode'] == 'deuteranopie') {
+        echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+    } elseif ($user['mode'] == 'tritanopie') {
+        echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+    } elseif ($user['mode'] == 'protanopie') {
+        echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+    } elseif ($user['mode'] == 'achromatopsie') {
+        echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+    } elseif ($user['mode'] == 'contrast') {
+        echo '<link rel="stylesheet" href="css/style_contrast.css">';
+    } elseif ($user['mode'] == 'darkside') {
+        echo '<link rel="stylesheet" href="css/style_darkside.css">';
+    } else {
+        echo '<link rel="stylesheet" href="css/style_defaut.css">';
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+?>
 </head>
 <body>
 <div class="container py-4">
