@@ -159,65 +159,39 @@ $sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
             <div class="container py-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Données d'Irrigation</h4>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Date et Heure</th>
-                                        <th>Recette</th>
+                        <h5 class="card-title">Données d'Irrigation</h5>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Date et Heure</th>
+                                <th>Recette</th>
+                                <th>Âge (en heures)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (!empty($irrigations)): ?>
+                                <?php foreach ($irrigations as $index => $irrigation): ?>
+                                    <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
+                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                        <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                        <td>
+                                            <?php
+                                            $hoursAgo = (int) $irrigation['hoursAgo'];
+                                            echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                            ?>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($irrigations)): ?>
-                                        <?php foreach ($irrigations as $index => $irrigation): ?>
-                                            <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
-                                                <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                                <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
-                                                <td>
-                                                    <?php
-                                                    $hoursAgo = (int) $irrigation['hoursAgo'];
-                                                    echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Données des Capteurs</h4>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Unité</th>
-                                        <th>Fréquence</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($sensors)): ?>
-                                        <?php foreach ($sensors as $sensor): ?>
-                                            <tr>
-                                                <td><?php echo htmlspecialchars($sensor['type']); ?></td>
-                                                <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
-                                                <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="3" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+                                </tr>
+                            <?php endif; ?>
+                            </tbody>
+                        </table>
+                        <?php if (count($irrigations) > 5): ?>
+                            <button class="btn btn-link mt-2" id="toggle-irrigations" data-showing="5">Voir toutes les irriguations</button>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -280,6 +254,26 @@ $sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const button = document.getElementById('toggle-irrigations');
+            if (button) {
+                button.addEventListener('click', function () {
+                    const rows = document.querySelectorAll('.irrigation-row');
+                    const isShowingAll = button.innerText === 'Voir toutes les irriguations';
+
+                    if (isShowingAll) {
+                        rows.forEach(row => row.classList.remove('d-none')); // Afficher toutes les lignes
+                        button.innerText = 'Voir moins'; // Mise à jour du bouton
+                    } else {
+                        rows.forEach((row, index) => {
+                            row.classList.toggle('d-none', index >= 5); // Masquer les lignes au-delà des 5 premières
+                        });
+                        button.innerText = 'Voir toutes les irriguations'; // Mise à jour du bouton
+                    }
+                });
+            }
+        });
+
         // JavaScript pour gérer l'affichage des onglets
         document.addEventListener('DOMContentLoaded', function() {
             // Masquer tous les onglets sauf le premier
