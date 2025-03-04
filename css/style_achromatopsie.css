@@ -2,11 +2,13 @@
 
 /* Variables CSS adaptées pour l'achromatopsie */
 :root {
-    --primary-color: #555; /* Gris neutre */
-    --background-color: #F0F0F0; /* Gris clair pour éviter un blanc trop agressif */
-    --text-color: #222; /* Noir atténué pour un bon contraste */
-    --header-color: #666; /* Gris moyen pour header */
-    --button-color: #444; /* Gris foncé pour différencier les boutons */
+    --primary-color: #555;
+    --background-color: #F0F0F0;
+    --text-color: #222;
+    --header-color: #666;
+    --button-color: #444;
+    --container-bg: #E0E0E0;
+    --border-color: #999;
 }
 
 /* Styles de base */
@@ -48,17 +50,17 @@ body {
 
 /* Conteneurs */
 .dashboard-container, .container {
-    max-width: 80%; /* Conteneurs plus larges */
+    max-width: 80%;
     margin: 50px auto;
     background-color: var(--container-bg);
     padding: 20px 30px;
-    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     border: 1px solid var(--border-color);
 }
 
 .container {
-    max-width: 800px; /* Conteneurs plus larges */
+    max-width: 600px;
 }
 
 /* Typographie */
@@ -68,7 +70,7 @@ h2 {
 }
 
 p {
-    color: #b0b0b0; /* Texte secondaire légèrement plus foncé */
+    color: #444;
 }
 
 a {
@@ -94,18 +96,18 @@ a:hover {
 }
 
 .btn:hover, button:hover {
-    background-color: #1565c0; /* Bleu encore plus foncé au survol */
+    background-color: #333;
 }
 
 /* Messages d'erreur et de succès */
 .error {
-    color: #e57373; /* Rouge doux */
+    color: #888;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .success {
-    color: #81c784; /* Vert doux */
+    color: #666;
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -114,7 +116,7 @@ a:hover {
 label {
     display: block;
     margin-bottom: 5px;
-    color: #bdbdbd;
+    color: #444;
 }
 
 input[type="password"] {
@@ -133,7 +135,7 @@ input[type="password"] {
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: rgba(100, 100, 100, 0.8);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -145,7 +147,7 @@ input[type="password"] {
     width: 66.66vw;
     height: auto;
     max-height: 90vh;
-    background-color: var(--container-bg);
+    background-color: rgba(80, 80, 80, 0.9);
     padding: 40px;
     border-radius: 15px;
     text-align: center;
@@ -158,8 +160,8 @@ input[type="password"] {
     display: block;
     margin: 15px 0;
     padding: 12px 25px;
-    background-color: var(--primary-color);
-    color: #fff;
+    background-color: white;
+    color: #222;
     text-decoration: none;
     border-radius: 5px;
     font-size: 1.2em;
@@ -168,7 +170,7 @@ input[type="password"] {
 }
 
 .modal-content a:hover {
-    background-color: #0d47a1;
+    background-color: #777;
     transform: scale(1.05);
 }
 
@@ -192,16 +194,16 @@ hr {
 
 /* Styles pour les cartes */
 .card {
-    background-color: var(--container-bg); /* Utilisez la variable pour le fond sombre */
-    border: 1px solid var(--border-color); /* Bordure discrète */
-    border-radius: 8px; /* Coins arrondis */
-    padding: 20px; /* Espacement intérieur */
-    margin-bottom: 20px; /* Marge en bas pour séparer les cartes */
-    color: var(--text-color); /* Texte clair pour la lisibilité */
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: var(--text-color);
 }
 
 .card-title {
-    color: var(--primary-color); /* Titre en bleu pour le contraste */
+    color: var(--primary-color);
     font-size: 1.5em;
     margin-bottom: 15px;
 }
