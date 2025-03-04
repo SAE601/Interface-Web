@@ -1,13 +1,21 @@
 <?php
 session_start();
 
-include('config.php');
-
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
+
+// Informations de connexion à la base de données
+$host = 'localhost';
+$dbname = 'optiplant';
+$username = 'root';
+$password = '';
+
+// Connexion à la base de données
+$pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Récupération du paramètre 'trays'
 $idTray = isset($_GET['trays']) ? intval($_GET['trays']) : null;
@@ -16,9 +24,15 @@ if (!$idTray) {
     die('<div class="alert alert-danger">Bac introuvable.</div>');
 }
 
-// Requête SQL pour récupérer les informations du bac correspondant
-$sql = "SELECT * FROM trays WHERE idTray = :idTray";
-$stmt = $pdo_optiplant->prepare($sql);
+$sql = "SELECT trays.*, 
+               plants.plantName AS plantName, 
+               periods.name AS periodName
+        FROM trays 
+        LEFT JOIN plants ON trays.idPlant = plants.idPlant 
+        LEFT JOIN recipes ON plants.idPlant = recipes.idPlant
+        LEFT JOIN periods ON recipes.idPeriod = periods.idPeriod
+        WHERE trays.idTray = :idTray";
+$stmt = $pdo->prepare($sql);
 $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 $bac = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -33,15 +47,14 @@ $sqlIrrigation = "SELECT *, TIMESTAMPDIFF(HOUR, dateTime, NOW()) AS hoursAgo
                   FROM irrigation 
                   WHERE idTray = :idTray AND dateTime >= NOW() - INTERVAL 24 HOUR 
                   ORDER BY dateTime DESC";
-$stmtIrrigation = $pdo_optiplant->prepare($sqlIrrigation);
-
+$stmtIrrigation = $pdo->prepare($sqlIrrigation);
 $stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtIrrigation->execute();
 $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour récupérer les alertes spécifiques au bac
 $sql = "SELECT message, dateTime FROM alerts WHERE idTray = :idTray ORDER BY dateTime DESC LIMIT 5";
-$stmt = $pdo_optiplant->prepare($sql);
+$stmt = $pdo->prepare($sql);
 $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 // Récupérer les alertes
@@ -112,8 +125,38 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Onglet 2 -->
     <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-        <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-        <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+        <!-- Utilisation d'une grille Bootstrap avec deux colonnes -->
+        <div class="row align-items-center">
+            <!-- Colonne pour l'image -->
+            <div class="col-md-6 text-center">
+                <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+            </div>
+
+            <!-- Colonne pour les informations texte -->
+            <div class="col-md-6">
+                <div>
+                    <!-- Nom de la plante -->
+                    <?php if (!empty($bac['plantName'])): ?>
+                        <h3>Nom de la plante :</h3>
+                        <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
+                    <?php else: ?>
+                        <h3>Nom de la plante :</h3>
+                        <p class="text-muted">Plante non spécifiée pour ce bac.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="mt-4">
+                    <!-- Période de la plante -->
+                    <?php if (!empty($bac['periodName'])): ?>
+                        <h3>État actuel de la plante :</h3>
+                        <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
+                    <?php else: ?>
+                        <h3>État actuel de la plante :</h3>
+                        <p class="text-muted">Période non spécifiée pour cette plante.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Onglet 3 -->
