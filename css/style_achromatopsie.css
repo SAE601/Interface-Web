@@ -31,6 +31,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .bouton-centre-header {
@@ -46,22 +47,18 @@ body {
 }
 
 /* Conteneurs */
-.dashboard-container {
-    max-width: 80%; /* Conteneur plus large */
+.dashboard-container, .container {
+    max-width: 80%; /* Conteneurs plus larges */
     margin: 50px auto;
-    background-color: #E0E0E0; /* Fond légèrement plus foncé que le body */
+    background-color: var(--container-bg);
     padding: 20px 30px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.05);
     border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .container {
-    max-width: 600px; /* Conteneur plus large */
-    margin: 50px auto;
-    background-color: #E0E0E0;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    max-width: 800px; /* Conteneurs plus larges */
 }
 
 /* Typographie */
@@ -71,11 +68,11 @@ h2 {
 }
 
 p {
-    color: #444; /* Texte légèrement plus foncé pour améliorer la lisibilité */
+    color: #b0b0b0; /* Texte secondaire légèrement plus foncé */
 }
 
 a {
-    color: var(--button-color);
+    color: var(--primary-color);
     text-decoration: none;
 }
 
@@ -84,43 +81,31 @@ a:hover {
 }
 
 /* Boutons */
-.btn {
+.btn, button {
     margin: 10px;
     padding: 10px 20px;
     background-color: var(--button-color);
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.btn:hover {
-    background-color: #222; /* Encore plus foncé pour le survol */
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: var(--button-color);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #222;
+.btn:hover, button:hover {
+    background-color: #1565c0; /* Bleu encore plus foncé au survol */
 }
 
 /* Messages d'erreur et de succès */
 .error {
-    color: #333; /* Gris foncé pour être visible sans être agressif */
+    color: #e57373; /* Rouge doux */
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .success {
-    color: #666; /* Gris moyen pour contraste avec le fond */
+    color: #81c784; /* Vert doux */
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -129,15 +114,17 @@ button:hover {
 label {
     display: block;
     margin-bottom: 5px;
-    color: #444;
+    color: #bdbdbd;
 }
 
 input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #999;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
+    background-color: var(--container-bg);
+    color: var(--text-color);
 }
 
 /* Modale */
@@ -146,7 +133,7 @@ input[type="password"] {
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: rgba(120, 120, 120, 0.8);
+    background-color: rgba(30, 30, 30, 0.9);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -158,35 +145,35 @@ input[type="password"] {
     width: 66.66vw;
     height: auto;
     max-height: 90vh;
-    background-color: #888; /* Gris intermédiaire pour éviter trop de contraste */
+    background-color: var(--container-bg);
     padding: 40px;
     border-radius: 15px;
     text-align: center;
     box-sizing: border-box;
     overflow-y: auto;
+    border: 1px solid var(--border-color);
 }
 
 .modal-content a {
     display: block;
     margin: 15px 0;
     padding: 12px 25px;
-    background-color: #CCC; /* Gris clair */
-    color: #222;
+    background-color: var(--primary-color);
+    color: #fff;
     text-decoration: none;
     border-radius: 5px;
     font-size: 1.2em;
-    font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .modal-content a:hover {
-    background-color: #666; /* Plus foncé au survol */
+    background-color: #0d47a1;
     transform: scale(1.05);
 }
 
 .modal-content hr {
-    color: #222;
+    color: #666;
 }
 
 /* Bouton de fermeture */
@@ -195,10 +182,31 @@ input[type="password"] {
     top: 20px;
     right: 20px;
     font-size: 1.5em;
-    color: #222;
+    color: var(--text-color);
     cursor: pointer;
 }
 
 hr {
-    color: #222;
+    color: #666;
+}
+
+/* Styles pour les cartes */
+.card {
+    background-color: var(--container-bg); /* Utilisez la variable pour le fond sombre */
+    border: 1px solid var(--border-color); /* Bordure discrète */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 20px; /* Espacement intérieur */
+    margin-bottom: 20px; /* Marge en bas pour séparer les cartes */
+    color: var(--text-color); /* Texte clair pour la lisibilité */
+}
+
+.card-title {
+    color: var(--primary-color); /* Titre en bleu pour le contraste */
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.card-content {
+    font-size: 1.1em;
+    line-height: 1.6;
 }

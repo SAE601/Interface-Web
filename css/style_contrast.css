@@ -1,4 +1,5 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
 /* Variables CSS pour un mode à contraste élevé */
 :root {
     --primary-color: #FFD700; /* Jaune vif pour une visibilité accrue */
@@ -6,7 +7,7 @@
     --text-color: #FFFFFF; /* Blanc pur pour un texte lisible */
     --header-color: #000000; /* Fond du header en noir */
     --button-color: #FF4500; /* Orange vif pour bien démarquer les boutons */
-    --border-color: #FFFFFF; /* Bordures blanches pour plus de visibilité */
+    --container-bg: noir; /* Bordures blanches pour plus de visibilité */
     --border-color: #FFD700;
 }
 
@@ -32,7 +33,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000;
-    border-bottom: 3px solid var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .bouton-centre-header {
@@ -64,83 +65,68 @@ body {
 
 /* Typographie */
 h2 {
-    color: var(--primary-color);
+    color: var(--text-color);
     text-align: center;
-    text-transform: uppercase;
 }
 
 p {
-    color: #FFFF00; /* Jaune clair pour différencier le texte standard */
+    color: #b0b0b0; /* Texte secondaire légèrement plus foncé */
 }
 
 a {
-    color: var(--button-color);
+    color: var(--primary-color);
     text-decoration: none;
-    font-weight: bold;
 }
 
 a:hover {
     text-decoration: underline;
-    background-color: var(--primary-color);
-    color: black;
 }
 
 /* Boutons */
 .btn, button {
     margin: 10px;
-    padding: 12px 20px;
+    padding: 10px 20px;
     background-color: var(--button-color);
-    color: #000000;
+    color: #fff;
     text-decoration: none;
     border-radius: 5px;
-    border: 2px solid var(--primary-color);
-    font-weight: bold;
+    border: none;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-size: 1.1em;
 }
 
 .btn:hover, button:hover {
-    background-color: var(--primary-color);
-    color: black;
+    background-color: #1565c0; /* Bleu encore plus foncé au survol */
 }
 
 /* Messages d'erreur et de succès */
 .error {
-    color: #FF0000; /* Rouge vif */
+    color: #e57373; /* Rouge doux */
     font-weight: bold;
-    background-color: #000000;
-    padding: 10px;
-    border: 2px solid white;
-    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .success {
-    color: #00FF00; /* Vert vif */
+    color: #81c784; /* Vert doux */
     font-weight: bold;
-    background-color: #000000;
-    padding: 10px;
-    border: 2px solid white;
-    display: inline-block;
+    margin-bottom: 10px;
 }
 
 /* Formulaire */
 label {
     display: block;
     margin-bottom: 5px;
-    color: var(--primary-color);
-    font-weight: bold;
+    color: #bdbdbd;
 }
 
 input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 2px solid var(--primary-color);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: #000000;
-    color: #FFFFFF;
-    font-size: 1.2em;
+    background-color: var(--container-bg);
+    color: var(--text-color);
 }
 
 /* Modale */
@@ -149,7 +135,7 @@ input[type="password"] {
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(30, 30, 30, 0.9);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -161,13 +147,13 @@ input[type="password"] {
     width: 66.66vw;
     height: auto;
     max-height: 90vh;
-    background-color: #000000;
+    background-color: var(--container-bg);
     padding: 40px;
     border-radius: 15px;
     text-align: center;
     box-sizing: border-box;
     overflow-y: auto;
-    border: 3px solid var(--primary-color);
+    border: 1px solid var(--border-color);
 }
 
 .modal-content a {
@@ -175,23 +161,21 @@ input[type="password"] {
     margin: 15px 0;
     padding: 12px 25px;
     background-color: var(--primary-color);
-    color: #000000;
+    color: #fff;
     text-decoration: none;
     border-radius: 5px;
     font-size: 1.2em;
     text-transform: uppercase;
-    font-weight: bold;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .modal-content a:hover {
-    background-color: #FF0000;
-    color: white;
+    background-color: #0d47a1;
     transform: scale(1.05);
 }
 
 .modal-content hr {
-    color: white;
+    color: #666;
 }
 
 /* Bouton de fermeture */
@@ -200,28 +184,26 @@ input[type="password"] {
     top: 20px;
     right: 20px;
     font-size: 1.5em;
-    color: var(--primary-color);
+    color: var(--text-color);
     cursor: pointer;
-    font-weight: bold;
 }
 
 hr {
-    color: white;
-    border-top: 2px solid var(--primary-color);
+    color: #666;
 }
 
 /* Styles pour les cartes */
 .card {
-    background-color: var(--background-color); /* Utilisez la variable pour le fond noir */
-    border: 2px solid var(--primary-color); /* Bordure jaune pour le contraste */
+    background-color: var(--container-bg); /* Utilisez la variable pour le fond sombre */
+    border: 1px solid var(--border-color); /* Bordure discrète */
     border-radius: 8px; /* Coins arrondis */
     padding: 20px; /* Espacement intérieur */
     margin-bottom: 20px; /* Marge en bas pour séparer les cartes */
-    color: var(--text-color); /* Texte en blanc pour la lisibilité */
+    color: var(--text-color); /* Texte clair pour la lisibilité */
 }
 
 .card-title {
-    color: var(--primary-color); /* Titre en jaune pour le contraste */
+    color: var(--primary-color); /* Titre en bleu pour le contraste */
     font-size: 1.5em;
     margin-bottom: 15px;
 }

@@ -1,12 +1,14 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
-/* Variables CSS */
+/* Variables CSS adaptées pour un mode sombre */
 :root {
     --primary-color: #1abc9c;
     --background-color: #f4f4f4;
     --text-color: #333;
-    --header-color: #1abc9c;
+    --header-color: #a7d9ff;
     --button-color: #007BFF;
+    --container-bg: #fff;
+    --border-color: #ccc;
 }
 
 /* Styles de base */
@@ -31,7 +33,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1000;
-    background-color: #a7d9ff;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .bouton-centre-header {
@@ -47,27 +49,23 @@ body {
 }
 
 /* Conteneurs */
-.dashboard-container {
-    max-width: 80%; /* Conteneur plus large */
+.dashboard-container, .container {
+    max-width: 80%; /* Conteneurs plus larges */
     margin: 50px auto;
-    background-color: #fff;
+    background-color: var(--container-bg);
     padding: 20px 30px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    border: 1px solid var(--border-color);
 }
 
 .container {
-    max-width: 600px; /* Conteneur plus large */
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    max-width: 600px;
 }
 
 /* Typographie */
 h2 {
-    color: #333;
+    color: var(--text-color);
     text-align: center;
 }
 
@@ -85,42 +83,32 @@ a:hover {
 }
 
 /* Boutons */
-.btn {
+.btn, button {
     margin: 10px;
     padding: 10px 20px;
     background-color: var(--button-color);
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.btn:hover {
-    background-color: #0056b3;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: var(--button-color);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
+.btn:hover, button:hover {
     background-color: #0056b3;
 }
 
 /* Messages d'erreur et de succès */
 .error {
     color: red;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
 .success {
     color: green;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
@@ -135,8 +123,10 @@ input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
+    background-color: var(--container-bg);
+    color: var(--text-color);
 }
 
 /* Modale */
@@ -149,20 +139,21 @@ input[type="password"] {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    overflow: auto; /* Permet de scroll sur la page */
+    overflow: auto;
 }
 
 .modal-content {
     position: relative;
     width: 66.66vw;
     height: auto;
-    max-height: 90vh; /* Hauteur maximale de la modale (90% de la hauteur de l'écran) */
+    max-height: 90vh;
     background-color: rgba(102, 102, 102, 0.9);
     padding: 40px;
     border-radius: 15px;
     text-align: center;
     box-sizing: border-box;
-    overflow-y: auto; /* Permettre le défilement vertical si le contenu dépasse */
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
 }
 
 .modal-content a {
@@ -174,7 +165,6 @@ input[type="password"] {
     text-decoration: none;
     border-radius: 5px;
     font-size: 1.2em;
-    font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -194,7 +184,7 @@ input[type="password"] {
     top: 20px;
     right: 20px;
     font-size: 1.5em;
-    color: black;
+    color: var(--text-color);
     cursor: pointer;
 }
 
@@ -202,26 +192,23 @@ hr {
     color: black;
 }
 
+/* Styles pour les cartes */
 .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.user-info {
-    background-color: #f8f9fa;
+    background-color: var(--container-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     padding: 20px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    margin-bottom: 20px;
+    color: var(--text-color);
 }
 
-.logout-btn {
-    background-color: #dc3545;
-    color: white;
+.card-title {
+    color: var(--primary-color);
+    font-size: 1.5em;
+    margin-bottom: 15px;
 }
 
-.logout-btn:hover {
-    background-color: #c82333;
-    color: white;
+.card-content {
+    font-size: 1.1em;
+    line-height: 1.6;
 }
