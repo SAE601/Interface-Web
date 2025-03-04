@@ -291,41 +291,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
 
-        <!-- Dernière ligne : Infos utilisateur + bouton de déconnexion -->
-        <div class="row">
-            <div class="dashboard-container">
-                <h2>Informations du compte : </h2>
-                <?php
 
-                try {
-                    // Get the user ID from the session
-                    $id = $_SESSION['user_id'];
-
-                    // Prepare the SQL query with a placeholder
-                    $stmt = $pdo->prepare("SELECT username, email FROM users WHERE id = :id");
-                    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-                    // Execute the query
-                    $stmt->execute();
-
-                    // Fetch the result
-                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($user) {
-                        echo "Nom de l'utilisateur : " . $user['username'] . "<br>";
-                        echo "Adresse Email reliée : " . $user['email'] . "<br>";
-                    } else {
-                        echo "Aucun utilisateur trouvé avec cet ID.";
-                    }
-                } catch (PDOException $e) {
-                    echo "Erreur : " . $e->getMessage();
-                }
-                ?>
-                <br>
-                <a class="btn btn-primary" href="changemdp.php" role="button">Changer de mot de passe</a>
-            </div>
-
-        </div>
     </div>
 
     <script>
