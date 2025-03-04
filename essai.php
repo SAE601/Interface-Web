@@ -145,6 +145,10 @@ $sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
                                 <p class="text-muted">Période non spécifiée pour cette plante.</p>
                             <?php endif; ?>
                         </div>
+                        <div class="col-md-6 text-center">
+                            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                            <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,64 +160,64 @@ $sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Données d'Irrigation</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Date et Heure</th>
-                                    <th>Recette</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($irrigations)): ?>
-                                    <?php foreach ($irrigations as $index => $irrigation): ?>
-                                        <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
-                                            <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                            <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
-                                            <td>
-                                                <?php
-                                                $hoursAgo = (int) $irrigation['hoursAgo'];
-                                                echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
-                                                ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
+                            <table class="table table-bordered table-striped">
+                                <thead>
                                     <tr>
-                                        <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+                                        <th>Date et Heure</th>
+                                        <th>Recette</th>
                                     </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($irrigations)): ?>
+                                        <?php foreach ($irrigations as $index => $irrigation): ?>
+                                            <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
+                                                <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                                <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                                <td>
+                                                    <?php
+                                                    $hoursAgo = (int) $irrigation['hoursAgo'];
+                                                    echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Données des Capteurs</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Unité</th>
-                                    <th>Fréquence</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($sensors)): ?>
-                                    <?php foreach ($sensors as $sensor): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($sensor['type']); ?></td>
-                                            <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
-                                            <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
+                            <table class="table table-bordered table-striped">
+                                <thead>
                                     <tr>
-                                        <td colspan="3" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
+                                        <th>Type</th>
+                                        <th>Unité</th>
+                                        <th>Fréquence</th>
                                     </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($sensors)): ?>
+                                        <?php foreach ($sensors as $sensor): ?>
+                                            <tr>
+                                                <td><?php echo htmlspecialchars($sensor['type']); ?></td>
+                                                <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
+                                                <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="3" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
                     </div>
                 </div>
 
