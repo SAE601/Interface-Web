@@ -206,7 +206,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Ligne 3 : 4 blocs pour les bacs -->
         <div class="row text-center">
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo1" role="button" aria-expanded="true" aria-controls="bacInfo1">
+                <div class="card" data-toggle="body-card" href="#bacInfo1" role="button" aria-expanded="true" aria-controls="bacInfo1">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 1
@@ -218,7 +218,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo2" role="button" aria-expanded="false" aria-controls="bacInfo2">
+                <div class="card" data-toggle="body-card" href="#bacInfo2" role="button" aria-expanded="false" aria-controls="bacInfo2">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 2
@@ -230,7 +230,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo3" role="button" aria-expanded="false" aria-controls="bacInfo3">
+                <div class="card" data-toggle="body-card" href="#bacInfo3" role="button" aria-expanded="false" aria-controls="bacInfo3">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 3
@@ -242,7 +242,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo4" role="button" aria-expanded="false" aria-controls="bacInfo4">
+                <div class="card" data-toggle="body-card" href="#bacInfo4" role="button" aria-expanded="false" aria-controls="bacInfo4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 4
