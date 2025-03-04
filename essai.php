@@ -1,21 +1,13 @@
 <?php
 session_start();
 
+include('config.php');
+
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
-
-// Informations de connexion à la base de données
-$host = 'localhost';
-$dbname = 'optiplant';
-$username = 'root';
-$password = '';
-
-// Connexion à la base de données
-$pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Récupération du paramètre 'trays'
 $idTray = isset($_GET['trays']) ? intval($_GET['trays']) : null;
@@ -24,6 +16,7 @@ if (!$idTray) {
     die('<div class="alert alert-danger">Bac introuvable.</div>');
 }
 
+// Requête SQL pour récupérer les informations du bac correspondant
 $sql = "SELECT trays.*, 
                plants.plantName AS plantName, 
                periods.name AS periodName
@@ -32,7 +25,7 @@ $sql = "SELECT trays.*,
         LEFT JOIN recipes ON plants.idPlant = recipes.idPlant
         LEFT JOIN periods ON recipes.idPeriod = periods.idPeriod
         WHERE trays.idTray = :idTray";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo_optiplant->prepare($sql);
 $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 $bac = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -47,14 +40,15 @@ $sqlIrrigation = "SELECT *, TIMESTAMPDIFF(HOUR, dateTime, NOW()) AS hoursAgo
                   FROM irrigation 
                   WHERE idTray = :idTray AND dateTime >= NOW() - INTERVAL 24 HOUR 
                   ORDER BY dateTime DESC";
-$stmtIrrigation = $pdo->prepare($sqlIrrigation);
+$stmtIrrigation = $pdo_optiplant->prepare($sqlIrrigation);
+
 $stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtIrrigation->execute();
 $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour récupérer les alertes spécifiques au bac
 $sql = "SELECT message, dateTime FROM alerts WHERE idTray = :idTray ORDER BY dateTime DESC LIMIT 5";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo_optiplant->prepare($sql);
 $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 // Récupérer les alertes
