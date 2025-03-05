@@ -82,24 +82,6 @@ nav {
     flex-grow: 1; /* Permet aux liens de s'étirer */
     text-align: center; /* Centre le texte dans chaque élément */
 }
-.links a{
-    text-align: center;
-    text-decoration: none;
-    color:#ffffff;
-    font-size:30px;
-    cursor: pointer;
-    padding-bottom: 0.3em; /* surlignage un peu plus bas*/
-    background-image:linear-gradient(#ffffff,#ffffff);
-    background-size: 0% 0.1em;
-    background-position-y:100%;
-    background-position-x:50%;
-    background-repeat: no-repeat;
-    transition:background-size ease-in-out 0.05s;
-    -webkit-transition: background-size ease-in-out 0.1s;
-    -moz-transition: background-size ease-in-out 0.1s;
-    -ms-transition: background-size ease-in-out 0.1s;
-    -o-transition: background-size ease-in-out 0.1s;
-}
 .links a:hover{
     background-size: 100% 0.15em;
 }

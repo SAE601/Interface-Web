@@ -8,6 +8,18 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
+// Récupérer les informations de l'utilisateur
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch();
+
+
+$color_mode = $user['mode'];
+
+$profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
+
 
 try {
     // Requête pour récupérer les recettes avec les informations des tables groupe, periode et irrigation
@@ -39,6 +51,9 @@ try {
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style_enfant.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
     <?php
 
 // Prendre en compte le mode de couleur de l'utilisateur
@@ -74,6 +89,8 @@ try {
 ?>
 </head>
 <body>
+
+<?php include("header.php");?>
 <div class="container py-4">
 
     <!-- Bouton Retour -->

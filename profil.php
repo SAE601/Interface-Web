@@ -31,6 +31,8 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
+    <link rel="stylesheet" href="css/style_enfant.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <?php
 
     // Prendre en compte le mode de couleur de l'utilisateur
@@ -68,12 +70,13 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
 
 <body>
 
+    <?php include("header.php");?>
     <?php
     if (isset($_SESSION['message'])) {
         echo "<div class=\"dashboard-container\" ><p>" . $_SESSION['message'] . "</p></div>";
         $_SESSION['message'] = NULL;
     }
-    ?>
+    ?> 
 
     <div class="dashboard-container">
         <h2>Param√®tres</h2>
