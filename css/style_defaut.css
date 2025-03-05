@@ -59,7 +59,7 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 80%;
 }
 .grid {
     display: grid;
