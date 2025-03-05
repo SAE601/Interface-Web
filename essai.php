@@ -9,6 +9,17 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// ________________________________________________
+// Gestion des USERS
+
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch();
+
+$profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
+
 // Récupérer le paramètre 'trays'
 $idTray = isset($_GET['trays']) ? intval($_GET['trays']) : null;
 
@@ -105,8 +116,10 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 
+    <?php include 'header.php'; ?>
+
     <!-- Navigation des onglets -->
-    <div class="header">
+    <div>
         <div class="bouton-centre-header">
             <a name="" id="tab1-btn" class="btn btn-primary" href="#tab1" role="button" data-toggle="tab">Photos</a>
             <a name="" id="tab2-btn" class="btn btn-primary" href="#tab2" role="button" data-toggle="tab">Summary</a>
