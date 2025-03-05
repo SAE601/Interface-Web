@@ -1,7 +1,7 @@
 <?php
-session_start();
 
 include('config.php');
+session_start();
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
@@ -22,7 +22,6 @@ try {
         ORDER BY r.idRecipe ASC  -- Trie les recettes par idRecette
     ";
 
-
     $stmt = $pdo_optiplant->prepare($sql);
     $stmt->execute();
     $recettes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,6 +38,7 @@ try {
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <?php
 
 // Prendre en compte le mode de couleur de l'utilisateur
@@ -74,90 +74,60 @@ try {
 ?>
 </head>
 <body>
-<div class="container py-4">
 
+<div class="container mt-5">
     <!-- Bouton Retour -->
-    <div class="row mb-4">
-        <div class="col-12 text-left">
+    <div class="row">
+        <div class="col-12">
             <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
         </div>
     </div>
 
-    <!-- Titre Principal -->
-    <div class="row">
-        <div class="col-12">
-            <h1 class="page-title text-center">Les Recettes</h1>
+    <h2 class="text-center mb-4">Liste des Recettes</h2>
+
+    <?php foreach ($recettes as $recette) : ?>
+        <div class="recette-item">
+            <h5>Recette N°<?= htmlspecialchars($recette['idRecipe']) ?> </h5>
+            <a class="btn btn-details" data-id="<?= htmlspecialchars($recette['idRecipe']) ?>" data-bs-toggle="modal" data-bs-target="#modalRecette">
+               Voir Détails
+            </a>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+<!-- Modal Bootstrap -->
+<div class="modal" id="modalRecette" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Détails de la Recette</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                Sélectionnez une recette pour voir les détails.
+            </div>
         </div>
     </div>
-
-    <!-- Affichage principal des recettes -->
-    <div class="row recipes-container">
-        <?php if (empty($recettes)): ?>
-            <!-- Si aucune recette n'est trouvée -->
-            <div class="col-12 text-center">
-                <div class="alert alert-warning">Aucune recette n'est disponible pour le moment.</div>
-            </div>
-        <?php else: ?>
-            <?php foreach ($recettes as $recette): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body d-flex flex-column">
-                            <!-- Titre de la Recette -->
-                            <h5 class="card-title">
-                                Recette  : N°<?= isset($recette['idRecipe']) ? htmlspecialchars($recette['idRecipe']) : 'Non disponible' ?>
-                            </h5>
-
-                            <!-- Description de la Recette -->
-                            <p class="card-text">
-                                <?= isset($recette['description']) ? nl2br(htmlspecialchars($recette['description'])) : '...'; ?>
-                            </p>
-
-                            <!-- Informations liées au groupe et à la période -->
-                            <p>
-                                <strong>Groupe : </strong>
-                                <?= isset($recette['nomGroupe']) ? htmlspecialchars($recette['nomGroupe']) : 'Non défini'; ?><br>
-                                <strong>Période : </strong>
-                                <?= isset($recette['nomPeriode']) ? htmlspecialchars($recette['nomPeriode']) : 'Non défini'; ?><br>
-                                <strong>Bac associé :</strong> Bac
-                                <?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : 'Non défini'; ?>
-                            </p>
-
-                            <!-- Informations Complètes -->
-                            <p>
-                                <strong>Arrosage : </strong>
-                                <?= isset($recette['watering']) ? htmlspecialchars($recette['watering']) : 'N/A'; ?><br>
-                                <strong>Arrosage du jour : </strong>
-                                <?= isset($recette['dailyWatering']) ? htmlspecialchars($recette['dailyWatering']) : 'Non définie'; ?><br>
-                                <strong>Fréquence : </strong>
-                                <?= isset($recette['daily']) && $recette['daily'] ? 'Quotidien' : 'Non quotidien'; ?><br>
-                                <strong>Azote : </strong>
-                                <?= isset($recette['nitrogen']) ? htmlspecialchars($recette['nitrogen']) : 'Non définie'; ?><br>
-                                <strong>Phosphore : </strong>
-                                <?= isset($recette['phosphorus']) ? htmlspecialchars($recette['phosphorus']) : 'Non définie'; ?><br>
-                                <strong>Potassium : </strong>
-                                <?= isset($recette['potassium']) ? htmlspecialchars($recette['potassium']) : 'Non définie'; ?><br>
-                                <strong>Seuil d'humidité : </strong>
-                                <?= isset($recette['humidityThreshold']) ? htmlspecialchars($recette['humidityThreshold']) : 'Non définie'; ?>
-                            </p>
-
-                            <!-- Bouton En savoir plus -->
-                            <?php if (isset($recette['idTray']) && !empty($recette['idTray'])): ?>
-                                <!-- Si un bac est associé -->
-                                <a href="essai.php?trays=<?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : '' ?>"
-                                   class="btn btn-en-savoir-plus mt-auto">
-                                    En savoir plus sur le bac <?= htmlspecialchars($recette['idTray']) ?>
-                                </a>
-                            <?php else: ?>
-                                <!-- Si aucun bac n'est associé -->
-                                <p class="text-muted">Aucun bac associé pour cette recette.</p>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
 </div>
-<script src="/js/bootstrap.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.btn-details').forEach(button => {
+        button.addEventListener('click', function() {
+            let recetteID = this.getAttribute('data-id');
+            if (recetteID) {
+                fetch('recette_details.php?id=' + recetteID)
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('modalBody').innerHTML = data;
+                    })
+                    .catch(error => {
+                        document.getElementById('modalBody').innerHTML = '<div class="alert alert-danger">Erreur de chargement des détails.</div>';
+                    });
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
