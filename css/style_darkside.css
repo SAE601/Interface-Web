@@ -2,13 +2,20 @@
 
 /* Variables CSS adaptées pour un mode sombre */
 :root {
-    --primary-color: #1e88e5; /* Bleu vif pour contraster avec le fond sombre */
-    --background-color: #121212; /* Fond très sombre pour un effet mode nuit */
-    --text-color: #e0e0e0; /* Texte clair pour un bon contraste */
-    --header-color: #1c1c1c; /* Gris foncé pour le header */
-    --button-color: #1976d2; /* Bleu foncé pour les boutons */
-    --container-bg: #1e1e1e; /* Gris foncé pour les containers */
-    --border-color: #333; /* Bordures discrètes */
+    --primary-color: #1e88e5;
+    /* Bleu vif pour contraster avec le fond sombre */
+    --background-color: #121212;
+    /* Fond très sombre pour un effet mode nuit */
+    --text-color: #e0e0e0;
+    /* Texte clair pour un bon contraste */
+    --header-color: #1c1c1c;
+    /* Gris foncé pour le header */
+    --button-color: #1976d2;
+    /* Bleu foncé pour les boutons */
+    --container-bg: #1e1e1e;
+    /* Gris foncé pour les containers */
+    --border-color: #333;
+    /* Bordures discrètes */
 }
 
 /* Styles de base */
@@ -49,8 +56,10 @@ body {
 }
 
 /* Conteneurs */
-.dashboard-container, .container {
-    max-width: 80%; /* Conteneurs plus larges */
+.dashboard-container,
+.container {
+    max-width: 80%;
+    /* Conteneurs plus larges */
     margin: 50px auto;
     background-color: var(--container-bg);
     padding: 20px 30px;
@@ -72,10 +81,12 @@ h1 {
 h2 {
     color: var(--text-color);
     text-align: center;
+    margin-bottom: 20px; /* Ajoute un espace entre le titre et les boutons */
 }
 
 p {
-    color: #b0b0b0; /* Texte secondaire légèrement plus foncé */
+    color: #b0b0b0;
+    /* Texte secondaire légèrement plus foncé */
 }
 
 a {
@@ -100,19 +111,23 @@ a:hover {
     transition: background-color 0.3s;
 }
 
-.btn:hover, button:hover {
-    background-color: #1565c0; /* Bleu encore plus foncé au survol */
+.btn:hover,
+button:hover {
+    background-color: #1565c0;
+    /* Bleu encore plus foncé au survol */
 }
 
 /* Messages d'erreur et de succès */
 .error {
-    color: #e57373; /* Rouge doux */
+    color: #e57373;
+    /* Rouge doux */
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .success {
-    color: #81c784; /* Vert doux */
+    color: #81c784;
+    /* Vert doux */
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -149,7 +164,7 @@ input[type="password"] {
 
 .modal1-content {
     position: relative;
-    width: 66.66vw;
+    width: 80vw;
     height: auto;
     max-height: 90vh;
     background-color: var(--container-bg);
@@ -169,7 +184,7 @@ input[type="password"] {
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 1.2em;
+    font-size: 3   em;
     text-transform: uppercase;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -199,16 +214,23 @@ hr {
 
 /* Styles pour les cartes */
 .card {
-    background-color: var(--container-bg); /* Utilisez la variable pour le fond sombre */
-    border: 1px solid var(--border-color); /* Bordure discrète */
-    border-radius: 8px; /* Coins arrondis */
-    padding: 20px; /* Espacement intérieur */
-    margin-bottom: 20px; /* Marge en bas pour séparer les cartes */
-    color: var(--text-color); /* Texte clair pour la lisibilité */
+    background-color: var(--container-bg);
+    /* Utilisez la variable pour le fond sombre */
+    border: 1px solid var(--border-color);
+    /* Bordure discrète */
+    border-radius: 8px;
+    /* Coins arrondis */
+    padding: 20px;
+    /* Espacement intérieur */
+    margin-bottom: 20px;
+    /* Marge en bas pour séparer les cartes */
+    color: var(--text-color);
+    /* Texte clair pour la lisibilité */
 }
 
 .card-title {
-    color: var(--primary-color); /* Titre en bleu pour le contraste */
+    color: var(--primary-color);
+    /* Titre en bleu pour le contraste */
     font-size: 1.5em;
     margin-bottom: 15px;
 }
