@@ -8,6 +8,18 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
+// Récupérer les informations de l'utilisateur
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch();
+
+
+$color_mode = $user['mode'];
+
+$profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
+
 
 try {
     // Requête pour récupérer les recettes avec les informations des tables groupe, periode et irrigation
@@ -33,6 +45,8 @@ try {
 }
 ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -41,16 +55,10 @@ try {
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style_enfant.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Les Recettes</title>
-        <link href="/css/bootstrap.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <style>
+    <style>
             body {
                 background-color: #f8f9fa;
             }
@@ -76,44 +84,42 @@ try {
                 background-color: #0056b3;
             }
         </style>
-
-
-
         <?php
-    /*
-    // Prendre en compte le mode de couleur de l'utilisateur
-    try {
-        $id = $_SESSION['user_id'];
-        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+            /*
+            // Prendre en compte le mode de couleur de l'utilisateur
+            try {
+                $id = $_SESSION['user_id'];
+                $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->execute();
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user['mode'] == 'deuteranopie') {
-            echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
-        } elseif ($user['mode'] == 'tritanopie') {
-            echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
-        } elseif ($user['mode'] == 'protanopie') {
-            echo '<link rel="stylesheet" href="css/style_protanopie.css">';
-        } elseif ($user['mode'] == 'achromatopsie') {
-            echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
-        } elseif ($user['mode'] == 'contrast') {
-            echo '<link rel="stylesheet" href="css/style_contrast.css">';
-        } elseif ($user['mode'] == 'darkside') {
-            echo '<link rel="stylesheet" href="css/style_darkside.css">';
-        }  elseif ($user['mode'] == 'enfant') {
-            echo '<link rel="stylesheet" href="css/style_enfant.css">';
-        } else {
-            echo '<link rel="stylesheet" href="css/style_defaut.css">';
-        }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }*/
+                if ($user['mode'] == 'deuteranopie') {
+                    echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+                } elseif ($user['mode'] == 'tritanopie') {
+                    echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+                } elseif ($user['mode'] == 'protanopie') {
+                    echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+                } elseif ($user['mode'] == 'achromatopsie') {
+                    echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+                } elseif ($user['mode'] == 'contrast') {
+                    echo '<link rel="stylesheet" href="css/style_contrast.css">';
+                } elseif ($user['mode'] == 'darkside') {
+                    echo '<link rel="stylesheet" href="css/style_darkside.css">';
+                }  elseif ($user['mode'] == 'enfant') {
+                    echo '<link rel="stylesheet" href="css/style_enfant.css">';
+                } else {
+                    echo '<link rel="stylesheet" href="css/style_defaut.css">';
+                }
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }*/
 
-    ?>
+            ?>
 </head>
 <body>
+<?php include("header.php");?>
 
 <div class="container mt-5">
     <!-- Bouton Retour -->
@@ -182,6 +188,17 @@ try {
         </div>
     </div>
 </div>
+<script src="/js/bootstrap.js"></script>
+<!-- Script pour gérer le menu déroulant -->
+<script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+        // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+        document.querySelector('.menu-text').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -234,5 +251,4 @@ try {
     });
 </script>
 </body>
-    </html>
-
+</html>
