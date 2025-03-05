@@ -85,7 +85,6 @@ try {
             }
         </style>
         <?php
-            
             // Prendre en compte le mode de couleur de l'utilisateur
             try {
                 $id = $_SESSION['user_id'];
