@@ -103,9 +103,9 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <!-- Modale (page volante) -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-modal">&times;</span>
+    <div id="modal" class="modal1">
+        <div class="modal1-content">
+            <span class="close-modal1" id="close-modal">&times;</span>
             <h2>Paramètres de couleurs</h2>
 
             <div class="grid">
