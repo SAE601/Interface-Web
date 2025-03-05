@@ -31,6 +31,8 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
+    <link rel="stylesheet" href="css/style_enfant.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <?php
 
     // Prendre en compte le mode de couleur de l'utilisateur
@@ -68,12 +70,13 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
 
 <body>
 
+    <?php include("header.php");?>
     <?php
     if (isset($_SESSION['message'])) {
         echo "<div class=\"dashboard-container\" ><p>" . $_SESSION['message'] . "</p></div>";
         $_SESSION['message'] = NULL;
     }
-    ?>
+    ?> 
 
     <div class="dashboard-container">
         <h2>Param√®tres</h2>
@@ -87,7 +90,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
         <!-- Afficher la photo de profil de l'utilisateur -->
         <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo">
         <!-- Bouton pour modifier la photo -->
-        <form action="modifier_photo.php" method="GET">
+        <form style="padding-top: 20px;" action="modifier_photo.php" method="GET">
             <button type="submit" class="modify-button">Modifier</button>
         </form>
     </div>
@@ -162,7 +165,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
                 <option value="achromatopsie" <?php echo ($mode === 'achromatopsie') ? 'selected' : ''; ?>>Achromatopsie</option>
                 <option value="contrast" <?php echo ($mode === 'contrast') ? 'selected' : ''; ?>>Contraste</option>
                 <option value="darkside" <?php echo ($mode === 'darkside') ? 'selected' : ''; ?>>Darkside</option>
-                <option value="enfant" <?php echo ($mode === 'enfant') ? 'selected' : ''; ?>>Enfant</option>
+                <!-- <option value="enfant" <?php echo ($mode === 'enfant') ? 'selected' : ''; ?>>Enfant</option> -->
             </select>
         </form>
 
@@ -227,7 +230,16 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
             ?>
         </div>
     <?php endif; ?>
-
+    <!-- Script pour g√©rer le menu d√©roulant -->
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+        // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+        document.querySelector('.menu-text').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>

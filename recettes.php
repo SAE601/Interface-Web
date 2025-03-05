@@ -55,7 +55,7 @@ try {
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style_enfant.css">
+    <!-- <link rel="stylesheet" href="css/style_enfant.css"> -->
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
@@ -85,6 +85,7 @@ try {
             }
         </style>
         <?php
+            
             // Prendre en compte le mode de couleur de l'utilisateur
             try {
                 $id = $_SESSION['user_id'];
@@ -114,7 +115,7 @@ try {
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
-
+            
             ?>
 </head>
 <body>
