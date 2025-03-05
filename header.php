@@ -35,7 +35,7 @@ function getPageName() {
                 }
             }
         </script>
-        <h1>SAE Ombrière</h1>
+        <h1 class="header-title">SAE Ombrière</h1>
         <nav>
             <div class="links">
                 <ul>
