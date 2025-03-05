@@ -22,15 +22,25 @@ h1 {
     text-align: center;
     margin: 0;
 }
+
 .logo a {
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-left:0;
 }
-.logo img {
-    width: 80px; /* Ajuste la hauteur du logo */
+/* .logo img {
+    width: 80px; /* Ajuste la hauteur du logo 
     justify-content: space-between;
+} 
+*/
+.logo img {
+    width: 100px; /* Taille de l'image */
+    height: 100px; /* Garder la même valeur que la largeur pour un cercle parfait */
+    border-radius: 50%; /* Transforme l'image en cercle */
+    object-fit: cover; /* Rognage contrôlé pour s'adapter au cercle */
+    object-position: top; /* Centre l'image */
+    border: 3px solid #ccc; /* Bordure optionnelle */
 }
 .logo-text {
     font-size: 14px;
@@ -40,8 +50,9 @@ h1 {
     text-align: center;
     font-size:20px;
 }
-.logo a:hover{
-    background-size: 80% 0.15em;
+.logo img:hover {
+    border-color: #afafaf;
+    border-width: 6px;
 }
 /* style barre de navigation */
 nav {
@@ -83,11 +94,11 @@ nav {
     background-position-y:100%;
     background-position-x:50%;
     background-repeat: no-repeat;
-    transition:background-size ease-in-out 0.1s;
-    -webkit-transition: background-size ease-in-out 0.5s;
-    -moz-transition: background-size ease-in-out 0.5s;
-    -ms-transition: background-size ease-in-out 0.5s;
-    -o-transition: background-size ease-in-out 0.5s;
+    transition:background-size ease-in-out 0.05s;
+    -webkit-transition: background-size ease-in-out 0.1s;
+    -moz-transition: background-size ease-in-out 0.1s;
+    -ms-transition: background-size ease-in-out 0.1s;
+    -o-transition: background-size ease-in-out 0.1s;
 }
 .links a:hover{
     background-size: 100% 0.15em;
@@ -175,7 +186,7 @@ dotlottie-player:hover {
 
 .animation-container.active .moon {
     opacity: 1; /* Afficher la lune quand actif */
-}     
+}
 .footer {
     position:relative;
     bottom: 0;
