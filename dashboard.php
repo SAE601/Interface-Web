@@ -103,30 +103,30 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <!-- Modale (page volante) -->
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" id="close-modal">&times;</span>
-        <h2>Paramètres de couleurs</h2>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2>Paramètres de couleurs</h2>
 
-        <div class="grid">
-            <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
-            <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
-            <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
-            <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
+            <div class="grid">
+                <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
+                <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
+                <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
+                <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
 
-            <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
-            <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
-            <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
-            <button class="btn btn-dark" data-mode="enfant">Mode enfant</button>
+                <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
+                <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
+                <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
+                <button class="btn btn-dark" data-mode="enfant">Mode enfant</button>
+            </div>
         </div>
     </div>
-</div>
 
     </div>
 
     <script>
         document.querySelectorAll('button[data-mode]').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const mode = this.getAttribute('data-mode');
                 window.location.href = `dashboard.php?mode=${mode}`;
             });
@@ -211,53 +211,53 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Ligne 3 : 4 blocs pour les bacs -->
         <div class="row text-center">
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo1" role="button" aria-expanded="true"
+                <div class="card" href="#bacInfo1" role="button" aria-expanded="true"
                     aria-controls="bacInfo1">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 1
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo1">
+                    <div id="bacInfo1">
                         <a class="btn btn-dark" href="essai.php?trays=1">Info sur la BAC</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo2" role="button" aria-expanded="false"
+                <div class="card" href="#bacInfo2" role="button" aria-expanded="false"
                     aria-controls="bacInfo2">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 2
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo2">
+                    <div id="bacInfo2">
                         <a class="btn btn-dark" href="essai.php?trays=2">Info sur la BAC</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo3" role="button" aria-expanded="false"
+                <div class="card" href="#bacInfo3" role="button" aria-expanded="false"
                     aria-controls="bacInfo3">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 3
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo3">
+                    <div id="bacInfo3">
                         <a class="btn btn-dark" href="essai.php?trays=3">Info sur la BAC</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo4" role="button" aria-expanded="false"
+                <div class="card" href="#bacInfo4" role="button" aria-expanded="false"
                     aria-controls="bacInfo4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 4
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo4">
+                    <div id="bacInfo4">
                         <a class="btn btn-dark" href="essai.php?trays=4">Infos sur la BAC</a>
                     </div>
                 </div>
@@ -306,7 +306,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script>
         // Empêcher la fermeture du collapse
-        document.getElementById('bacInfo1').addEventListener('hide.bs.collapse', function (event) {
+        document.getElementById('bacInfo1').addEventListener('hide.bs.collapse', function(event) {
             event.preventDefault(); // Empêche l'action de fermeture
             alert("Le collapse ne peut pas être fermé !");
         });
