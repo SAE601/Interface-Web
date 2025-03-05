@@ -39,7 +39,7 @@ function getPageName() {
         <nav>
             <div class="links">
                 <ul>
-                <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard' || getPageName() == 'enfant') ? 'current' : ''; ?>">Dashboard</a></li>
+                <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard') ? 'current' : ''; ?>">Dashboard</a></li>
 
                     <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes') ? 'current' : ''; ?>">Recettes</a></li>
                     <li><a href="profil.php" id="<?php echo (getPageName() == 'profil') ? 'current' : ''; ?>">Profil</a></li>

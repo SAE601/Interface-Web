@@ -55,7 +55,6 @@ try {
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="css/style_enfant.css"> -->
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
@@ -107,16 +106,13 @@ try {
                     echo '<link rel="stylesheet" href="css/style_contrast.css">';
                 } elseif ($user['mode'] == 'darkside') {
                     echo '<link rel="stylesheet" href="css/style_darkside.css">';
-                }  elseif ($user['mode'] == 'enfant') {
-                    echo '<link rel="stylesheet" href="css/style_enfant.css">';
                 } else {
                     echo '<link rel="stylesheet" href="css/style_defaut.css">';
                 }
             } catch (PDOException $e) {
                 echo "Error: " . $e->getMessage();
             }
-            
-            ?>
+        ?>
 </head>
 <body>
 <?php include("header.php");?>

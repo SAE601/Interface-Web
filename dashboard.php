@@ -101,9 +101,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo '<link rel="stylesheet" href="css/style_contrast.css">';
         } elseif ($user['mode'] == 'darkside') {
             echo '<link rel="stylesheet" href="css/style_darkside.css">';
-        } elseif ($user['mode'] == 'enfant') {
-            header('Location: enfant.php');
-            exit();
         } else {
             echo '<link rel="stylesheet" href="css/style_defaut.css">';
         }
@@ -133,7 +130,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
                 <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
                 <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
-                <button class="btn btn-dark" data-mode="enfant">Mode enfant</button>
             </div>
         </div>
     </div>

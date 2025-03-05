@@ -31,7 +31,6 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
-    <link rel="stylesheet" href="css/style_enfant.css">
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <?php
 
@@ -56,8 +55,6 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
             echo '<link rel="stylesheet" href="css/style_contrast.css">';
         } elseif ($user['mode'] == 'darkside') {
             echo '<link rel="stylesheet" href="css/style_darkside.css">';
-        } elseif ($user['mode'] == 'enfant') {
-            echo '<link rel="stylesheet" href="css/style_enfant.css">';
         } else {
             echo '<link rel="stylesheet" href="css/style_defaut.css">';
         }
@@ -165,7 +162,6 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
                 <option value="achromatopsie" <?php echo ($mode === 'achromatopsie') ? 'selected' : ''; ?>>Achromatopsie</option>
                 <option value="contrast" <?php echo ($mode === 'contrast') ? 'selected' : ''; ?>>Contraste</option>
                 <option value="darkside" <?php echo ($mode === 'darkside') ? 'selected' : ''; ?>>Darkside</option>
-                <!-- <option value="enfant" <?php echo ($mode === 'enfant') ? 'selected' : ''; ?>>Enfant</option> -->
             </select>
         </form>
 
