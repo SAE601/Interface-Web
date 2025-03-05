@@ -26,12 +26,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         $message = 'Cet email est déjà utilisé.';
     } else {
         // Vérifier les contraintes du mot de passe
-        if (strlen($password) < 8) {
-            $message = 'Le mot de passe doit contenir au moins 8 caractères.';
+        if (strlen($password) < 8 || !preg_match('/\d/', $password) || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[^a-zA-Z\d]/', $password)) {
+            $message = 'Le mot de passe doit contenir au moins une lettre, un chiffre, une majuscule et un caractère spécial';
         } elseif (preg_match('/\s/', $password)) {
-            $message = 'Le mot de passe ne doit pas contenir d\'espaces.';
-        } elseif (!preg_match('/\d/', $password)) {
-            $message = 'Le mot de passe doit contenir au moins un chiffre.';
+            $message = 'Le mot de passe ne doit pas contenir d\'espaces';
         } else {
             // Hacher le mot de passe
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -171,7 +169,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
         <div>
             <input type="submit" value="S'inscrire">
+            <a href="index.php" class="btn">Page de connexion</a>
         </div>
+
     </form>
 </div>
 
