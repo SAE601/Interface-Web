@@ -211,9 +211,14 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             Bac 1
                         </h5>
                     </div>
+<<<<<<< Updated upstream
                     <div class="card-body" id="bacInfo1">
                         <a class="btn btn-primary" href="essai.php?trays=1">Infos sur le bac</a>
 
+=======
+                    <div class="body-card" id="bacInfo1">
+                        <a class="btn btn-primary" href="essai.php?trays=1">En savoir plus</a>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
@@ -224,8 +229,13 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             Bac 2
                         </h5>
                     </div>
+<<<<<<< Updated upstream
                     <div class="card-body" id="bacInfo2">
                         <a class="btn btn-primary" href="essai.php?trays=2">Infos sur le bac</a>
+=======
+                    <div class="body-card" id="bacInfo2">
+                        <a class="btn btn-primary" href="essai.php?trays=2">En savoir plus</a>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
@@ -236,8 +246,13 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             Bac 3
                         </h5>
                     </div>
+<<<<<<< Updated upstream
                     <div class="card-body" id="bacInfo3">
                         <a class="btn btn-primary" href="essai.php?trays=3">Infos sur le bac</a>
+=======
+                    <div class="body-card" id="bacInfo3">
+                        <a class="btn btn-primary" href="essai.php?trays=3">En savoir plus</a>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
@@ -248,8 +263,13 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             Bac 4
                         </h5>
                     </div>
+<<<<<<< Updated upstream
                     <div class="card-body" id="bacInfo4">
                         <a class="btn btn-primary" href="essai.php?trays=4">Infos sur le bac</a>
+=======
+                    <div class="body-card" id="bacInfo4">
+                        <a class="btn btn-primary" href="essai.php?trays=4">En savoir plus</a>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
