@@ -103,26 +103,30 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <!-- Modale (page volante) -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-modal">&times;</span>
-            <h2>Paramètres de couleurs</h2>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="close-modal">&times;</span>
+        <h2>Paramètres de couleurs</h2>
 
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="contrast">mode contraste élevé</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="deuteranopie">mode deuteranope</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="tritanopie">mode tritanope</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="protanopie">mode protanope</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="achromatopsie">mode achromatope</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="default">couleur par défaut</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="darkside">mode darkside</button>
-            <button name="button" class="btn btn-primary" href="#" role="button" data-mode="enfant">mode enfant</button>
+        <div class="grid">
+            <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
+            <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
+            <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
+            <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
 
+            <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
+            <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
+            <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
+            <button class="btn btn-dark" data-mode="enfant">Mode enfant</button>
         </div>
+    </div>
+</div>
+
     </div>
 
     <script>
         document.querySelectorAll('button[data-mode]').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const mode = this.getAttribute('data-mode');
                 window.location.href = `dashboard.php?mode=${mode}`;
             });
@@ -164,7 +168,9 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div id="api-meteo-div" class="card-body">
                         <h5 class="card-title">Météo France</h5>
                         <p>
-                            <span id="meteo-city"></span> - Température: <span id="meteo-temperature"></span>°C - Humidité: <span id="meteo-humidity"></span>% - Conditions: <span id="meteo-description"></span>
+                            <span id="meteo-city"></span> - Température: <span id="meteo-temperature"></span>°C -
+                            Humidité: <span id="meteo-humidity"></span>% - Conditions: <span
+                                id="meteo-description"></span>
                         </p>
                         <p><i>
                                 <?php
@@ -205,50 +211,54 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Ligne 3 : 4 blocs pour les bacs -->
         <div class="row text-center">
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo1" role="button" aria-expanded="true" aria-controls="bacInfo1">
+                <div class="card" data-toggle="collapse" href="#bacInfo1" role="button" aria-expanded="true"
+                    aria-controls="bacInfo1">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 1
                         </h5>
                     </div>
                     <div class="collapse" id="bacInfo1">
-                        <a class="btn btn-primary" href="essai.php?trays=1">Info sur la BAC</a>
+                        <a class="btn btn-dark" href="essai.php?trays=1">Info sur la BAC</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo2" role="button" aria-expanded="false" aria-controls="bacInfo2">
+                <div class="card" data-toggle="collapse" href="#bacInfo2" role="button" aria-expanded="false"
+                    aria-controls="bacInfo2">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 2
                         </h5>
                     </div>
                     <div class="collapse" id="bacInfo2">
-                        <a class="btn btn-primary" href="essai.php?trays=2">Info sur la BAC</a>
+                        <a class="btn btn-dark" href="essai.php?trays=2">Info sur la BAC</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo3" role="button" aria-expanded="false" aria-controls="bacInfo3">
+                <div class="card" data-toggle="collapse" href="#bacInfo3" role="button" aria-expanded="false"
+                    aria-controls="bacInfo3">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 3
                         </h5>
                     </div>
                     <div class="collapse" id="bacInfo3">
-                        <a class="btn btn-primary" href="essai.php?trays=3">Info sur la BAC</a>
+                        <a class="btn btn-dark" href="essai.php?trays=3">Info sur la BAC</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo4" role="button" aria-expanded="false" aria-controls="bacInfo4">
+                <div class="card" data-toggle="collapse" href="#bacInfo4" role="button" aria-expanded="false"
+                    aria-controls="bacInfo4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 4
                         </h5>
                     </div>
                     <div class="collapse" id="bacInfo4">
-                        <a class="btn btn-primary" href="essai.php?trays=4">Infos sur la BAC</a>
+                        <a class="btn btn-dark" href="essai.php?trays=4">Infos sur la BAC</a>
                     </div>
                 </div>
             </div>
@@ -296,7 +306,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script>
         // Empêcher la fermeture du collapse
-        document.getElementById('bacInfo1').addEventListener('hide.bs.collapse', function(event) {
+        document.getElementById('bacInfo1').addEventListener('hide.bs.collapse', function (event) {
             event.preventDefault(); // Empêche l'action de fermeture
             alert("Le collapse ne peut pas être fermé !");
         });
@@ -306,9 +316,15 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Intégration de Bootstrap JS -->
     <script src="js/index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <script src="js/météo_script.js"></script>
 </body>
 
