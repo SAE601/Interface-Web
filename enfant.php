@@ -4,7 +4,7 @@ session_start();
 include("config.php");
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -62,11 +62,24 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <header>
-
-        <div class="animation-container" onclick="this.classList.toggle('active')">
-            <dotlottie-player class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay></dotlottie-player>
-            <dotlottie-player class="moon" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay></dotlottie-player>
+        <div class="animation-container" role="button" tabindex="0" aria-label="Toggle animation" onclick="toggleAnimation()" onkeydown="handleKeyDown(event)">
+        <!-- <div class="animation-container" onclick="this.classList.toggle('active')"> -->
+            <dotlottie-player class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>
+            <dotlottie-player class="moon" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>
         </div>
+        <script>
+            function toggleAnimation() {
+                const container = document.querySelector('.animation-container');
+                container.classList.toggle('active');
+            }
+            function handleKeyDown(event) {
+            // Vérifie si la touche pressée est "Enter" ou "Espace"
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault(); // Empêche le défilement de la page si la touche Espace est pressée
+                    toggleAnimation();
+                }
+            }
+        </script>
         <h1>SAE Ombrière</h1>
         <nav>
             <div class="links">
@@ -89,7 +102,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </nav>
         <div class="logo">
             <a href="profil.php">
-                <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo">
+                <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo" aria-hidden="true">
             </a>
         </div>
 
@@ -250,7 +263,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <footer class="footer">
         <div class="image-plant">
-            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 200px; height: 200px; " loop autoplay></dotlottie-player>
+            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 200px; height: 200px; " loop autoplay aria-hidden="true"></dotlottie-player>
         </div>
         <h3> &copy; 2025 Site Web SAE Ombrière. Tous droits réservés.</h3>
     </footer>
