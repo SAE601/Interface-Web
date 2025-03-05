@@ -9,6 +9,19 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// ________________________________________________
+// Gestion des USERS
+
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch();
+
+$profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
+
+// ________________________________________________
+
 // Récupérer l'heure actuelle dans le fuseau horaire 'Europe/Paris'
 $queryHour = "SELECT CURRENT_TIME AS time";
 $stmt = $pdo_optiplant->prepare($queryHour);
@@ -47,6 +60,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Page d'Accueil</title>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <?php
 
     // Prendre en compte le mode de couleur de l'utilisateur
@@ -85,24 +100,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <!-- page du haut -->
-    <div class="header">
-        <div class="bouton-centre-header">
-            <a name="dashboard" id="" class="btn btn-primary" href="dashboard.php" role="button">dashboard</a>
-            <a name="recettes" id="" class="btn btn-primary" href="recettes.php" role="button">recettes</a>
-            <a name="" id="" class="btn btn-primary" href="logout.php" role="button">Déconnexion</a>
-        </div>
+    <?php include("header.php"); ?>
 
-        <div class="boutoun-droite-header">
-            <a name="profil" id="profil_utilisateur" class="btn btn-primary" href="profil.php" role="button">Profil</a>
-            <a name="parametre" id="open-modal" class="btn btn-primary" href="#" role="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-palette-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M12.433 10.07C14.133 10.585 16 11.15 16 8a8 8 0 1 0-8 8c1.996 0 1.826-1.504 1.649-3.08-.124-1.101-.252-2.237.351-2.92.465-.527 1.42-.237 2.433.07M8 5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m4.5 3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3M5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
-                </svg>
-            </a>
-        </div>
-    </div>
     <!-- Modale (page volante) -->
     <div id="modal" class="modal">
         <div class="modal-content">

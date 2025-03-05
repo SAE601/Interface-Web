@@ -165,7 +165,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
                 <option value="achromatopsie" <?php echo ($mode === 'achromatopsie') ? 'selected' : ''; ?>>Achromatopsie</option>
                 <option value="contrast" <?php echo ($mode === 'contrast') ? 'selected' : ''; ?>>Contraste</option>
                 <option value="darkside" <?php echo ($mode === 'darkside') ? 'selected' : ''; ?>>Darkside</option>
-                <option value="enfant" <?php echo ($mode === 'enfant') ? 'selected' : ''; ?>>Enfant</option>
+                <!-- <option value="enfant" <?php echo ($mode === 'enfant') ? 'selected' : ''; ?>>Enfant</option> -->
             </select>
         </form>
 
