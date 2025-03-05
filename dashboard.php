@@ -205,50 +205,51 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Ligne 3 : 4 blocs pour les bacs -->
         <div class="row text-center">
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo1" role="button" aria-expanded="true" aria-controls="bacInfo1">
+                <div class="card" data-toggle="body-card" href="#bacInfo1" role="button" aria-expanded="true" aria-controls="bacInfo1">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 1
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo1">
-                        <a class="btn btn-primary" href="essai.php?trays=1">Info sur la BAC</a>
+                    <div class="card-body" id="bacInfo1">
+                        <a class="btn btn-primary" href="essai.php?trays=1">Infos sur le bac</a>
+
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo2" role="button" aria-expanded="false" aria-controls="bacInfo2">
+                <div class="card" data-toggle="body-card" href="#bacInfo2" role="button" aria-expanded="false" aria-controls="bacInfo2">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 2
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo2">
-                        <a class="btn btn-primary" href="essai.php?trays=2">Info sur la BAC</a>
+                    <div class="card-body" id="bacInfo2">
+                        <a class="btn btn-primary" href="essai.php?trays=2">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo3" role="button" aria-expanded="false" aria-controls="bacInfo3">
+                <div class="card" data-toggle="body-card" href="#bacInfo3" role="button" aria-expanded="false" aria-controls="bacInfo3">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 3
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo3">
-                        <a class="btn btn-primary" href="essai.php?trays=3">Info sur la BAC</a>
+                    <div class="card-body" id="bacInfo3">
+                        <a class="btn btn-primary" href="essai.php?trays=3">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card" data-toggle="collapse" href="#bacInfo4" role="button" aria-expanded="false" aria-controls="bacInfo4">
+                <div class="card" data-toggle="body-card" href="#bacInfo4" role="button" aria-expanded="false" aria-controls="bacInfo4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             Bac 4
                         </h5>
                     </div>
-                    <div class="collapse" id="bacInfo4">
-                        <a class="btn btn-primary" href="essai.php?trays=4">Infos sur la BAC</a>
+                    <div class="card-body" id="bacInfo4">
+                        <a class="btn btn-primary" href="essai.php?trays=4">Infos sur le bac</a>
                     </div>
                 </div>
             </div>
