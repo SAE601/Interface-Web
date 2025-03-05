@@ -159,7 +159,8 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     ?>
 
-
+    <br>
+    <br>
     <div class="dashboard-container">
         <!-- Ligne 1 : Deux colonnes pour la météo -->
         <div class="row">
