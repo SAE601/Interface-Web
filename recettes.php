@@ -63,6 +63,8 @@ try {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                max-width: 600px;
+                margin: 30px auto;
             }
             .btn-details {
                 background-color: #007bff;
@@ -128,7 +130,7 @@ try {
     <!-- Liste des recettes -->
     <?php foreach ($recettes as $recette): ?>
         <div class="recette-item">
-            <h5>Recette N°<?= htmlspecialchars($recette['idRecipe']) ?></h5>
+            <h5>Recette N°<?= htmlspecialchars($recette['idRecipe']) ?> -> <?= htmlspecialchars($recette['nomPlant']) ?></h5>
             <button
                     class="btn btn-details"
                     data-id="<?= htmlspecialchars($recette['idRecipe']) ?>"
