@@ -1,21 +1,18 @@
+<?php 
+
+function getPageName() {
+    $url = $_SERVER['REQUEST_URI'];
+
+    if (preg_match('/\/([a-zA-Z0-9_-]+)\.php/', $url, $matches)) {
+        return $matches[1];
+    }
+    return null;
+}
+?>
+
 <style>
-    .links a{
-        text-align: center;
-        text-decoration: none;
-        color:#ffffff;
-        font-size:30px;
-        cursor: pointer;
-        padding-bottom: 0.3em; /* surlignage un peu plus bas*/
-        background-image:linear-gradient(#ffffff,#ffffff);
-        background-size: 0% 0.1em;
-        background-position-y:100%;
-        background-position-x:50%;
-        background-repeat: no-repeat;
-        transition:background-size ease-in-out 0.1s;
-        -webkit-transition: background-size ease-in-out 0.1s;
-        -moz-transition: background-size ease-in-out 0.1s;
-        -ms-transition: background-size ease-in-out 0.1s;
-        -o-transition: background-size ease-in-out 0.1s;
+    #current {
+        background-size: 100% 0.15em;
     }
 </style>
 
@@ -42,9 +39,10 @@
         <nav>
             <div class="links">
                 <ul>
-                    <li><a href="dashboard.php">Dashboard</a></li>
-                    <li><a href="recettes.php">Recettes</a></li>
-                    <li><a href="profil.php">Profil</a></li>
+                <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard' || getPageName() == 'enfant') ? 'current' : ''; ?>">Dashboard</a></li>
+
+                    <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes') ? 'current' : ''; ?>">Recettes</a></li>
+                    <li><a href="profil.php" id="<?php echo (getPageName() == 'profil') ? 'current' : ''; ?>">Profil</a></li>
                     <!-- <li class="profile-link"><a href="profil.php">Profil</a></li> -->
                 </ul>
             </div>
