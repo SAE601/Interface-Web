@@ -52,16 +52,15 @@ $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Requête SQL pour récupérer les informations des capteurs avec leurs dernières valeurs
-$sqlSensorsWithData = "SELECT sensor.idSensor, sensor.type, sensor.unit, sensor.freq, data.value
-                       FROM sensor
-                       LEFT JOIN data ON sensor.idSensor = data.idSensor
-                       WHERE sensor.idTray = :idTray 
-                       ORDER BY sensor.type ASC";
-$stmtSensorsWithData = $pdo_optiplant->prepare($sqlSensorsWithData);
-$stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
-$stmtSensorsWithData->execute();
-$sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
+// Requête SQL pour récupérer les informations des capteurs associés au bac
+$sqlSensors = "SELECT type, unit, freq 
+               FROM sensor 
+               WHERE idTray = :idTray 
+               ORDER BY type ASC";
+$stmtSensors = $pdo_optiplant->prepare($sqlSensors);
+$stmtSensors->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmtSensors->execute();
+$sensors = $stmtSensors->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -105,83 +104,73 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 
-    <!-- Navigation des onglets -->
-    <div class="header">
-        <div class="bouton-centre-header">
-            <a name="" id="tab1-btn" class="btn btn-primary" href="#tab1" role="button" data-toggle="tab">Photos</a>
-            <a name="" id="tab2-btn" class="btn btn-primary" href="#tab2" role="button" data-toggle="tab">Summary</a>
-            <a name="" id="tab3-btn" class="btn btn-primary" href="#tab3" role="button" data-toggle="tab">Datas</a>
+<!-- Navigation des onglets -->
+<div class="header">
+    <div class="bouton-centre-header">
+        <a name="" id="tab1-btn" class="btn btn-primary" href="#tab1" role="button" data-toggle="tab">Photos</a>
+        <a name="" id="tab2-btn" class="btn btn-primary" href="#tab2" role="button" data-toggle="tab">Summary</a>
+        <a name="" id="tab3-btn" class="btn btn-primary" href="#tab3" role="button" data-toggle="tab">Datas</a>
+    </div>
+</div>
+
+<!-- Contenu des onglets -->
+<div class="tab-content mt-3">
+    <!-- Onglet 1 -->
+    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+        <div class="container">
+            <p>Contenu de l'onglet Photos</p>
         </div>
     </div>
 
-    <!-- Contenu des onglets -->
-    <div class="tab-content mt-3">
-        <!-- Onglet 1 -->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-            <div class="container">
-                <p>Contenu de l'onglet Photos</p>
-            </div>
-        </div>
-
-        <!-- Onglet 2 -->
-        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <div>
-                            <?php if (!empty($bac['plantName'])): ?>
-                                <h3>Nom de la plante :</h3>
-                                <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
-                            <?php else: ?>
-                                <h3>Nom de la plante :</h3>
-                                <p class="text-muted">Plante non spécifiée pour ce bac.</p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="mt-4">
-                            <?php if (!empty($bac['periodName'])): ?>
-                                <h3>Période actuelle de la plante :</h3>
-                                <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
-                            <?php else: ?>
-                                <h3>Période actuelle de la plante :</h3>
-                                <p class="text-muted">Période non spécifiée pour cette plante.</p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                            <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
-                        </div>
+    <!-- Onglet 2 -->
+    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div>
+                        <?php if (!empty($bac['plantName'])): ?>
+                            <h3>Nom de la plante :</h3>
+                            <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
+                        <?php else: ?>
+                            <h3>Nom de la plante :</h3>
+                            <p class="text-muted">Plante non spécifiée pour ce bac.</p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="mt-4">
+                        <?php if (!empty($bac['periodName'])): ?>
+                            <h3>État actuel de la plante :</h3>
+                            <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
+                        <?php else: ?>
+                            <h3>État actuel de la plante :</h3>
+                            <p class="text-muted">Période non spécifiée pour cette plante.</p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                        <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Onglet 3 -->
-        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-            <div class="container py-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Données d'Irrigation</h5>
+    <!-- Onglet 3 -->
+    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+        <div class="container py-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Données d'Irrigation</h4>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>Date et Heure</th>
                                 <th>Recette</th>
-<<<<<<< Updated upstream
-                                <th>Âge (en heures)</th>
-=======
-                                <th>Ago</th>
-                                <th>Action</th>
->>>>>>> Stashed changes
                             </tr>
                             </thead>
                             <tbody>
                             <?php if (!empty($irrigations)): ?>
                                 <?php foreach ($irrigations as $index => $irrigation): ?>
-<<<<<<< Updated upstream
-                                    <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
-=======
-                                    <tr>
->>>>>>> Stashed changes
+                                    <tr id="row-<?php echo $index; ?>" onclick="scrollToRow('row-<?php echo $index; ?>');">
                                         <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
                                         <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
                                         <td>
@@ -190,204 +179,135 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                                             echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
                                             ?>
                                         </td>
-<<<<<<< Updated upstream
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
-=======
-                                        <td>
-                                            <!-- Bouton pour afficher les infos de recette -->
-                                            <button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#recipe-info-<?php echo $index; ?>" aria-expanded="false" aria-controls="recipe-info-<?php echo $index; ?>">
-                                                Afficher la recette
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4">
-                                            <div class="collapse mt-2" id="recipe-info-<?php echo $index; ?>">
-                                                <div class="card card-body">
-                                                    <?php
-                                                    // Requête SQL pour récupérer les informations de la recette associée
-                                                    $sqlRecipe = "SELECT * FROM recipes WHERE idRecipe = :idRecipe";
-                                                    $stmtRecipe = $pdo_optiplant->prepare($sqlRecipe);
-                                                    $stmtRecipe->bindParam(':idRecipe', $irrigation['idRecipe'], PDO::PARAM_INT);
-                                                    $stmtRecipe->execute();
-                                                    $recipe = $stmtRecipe->fetch(PDO::FETCH_ASSOC);
-
-                                                    if ($recipe): ?>
-                                                        <h5>ID Recette : <?php echo htmlspecialchars($recipe['idRecipe']); ?></h5>
-                                                        <p><strong>Description :</strong> <?php echo htmlspecialchars($recipe['description']); ?></p>
-                                                        <p><strong>Durée :</strong> <?php echo htmlspecialchars($recipe['duration']); ?> minutes</p>
-                                                        <p><strong>Quantité :</strong> <?php echo htmlspecialchars($recipe['quantity']); ?> litres</p>
-                                                    <?php else: ?>
-                                                        <p class="text-muted">Aucune information disponible pour cette recette.</p>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="4" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
->>>>>>> Stashed changes
                                 </tr>
                             <?php endif; ?>
                             </tbody>
                         </table>
-<<<<<<< Updated upstream
-                        <?php if (count($irrigations) > 5): ?>
-                            <button class="btn btn-link mt-2" id="toggle-irrigations" data-showing="5">Voir toutes les irriguations</button>
-                        <?php endif; ?>
-=======
->>>>>>> Stashed changes
-                    </div>
                 </div>
+            </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Données des Capteurs</h5>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Données des Capteurs</h4>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>Type</th>
-                                <th>Valeur</th>
                                 <th>Unité</th>
                                 <th>Fréquence</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (!empty($sensorsWithData)): ?>
-                                <?php foreach ($sensorsWithData as $sensor): ?>
+                            <?php if (!empty($sensors)): ?>
+                                <?php foreach ($sensors as $sensor): ?>
                                     <tr>
                                         <td><?php echo htmlspecialchars($sensor['type']); ?></td>
-                                        <td>
-                                            <?php echo isset($sensor['value']) ? htmlspecialchars($sensor['value']) : '<span class="text-muted">N/A</span>'; ?>
-                                        </td>
                                         <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
                                         <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="4" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
+                                    <td colspan="3" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
                                 </tr>
                             <?php endif; ?>
                             </tbody>
                         </table>
-                    </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Dernières Alertes</h5>
-                                <ul class="mb-0">
-                                    <?php if (!empty($alerts)): ?>
-                                        <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dernières Alertes</h5>
+                            <ul class="mb-0">
+                                <?php if (!empty($alerts)): ?>
+                                    <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
+                                        <li class="alert-item">
+                                            <?php echo htmlspecialchars($alert['message']); ?>
+                                            <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
+                                <?php endif; ?>
+                            </ul>
+
+                            <?php if (count($alerts) > 3): ?>
+                                <div class="collapse" id="allAlerts">
+                                    <ul class="mt-2">
+                                        <?php foreach (array_slice($alerts, 3) as $alert): ?>
                                             <li class="alert-item">
                                                 <?php echo htmlspecialchars($alert['message']); ?>
                                                 <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
                                             </li>
                                         <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
-                                    <?php endif; ?>
-                                </ul>
-
-                                <?php if (count($alerts) > 3): ?>
-                                    <div class="collapse" id="allAlerts">
-                                        <ul class="mt-2">
-                                            <?php foreach (array_slice($alerts, 3) as $alert): ?>
-                                                <li class="alert-item">
-                                                    <?php echo htmlspecialchars($alert['message']); ?>
-                                                    <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                    <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
-                                        <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
-                                    </button>
-                                <?php endif; ?>
-                            </div>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
+                                    <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-left">
-                    <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
-                </div>
+<!-- Footer -->
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-left">
+                <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="js/index.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="js/index.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const button = document.getElementById('toggle-irrigations');
-            if (button) {
-                button.addEventListener('click', function () {
-                    const rows = document.querySelectorAll('.irrigation-row');
-                    const isShowingAll = button.innerText === 'Voir toutes les irriguations';
-
-                    if (isShowingAll) {
-                        rows.forEach(row => row.classList.remove('d-none')); // Afficher toutes les lignes
-                        button.innerText = 'Voir moins'; // Mise à jour du bouton
-                    } else {
-                        rows.forEach((row, index) => {
-                            row.classList.toggle('d-none', index >= 5); // Masquer les lignes au-delà des 5 premières
-                        });
-                        button.innerText = 'Voir toutes les irriguations'; // Mise à jour du bouton
-                    }
-                });
+<script>
+    // JavaScript pour gérer l'affichage des onglets
+    document.addEventListener('DOMContentLoaded', function() {
+        // Masquer tous les onglets sauf le premier
+        document.querySelectorAll('.tab-pane').forEach(function(tab) {
+            if (!tab.classList.contains('active')) {
+                tab.style.display = 'none';
             }
         });
 
-        // JavaScript pour gérer l'affichage des onglets
-        document.addEventListener('DOMContentLoaded', function() {
-            // Masquer tous les onglets sauf le premier
-            document.querySelectorAll('.tab-pane').forEach(function(tab) {
-                if (!tab.classList.contains('active')) {
+        // Gérer le clic sur les boutons
+        document.querySelectorAll('[data-toggle="tab"]').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var target = this.getAttribute('href');
+
+                // Masquer tous les onglets
+                document.querySelectorAll('.tab-pane').forEach(function(tab) {
                     tab.style.display = 'none';
-                }
-            });
-
-            // Gérer le clic sur les boutons
-            document.querySelectorAll('[data-toggle="tab"]').forEach(function(button) {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    var target = this.getAttribute('href');
-
-                    // Masquer tous les onglets
-                    document.querySelectorAll('.tab-pane').forEach(function(tab) {
-                        tab.style.display = 'none';
-                        tab.classList.remove('show', 'active');
-                    });
-
-                    // Afficher l'onglet cible
-                    document.querySelector(target).style.display = 'block';
-                    document.querySelector(target).classList.add('show', 'active');
+                    tab.classList.remove('show', 'active');
                 });
+
+                // Afficher l'onglet cible
+                document.querySelector(target).style.display = 'block';
+                document.querySelector(target).classList.add('show', 'active');
             });
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>
