@@ -39,40 +39,8 @@ try {
     <!-- Intégration de Bootstrap CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .recette-item {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .recette-item h5 {
-            margin: 0;
-            font-size: 18px;
-            color: #333;
-        }
-        .btn-details {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-details:hover {
-            background-color: #0056b3;
-        }
-    </style>
-
     <?php
-/*
+
 // Prendre en compte le mode de couleur de l'utilisateur
 try {
     $id = $_SESSION['user_id'];
@@ -101,7 +69,7 @@ try {
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
-}*/
+}
 
 ?>
 </head>
@@ -128,7 +96,7 @@ try {
 </div>
 
 <!-- Modal Bootstrap -->
-<div class="modal fade" id="modalRecette" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+<div class="modal" id="modalRecette" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
