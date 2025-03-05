@@ -166,13 +166,22 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                             <tr>
                                 <th>Date et Heure</th>
                                 <th>Recette</th>
+<<<<<<< Updated upstream
                                 <th>Âge (en heures)</th>
+=======
+                                <th>Ago</th>
+                                <th>Action</th>
+>>>>>>> Stashed changes
                             </tr>
                             </thead>
                             <tbody>
                             <?php if (!empty($irrigations)): ?>
                                 <?php foreach ($irrigations as $index => $irrigation): ?>
+<<<<<<< Updated upstream
                                     <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
+=======
+                                    <tr>
+>>>>>>> Stashed changes
                                         <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
                                         <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
                                         <td>
@@ -181,18 +190,59 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                                             echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
                                             ?>
                                         </td>
+<<<<<<< Updated upstream
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+=======
+                                        <td>
+                                            <!-- Bouton pour afficher les infos de recette -->
+                                            <button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#recipe-info-<?php echo $index; ?>" aria-expanded="false" aria-controls="recipe-info-<?php echo $index; ?>">
+                                                Afficher la recette
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="collapse mt-2" id="recipe-info-<?php echo $index; ?>">
+                                                <div class="card card-body">
+                                                    <?php
+                                                    // Requête SQL pour récupérer les informations de la recette associée
+                                                    $sqlRecipe = "SELECT * FROM recipes WHERE idRecipe = :idRecipe";
+                                                    $stmtRecipe = $pdo_optiplant->prepare($sqlRecipe);
+                                                    $stmtRecipe->bindParam(':idRecipe', $irrigation['idRecipe'], PDO::PARAM_INT);
+                                                    $stmtRecipe->execute();
+                                                    $recipe = $stmtRecipe->fetch(PDO::FETCH_ASSOC);
+
+                                                    if ($recipe): ?>
+                                                        <h5>ID Recette : <?php echo htmlspecialchars($recipe['idRecipe']); ?></h5>
+                                                        <p><strong>Description :</strong> <?php echo htmlspecialchars($recipe['description']); ?></p>
+                                                        <p><strong>Durée :</strong> <?php echo htmlspecialchars($recipe['duration']); ?> minutes</p>
+                                                        <p><strong>Quantité :</strong> <?php echo htmlspecialchars($recipe['quantity']); ?> litres</p>
+                                                    <?php else: ?>
+                                                        <p class="text-muted">Aucune information disponible pour cette recette.</p>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+>>>>>>> Stashed changes
                                 </tr>
                             <?php endif; ?>
                             </tbody>
                         </table>
+<<<<<<< Updated upstream
                         <?php if (count($irrigations) > 5): ?>
                             <button class="btn btn-link mt-2" id="toggle-irrigations" data-showing="5">Voir toutes les irriguations</button>
                         <?php endif; ?>
+=======
+>>>>>>> Stashed changes
                     </div>
                 </div>
 
@@ -286,6 +336,8 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
