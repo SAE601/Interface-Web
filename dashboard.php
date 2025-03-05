@@ -21,7 +21,23 @@ $user = $stmt->fetch();
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 
 // ________________________________________________
+// Vérification des paramètres GET pour détécter un changement de mode
+if (isset($_GET['mode'])) {
+    $mode = $_GET['mode'];
 
+    // Mettre à jour la valeur du mode dans la base de données
+    $stmt = $pdo->prepare("UPDATE users SET mode = :mode WHERE id = :id");
+    $stmt->bindParam(':mode', $mode, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Recharger la page après la mise à jour pour appliquer le nouveau mode
+    header("Location: dashboard.php");
+    exit;
+}
+
+
+// ________________________________________________
 // Récupérer l'heure actuelle dans le fuseau horaire 'Europe/Paris'
 $queryHour = "SELECT CURRENT_TIME AS time";
 $stmt = $pdo_optiplant->prepare($queryHour);
@@ -132,34 +148,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
-
-    <?php
-
-
-    try {
-        // Récupérer l'ID de l'utilisateur
-        $id = $_SESSION['user_id'];
-
-        // Vérifier si le paramètre 'mode' est passé dans l'URL
-        if (isset($_GET['mode'])) {
-            $mode = $_GET['mode'];
-
-            // Mettre à jour la valeur du mode dans la base de données
-            $stmt = $pdo->prepare("UPDATE users SET mode = :mode WHERE id = :id");
-            $stmt->bindParam(':mode', $mode, PDO::PARAM_STR);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-
-            // Recharger la page après la mise à jour pour appliquer le nouveau mode
-            header("Location: dashboard.php");
-            exit;
-        }
-    } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
-    }
-    ?>
-
-
+    <button class="btn btn-dark" id="open-modal">[TEMP] Ouvre la modal [TEMP]</button>
     <div class="dashboard-container">
         <!-- Ligne 1 : Deux colonnes pour la météo -->
         <div class="row">
