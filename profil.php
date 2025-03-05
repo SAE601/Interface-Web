@@ -90,7 +90,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
         <!-- Afficher la photo de profil de l'utilisateur -->
         <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo">
         <!-- Bouton pour modifier la photo -->
-        <form action="modifier_photo.php" method="GET">
+        <form style="padding-top: 20px;" action="modifier_photo.php" method="GET">
             <button type="submit" class="modify-button">Modifier</button>
         </form>
     </div>
