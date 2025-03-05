@@ -230,7 +230,16 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
             ?>
         </div>
     <?php endif; ?>
-
+    <!-- Script pour gérer le menu déroulant -->
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+        // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+        document.querySelector('.menu-text').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>

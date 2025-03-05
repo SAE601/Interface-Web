@@ -176,5 +176,15 @@ try {
     </div>
 </div>
 <script src="/js/bootstrap.js"></script>
+<!-- Script pour gérer le menu déroulant -->
+<script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+        // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+        document.querySelector('.menu-text').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
