@@ -135,7 +135,7 @@ input[type="password"] {
 }
 
 /* Modale */
-.modal {
+.modal1 {
     display: none;
     position: fixed;
     width: 100%;
@@ -147,7 +147,7 @@ input[type="password"] {
     overflow: auto;
 }
 
-.modal-content {
+.modal1-content {
     position: relative;
     width: 66.66vw;
     height: auto;
@@ -161,7 +161,7 @@ input[type="password"] {
     border: 1px solid var(--border-color);
 }
 
-.modal-content a {
+.modal1-content a {
     display: block;
     margin: 15px 0;
     padding: 12px 25px;
@@ -174,17 +174,17 @@ input[type="password"] {
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-.modal-content a:hover {
+.modal1-content a:hover {
     background-color: #0d47a1;
     transform: scale(1.05);
 }
 
-.modal-content hr {
+.modal1-content hr {
     color: #666;
 }
 
 /* Bouton de fermeture */
-.close-modal {
+.close-modal1 {
     position: absolute;
     top: 20px;
     right: 20px;
