@@ -86,8 +86,8 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
 
     <div class="dashboard-container">
         <h2>Paramètres</h2>
-        <p>Vous pouvez gérer votre profil et modifier les paramètres de motb de passe de photo de profil etc.</p>
-        <a class="btn btn-primary" href="logout.php" role="button">Se déconnecter</a>
+        <p>Vous pouvez gérer votre profil et modifier les paramètres de mot de passe de photo de profil etc.</p>
+        <a class="btn logout-btn" href="logout.php" role="button">Déconnexion</a>
         <a class="btn btn-primary" href="dashboard.php" role="button">Retour au Tableau de bord</a>
     </div>
 
