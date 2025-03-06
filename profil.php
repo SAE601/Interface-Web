@@ -29,6 +29,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de bord</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
@@ -87,8 +88,12 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
     <div class="dashboard-container">
         <h2>Paramètres</h2>
         <p>Vous pouvez gérer votre profil et modifier les paramètres de mot de passe de photo de profil etc.</p>
-        <a class="btn logout-btn" href="logout.php" role="button">Déconnexion</a>
-        <a class="btn btn-primary" href="dashboard.php" role="button">Retour au Tableau de bord</a>
+        <a class="btn logout-btn" href="logout.php" role="button">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+        <a class="btn btn-primary" href="dashboard.php" role="button">
+            <i class="fas fa-arrow-left"></i> Retour au Tableau de bord
+        </a>
     </div>
 
     <div class="dashboard-container" style='text-align: center'>
