@@ -182,16 +182,18 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
             <?php
             try {
                 // Récupérer tous les utilisateurs depuis la base de données
-                $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login FROM users");
+                $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login, profile_photo FROM users");
                 $stmt->execute();
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if ($users) {
                     echo "<table class='table table-striped table-dark'>";
-                    echo "<thead><tr><th>ID</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
+                    echo "<thead><tr><th>Photo de profil</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
                     echo "<tbody>";
                     foreach ($users as $user) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($user['id']) . "</td>";
+                        // Afficher la photo de profil
+                        $profile_photo = $user['profile_photo'] ?? 'images/nyquit1.jpg'; // Photo par défaut
+                        echo "<td><img src='" . htmlspecialchars($profile_photo) . "' alt='Photo de profil' class='profile-photo' style='width: 50px; height: 50px; border-radius: 50%; object-fit: cover;'></td>";
                         echo "<td>" . htmlspecialchars($user['username']) . "</td>";
                         // Afficher la date et l'heure de dernière connexion si elle n'est pas NULL
                         echo "<td>";
@@ -209,7 +211,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
                                     <input type='hidden' name='user_id' value='" . htmlspecialchars($user['id']) . "'>
                                     <button type='submit' class='btn btn-success'>Promouvoir</button>
                                 </form>
-                              </td>";
+                            </td>";
                         } else {
                             echo "<td></td>"; // Pas de bouton pour les autres rôles
                         }
