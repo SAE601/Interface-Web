@@ -70,7 +70,7 @@ try {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 50%;
+            max-width: 30%;
             margin: 30px auto
         }
         .btn-details {
@@ -117,15 +117,6 @@ try {
 </head>
 <body>
 <?php include("header.php");?>
-<!-- Script de la modal -->
-<script>
-        document.querySelectorAll('button[data-mode]').forEach(button => {
-            button.addEventListener('click', function() {
-                const mode = this.getAttribute('data-mode');
-                window.location.href = `recettes.php?mode=${mode}`;
-            });
-        });
-</script>
 
 <div class="container mt-5">
     <!-- Bouton Retour -->
@@ -226,7 +217,7 @@ try {
 
                     <!-- Période, menu déroulant -->
                     <div class="mb-3">
-                        <label for="idPeriod" class="form-label">Période</label>
+                        <label for="name" class="form-label">Période</label>
                         <select class="form-control" id="idPeriod" name="period" required>
                             <?php
                             // Récupérer les périodes depuis la base de données
@@ -245,12 +236,13 @@ try {
                             <?php
                             // Récupérer les périodes depuis la base de données
                             $stmt = $pdo_optiplant->query("SELECT idPlant, plantName FROM plants");
-                            while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value="' . htmlspecialchars($period['idPlant']) . '">' . htmlspecialchars($period['plantName']) . '</option>';
+                            while ($plant = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($plant['idPlant']) . '">' . htmlspecialchars($plant['plantName']) . '</option>';
                             }
                             ?>
                         </select>
                     </div>
+
 
                     <!-- Bacs, menu déroulant-->
                     <div class="mb-3">
@@ -259,16 +251,17 @@ try {
                             <?php
                             // Récupérer les périodes depuis la base de données
                             $stmt = $pdo_optiplant->query("SELECT idTray, nameTray FROM trays");
-                            while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value="' . htmlspecialchars($period['idTray']) . '">' . htmlspecialchars($period['nameTray']) . '</option>';
+                            while ($tray = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($tray['idTray']) . '">' . htmlspecialchars($tray['nameTray']) . '</option>';
                             }
                             ?>
                         </select>
                     </div>
 
+
                     <!-- Autres champs -->
                     <div class="mb-3">
-                        <label for="watering" class="form-label">Arrosage Total</label>
+                        <label for="watering" class="form-label">Arrosage </label>
                         <input type="text" class="form-control" id="watering" name="watering">
                     </div>
                     <div class="mb-3">

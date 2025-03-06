@@ -6,7 +6,7 @@ include('config.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idRecipe = intval($_POST['idRecipe']);
     $idPeriod = intval($_POST['period']);
-    $namePlant = $_POST['plant'];
+    $idPlant = $_POST['plant'];
     $idTray = $_POST['tray'];
     $watering = $_POST['watering'];
     $dailyWatering = $_POST['dailyWatering'];
@@ -16,18 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $humidityThreshold = $_POST['humidity'];
 
     try {
-        // Valider que la période existe
-        $stmt = $pdo_optiplant->prepare("SELECT COUNT(*) FROM periods WHERE idPeriod = :idPeriod");
-        $stmt->bindParam(':idPeriod', $idPeriod, PDO::PARAM_INT);
-        $stmt->execute();
-
-        if ($stmt->fetchColumn() == 0) {
-            die('<div class="alert alert-danger">Erreur : La période choisie est invalide.</div>');
-        }
-
         // Requête de mise à jour pour la table recipes
         $sql = "UPDATE recipes SET 
                     idPeriod = :idPeriod,
+                    idPlant = :idPlant,
                     watering = :watering,
                     dailyWatering = :dailyWatering,
                     nitrogen = :nitrogen,
@@ -39,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo_optiplant->prepare($sql);
         $stmt->bindParam(':idRecipe', $idRecipe, PDO::PARAM_INT);
         $stmt->bindParam(':idPeriod', $idPeriod);
+        $stmt->bindParam(':idPlant', $idPlant);
         $stmt->bindParam(':watering', $watering);
         $stmt->bindParam(':dailyWatering', $dailyWatering);
         $stmt->bindParam(':nitrogen', $nitrogen);
