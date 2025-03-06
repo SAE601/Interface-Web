@@ -54,67 +54,70 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
-            body {
-                background-color: #f8f9fa;
-            }
-            .recette-item {
-                background: #ffffff;
-                border-radius: 8px;
-                padding: 15px;
-                margin-bottom: 10px;
-                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .btn-details {
-                background-color: #007bff;
-                color: white;
-                border: none;
-                padding: 8px 12px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            .btn-details:hover {
-                background-color: #0056b3;
-            }
-        </style>
-        <?php
-            // Prendre en compte le mode de couleur de l'utilisateur
-            try {
-                $id = $_SESSION['user_id'];
-                $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->execute();
+        body {
+            background-color: #f8f9fa;
+        }
+        .recette-item {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 50%;
+            margin: 30px auto
+        }
+        .btn-details {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-details:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <?php
+    // Prendre en compte le mode de couleur de l'utilisateur
+    try {
+        $id = $_SESSION['user_id'];
+        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
 
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($user['mode'] == 'deuteranopie') {
-                    echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
-                } elseif ($user['mode'] == 'tritanopie') {
-                    echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
-                } elseif ($user['mode'] == 'protanopie') {
-                    echo '<link rel="stylesheet" href="css/style_protanopie.css">';
-                } elseif ($user['mode'] == 'achromatopsie') {
-                    echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
-                } elseif ($user['mode'] == 'contrast') {
-                    echo '<link rel="stylesheet" href="css/style_contrast.css">';
-                } elseif ($user['mode'] == 'darkside') {
-                    echo '<link rel="stylesheet" href="css/style_darkside.css">';
-                } else {
-                    echo '<link rel="stylesheet" href="css/style_defaut.css">';
-                }
-            } catch (PDOException $e) {
-                echo "Error: " . $e->getMessage();
-            }
-        ?>
+        if ($user['mode'] == 'deuteranopie') {
+            echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+        } elseif ($user['mode'] == 'tritanopie') {
+            echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+        } elseif ($user['mode'] == 'protanopie') {
+            echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+        } elseif ($user['mode'] == 'achromatopsie') {
+            echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+        } elseif ($user['mode'] == 'contrast') {
+            echo '<link rel="stylesheet" href="css/style_contrast.css">';
+        } elseif ($user['mode'] == 'darkside') {
+            echo '<link rel="stylesheet" href="css/style_darkside.css">';
+        } else {
+            echo '<link rel="stylesheet" href="css/style_defaut.css">';
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+    ?>
 </head>
 <body>
 <?php include("header.php");?>
+<!-- Script de la modal -->
 <script>
         document.querySelectorAll('button[data-mode]').forEach(button => {
             button.addEventListener('click', function() {
@@ -122,7 +125,7 @@ try {
                 window.location.href = `recettes.php?mode=${mode}`;
             });
         });
-    </script>
+</script>
 
 <div class="container mt-5">
     <!-- Bouton Retour -->
@@ -137,13 +140,13 @@ try {
     <!-- Liste des recettes -->
     <?php foreach ($recettes as $recette): ?>
         <div class="recette-item">
-            <h5>Recette N°<?= htmlspecialchars($recette['idRecipe']) ?></h5>
+            <h5>Recette N°<?= htmlspecialchars($recette['idRecipe']) ?> -> <?= htmlspecialchars($recette['nomPlant']) ?></h5>
             <button
                     class="btn btn-details"
                     data-id="<?= htmlspecialchars($recette['idRecipe']) ?>"
                     data-period="<?= isset($recette['nomPeriode']) ? htmlspecialchars($recette['nomPeriode']) : 'Non défini'; ?>"
                     data-plant="<?= isset($recette['nomPlant']) ? htmlspecialchars($recette['nomPlant']) : 'Non défini'; ?>"
-                    data-daily="<?= isset($recette['daily']) && $recette['daily'] ? 'Quotidien' : 'Non quotidien'; ?>"
+                    data-daily="<?= isset($recette['daily']) && $recette['daily'] ? 'Quotidien' : '1 jour sur 2'; ?>"
                     data-idtray="<?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : 'Non défini'; ?>"
                     data-watering="<?= isset($recette['watering']) ? htmlspecialchars($recette['watering']) : 'Non définie'; ?>"
                     data-daily-watering="<?= isset($recette['dailyWatering']) ? htmlspecialchars($recette['dailyWatering']) : 'Non définie'; ?>"
@@ -155,9 +158,25 @@ try {
                     data-bs-target="#detailsModal">
                 Voir Détails
             </button>
+            <button
+                    class="btn btn-primary btn-modifier"
+                    data-id="<?= htmlspecialchars($recette['idRecipe']) ?>"
+                    data-period="<?= isset($recette['nomPeriode']) ? htmlspecialchars($recette['nomPeriode']) : 'Non défini'; ?>"
+                    data-plant="<?= isset($recette['nomPlant']) ? htmlspecialchars($recette['nomPlant']) : 'Non défini'; ?>"
+                    data-daily="<?= isset($recette['daily']) && $recette['daily'] ? 'Quotidien' : '1 jour sur 2'; ?>"
+                    data-idtray="<?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : 'Non défini'; ?>"
+                    data-watering="<?= isset($recette['watering']) ? htmlspecialchars($recette['watering']) : 'Non définie'; ?>"
+                    data-daily-watering="<?= isset($recette['dailyWatering']) ? htmlspecialchars($recette['dailyWatering']) : 'Non définie'; ?>"
+                    data-nitrogen="<?= isset($recette['nitrogen']) ? htmlspecialchars($recette['nitrogen']) : 'Non définie'; ?>"
+                    data-phosphorus="<?= isset($recette['phosphorus']) ? htmlspecialchars($recette['phosphorus']) : 'Non définie'; ?>"
+                    data-potassium="<?= isset($recette['potassium']) ? htmlspecialchars($recette['potassium']) : 'Non définie'; ?>"
+                    data-humidity="<?= isset($recette['humidityThreshold']) ? htmlspecialchars($recette['humidityThreshold']) : 'Non définie'; ?>"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modifyModal">
+                Modifier
+            </button>
         </div>
     <?php endforeach; ?>
-
 </div>
 
 <!-- Modal pour afficher les détails d'une recette -->
@@ -182,7 +201,7 @@ try {
                         </tr>
                         </thead>
                         <tbody id="detailsTableBody">
-                        <!-- Les lignes dynamiques s'inséreront ici -->
+                        <!-- Emplacement des lignes dynamiques -->
                         </tbody>
                     </table>
                 </div>
@@ -191,7 +210,108 @@ try {
         </div>
     </div>
 </div>
-<script src="js/bootstrap.js"></script>
+
+<!-- Modal pour modifier les information d'une recette -->
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="modifyForm" method="post" action="update_recette.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifyModalLabel">Modifier une Recette</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- ID recette (caché) -->
+                    <input type="hidden" name="idRecipe" id="recipeId" value="">
+
+                    <!-- Période, menu déroulant -->
+                    <div class="mb-3">
+                        <label for="idPeriod" class="form-label">Période</label>
+                        <select class="form-control" id="idPeriod" name="period" required>
+                            <?php
+                            // Récupérer les périodes depuis la base de données
+                            $stmt = $pdo_optiplant->query("SELECT idPeriod, name FROM periods");
+                            while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($period['idPeriod']) . '">' . htmlspecialchars($period['name']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Plante, menu déroulant-->
+                    <div class="mb-3">
+                        <label for="namePlant" class="form-label">Plante</label>
+                        <select class="form-control" id="idPlant" name="plant" required>
+                            <?php
+                            // Récupérer les périodes depuis la base de données
+                            $stmt = $pdo_optiplant->query("SELECT idPlant, plantName FROM plants");
+                            while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($period['idPlant']) . '">' . htmlspecialchars($period['plantName']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Bacs, menu déroulant-->
+                    <div class="mb-3">
+                        <label for="nameTray" class="form-label">ID du Bac</label>
+                        <select class="form-control" id="idTray" name="tray" required>
+                            <?php
+                            // Récupérer les périodes depuis la base de données
+                            $stmt = $pdo_optiplant->query("SELECT idTray, nameTray FROM trays");
+                            while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($period['idTray']) . '">' . htmlspecialchars($period['nameTray']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Autres champs -->
+                    <div class="mb-3">
+                        <label for="watering" class="form-label">Arrosage Total</label>
+                        <input type="text" class="form-control" id="watering" name="watering">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dailyWatering" class="form-label">Arrosage Quotidien</label>
+                        <input type="text" class="form-control" id="dailyWatering" name="dailyWatering">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nitrogen" class="form-label">Azote</label>
+                        <input type="text" class="form-control" id="nitrogen" name="nitrogen">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phosphorus" class="form-label">Phosphore</label>
+                        <input type="text" class="form-control" id="phosphorus" name="phosphorus">
+                    </div>
+                    <div class="mb-3">
+                        <label for="potassium" class="form-label">Potassium</label>
+                        <input type="text" class="form-control" id="potassium" name="potassium">
+                    </div>
+                    <div class="mb-3">
+                        <label for="humidityThreshold" class="form-label">Seuil d'Humidité</label>
+                        <input type="text" class="form-control" id="humidityThreshold" name="humidity">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.js"></script>
+<!-- Script pour gérer le menu déroulant -->
+<script>
+    document.querySelector('.hamburger').addEventListener('click', function() {
+        document.querySelector('.links').classList.toggle('active');
+    });
+    // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+    document.querySelector('.menu-text').addEventListener('click', function() {
+        document.querySelector('.links').classList.toggle('active');
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -243,11 +363,64 @@ try {
         });
     });
 </script>
-<footer class="footer">
-        <div class="image-plant">
-            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 200px; height: 200px; " loop autoplay aria-hidden="true"></dotlottie-player>
-        </div>
-        <h3> &copy; 2025 Site Web SAE Ombrière. Tous droits réservés.</h3>
-    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modifyModal = document.getElementById('modifyModal');
+
+        modifyModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+
+            // Récupérer les données depuis les attributs data-*
+            document.getElementById('recipeId').value = button.getAttribute('data-id');
+            document.getElementById('idPeriod').value = button.getAttribute('data-period');
+            document.getElementById('namePlant').value = button.getAttribute('data-plant');
+            document.getElementById('idTray').value = button.getAttribute('data-idtray');
+            document.getElementById('watering').value = button.getAttribute('data-watering');
+            document.getElementById('dailyWatering').value = button.getAttribute('data-daily-watering');
+            document.getElementById('nitrogen').value = button.getAttribute('data-nitrogen');
+            document.getElementById('phosphorus').value = button.getAttribute('data-phosphorus');
+            document.getElementById('potassium').value = button.getAttribute('data-potassium');
+            document.getElementById('humidityThreshold').value = button.getAttribute('data-humidity');
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Cibler le modal et ajouter un listener à l'événement "show.bs.modal"
+        const modifyModal = document.getElementById('modifyModal');
+
+        modifyModal.addEventListener('show.bs.modal', function (event) {
+            // Bouton déclencheur
+            const button = event.relatedTarget;
+
+            // Récupérer les données des attributs data-*
+            const id = button.getAttribute('data-id');
+            const period = button.getAttribute('data-period');
+            const plant = button.getAttribute('data-plant');
+            const tray = button.getAttribute('data-idtray');
+            const watering = button.getAttribute('data-watering');
+            const dailyWatering = button.getAttribute('data-daily-watering');
+            const nitrogen = button.getAttribute('data-nitrogen');
+            const phosphorus = button.getAttribute('data-phosphorus');
+            const potassium = button.getAttribute('data-potassium');
+            const humidity = button.getAttribute('data-humidity');
+
+            // Prérenseigner les champs du modal avec ces données
+            document.getElementById('recipeId').value = id;
+            document.getElementById('idPeriod').value = period;
+            document.getElementById('idPlant').value = plant;
+            document.getElementById('idTray').value = tray;
+            document.getElementById('watering').value = watering;
+            document.getElementById('dailyWatering').value = dailyWatering;
+            document.getElementById('nitrogen').value = nitrogen;
+            document.getElementById('phosphorus').value = phosphorus;
+            document.getElementById('potassium').value = potassium;
+            document.getElementById('humidityThreshold').value = humidity;
+        });
+    });
+</script>
+
 </body>
 </html>
