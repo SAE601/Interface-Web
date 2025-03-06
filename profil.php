@@ -82,7 +82,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
         echo "<div class=\"dashboard-container\" ><p>" . $_SESSION['message'] . "</p></div>";
         $_SESSION['message'] = NULL;
     }
-    ?> 
+    ?>
 
     <div class="dashboard-container">
         <h2>Paramètres</h2>
@@ -243,16 +243,6 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
         </div>
         <h3> &copy; 2025 Site Web SAE Ombrière. Tous droits réservés.</h3>
     </footer>
-    <!-- Script pour gérer le menu déroulant -->
-    <script>
-        document.querySelector('.hamburger').addEventListener('click', function() {
-            document.querySelector('.links').classList.toggle('active');
-        });
-        // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
-        document.querySelector('.menu-text').addEventListener('click', function() {
-            document.querySelector('.links').classList.toggle('active');
-        });
-    </script>
 </body>
 
 </html>
