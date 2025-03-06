@@ -144,7 +144,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
-    <button class="btn btn-dark" id="open-modal">[TEMP] Ouvre la modal [TEMP]</button>
     <div class="dashboard-container">
         <!-- Ligne 1 : Deux colonnes pour la météo -->
         <div class="row">
