@@ -92,7 +92,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
             <i class="fas fa-sign-out-alt"></i> D√©connexion
         </a>
         <a class="btn btn-primary" href="dashboard.php" role="button">
-            <i class="fas fa-arrow-left"></i> Retour au Tableau de bord
+            <i class="fa-solid fa-arrow-left"></i> Retour au Tableau de bord
         </a>
     </div>
 
@@ -124,7 +124,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
     </style>
 
     <div class="dashboard-container">
-        <h2>Informations du compte : </h2>
+        <h2>Informations du compte </h2>
         <?php
 
         try {
@@ -161,7 +161,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
     </div>
 
     <div class="dashboard-container">
-        <h2>Changer le mode d'affichage :</h2>
+        <h2>Changer le mode d'affichage</h2>
         <form method="POST" action="update_mode.php" id="modeForm">
             <label for="mode">S√©lectionnez un mode :</label>
             <select name="mode" id="mode" required>
@@ -223,7 +223,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
                             echo "<td style='display: flex;'>
                                 <form method='POST' action='promote_user.php' style='display:inline; margin-right: 20px;'>
                                     <input type='hidden' name='user_id' value='" . htmlspecialchars($user['id']) . "'>
-                                    <button type='submit' class='btn btn-success'>Promouvoir</button>
+                                    <button type='submit' class='btn btn-success'><i class='fas fa-crown'></i> Promouvoir</button>
                                 </form>
                             </td>";
                         } else {
