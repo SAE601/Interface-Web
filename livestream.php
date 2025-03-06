@@ -28,7 +28,7 @@ if (isset($_GET['mode'])) {
     $stmt->execute();
 
     // Recharger la page après la mise à jour pour appliquer le nouveau mode
-    header("Location: dashboard.php");
+    header("Location: livestream.php");
     exit;
 }
 
@@ -44,6 +44,7 @@ $server_ip = $_SERVER['SERVER_ADDR'];
     <title>Livestream</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <!-- Styles personnalisés -->
     <?php
     try {
@@ -77,6 +78,14 @@ $server_ip = $_SERVER['SERVER_ADDR'];
 <body>
     <!-- En-tête -->
     <?php include("header.php"); ?>
+    <script>
+        document.querySelectorAll('button[data-mode]').forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                window.location.href = `livestream.php?mode=${mode}`;
+            });
+        });
+    </script>
 
     <!-- Contenu principal -->
     <div class="container mt-5">

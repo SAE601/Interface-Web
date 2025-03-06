@@ -115,6 +115,14 @@ try {
 </head>
 <body>
 <?php include("header.php");?>
+<script>
+        document.querySelectorAll('button[data-mode]').forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                window.location.href = `recettes.php?mode=${mode}`;
+            });
+        });
+    </script>
 
 <div class="container mt-5">
     <!-- Bouton Retour -->
