@@ -8,6 +8,22 @@ function getPageName() {
     }
     return null;
 }
+
+// ________________________________________________
+// Vérification des paramètres GET pour détécter un changement de mode
+if (isset($_GET['mode'])) {
+    $mode = $_GET['mode'];
+
+    // Mettre à jour la valeur du mode dans la base de données
+    $stmt = $pdo->prepare("UPDATE users SET mode = :mode WHERE id = :id");
+    $stmt->bindParam(':mode', $mode, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Recharger la page après la mise à jour pour appliquer le nouveau mode
+    header("Location: ". getPageName() .".php");
+    exit;
+}
 ?>
 
 <style>
