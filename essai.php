@@ -73,6 +73,16 @@ $stmtSensorsWithData = $pdo_optiplant->prepare($sqlSensorsWithData);
 $stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtSensorsWithData->execute();
 $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
+
+$sqlhumidityThreshold = "SELECT MIN(humidityThreshold) AS minHumidityThreshold
+    FROM PLANTS inner join RECIPES on PLANTS.idPlant = RECIPES.idPlant
+	INNER JOIN TRAYS
+	ON TRAYS.idPlant = PLANTS.idPlant
+	WHERE TRAYS.idTray = :idTray";
+$stmthumidityThreshold = $pdo_optiplant->prepare($sqlhumidityThreshold);
+$stmthumidityThreshold->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmthumidityThreshold->execute();
+$humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -141,19 +151,20 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                 <div class="row">
                     <div class="col-md-6">
                         <div>
-                            <h3>Nom de la plante :</h3>
+                            <h4>Nom de la plante :</h4>
                             <?php if (!empty($bac['plantName'])): ?>
                                 <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
                             <?php else: ?>
-                                <h3>Nom de la plante :</h3>
+                                <h4>Nom de la plante :</h4>
                                 <p class="text-muted">Plante non spécifiée pour ce bac.</p>
                             <?php endif; ?>
                         </div>
                         <div>
-                            <h3>Période actuelle de la plante :</h3>
+                            <h4>Période actuelle de la plante :</h4>
                             <?php if (!empty($bac['periodName'])): ?>
                                 <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
                             <?php else: ?>
+                                <h4>Période actuelle de la plante :</h4>
                                 <p class="text-muted">Période non spécifiée pour cette plante.</p>
                             <?php endif; ?>
                         </div>
@@ -163,28 +174,28 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                                 switch ($bac['periodName']) {
                                     case 'Semis':?>
                                         <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                                        <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; 300px;" loop autoplay></dotlottie-player>
+                                        <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 450px; 450px;" loop autoplay></dotlottie-player>
                                         <?php
                                         break;
 
                                     case 'Developpement des racines' :
                                         ?>
                                         <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                                        <dotlottie-player src="https://lottie.host/a8ea48f4-8774-43f0-9ba0-890ac1dda071/hnxGZo4ZyZ.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+                                        <dotlottie-player src="https://lottie.host/a8ea48f4-8774-43f0-9ba0-890ac1dda071/hnxGZo4ZyZ.lottie" background="transparent" speed="1" style="width: 450px; height: 450px" loop autoplay></dotlottie-player>
                                         <?php
                                         break;
 
                                     case 'Croissance végétative' :
                                         ?>
                                         <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                                        <dotlottie-player src="https://lottie.host/935c3d58-6436-4629-92b0-aeda99cd32d9/KjGXI3aTlY.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+                                        <dotlottie-player src="https://lottie.host/935c3d58-6436-4629-92b0-aeda99cd32d9/KjGXI3aTlY.lottie" background="transparent" speed="1" style="width: 450px; height: 450px" loop autoplay></dotlottie-player>
                                         <?php
                                         break;
 
                                     case 'Floraison et fructification' :
                                         ?>
                                         <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                                        <dotlottie-player src="https://lottie.host/ff40091b-80c4-4b5c-b1e6-204167316c10/sukIg9lbjv.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+                                        <dotlottie-player src="https://lottie.host/ff40091b-80c4-4b5c-b1e6-204167316c10/sukIg9lbjv.lottie" background="transparent" speed="1" style="width: 450px; height: 450px" loop autoplay></dotlottie-player>
                                         <?php
                                         break;
                                 }
@@ -317,11 +328,11 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-light">
+    <footer class="mt-auto py-3 bg-light">
         <div class="container">
             <div class="row">
-                <div class="col-12 text-left">
-                    <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
+                <div class="col-12 text-center">
+                    <a href="dashboard.php" class="btn btn-primary" role="button">⬅ Retour au tableau de bord</a>
                 </div>
             </div>
         </div>
@@ -382,6 +393,7 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
             });
         });
         const humidityData = <?php echo json_encode(!empty($sensorsWithData) ? $sensorsWithData[0]['value'] : null); ?>;
+        const humidityThreshold = <?php echo json_encode(!empty($humidityThreshold) ? $humidityThreshold[0]['minHumidityThreshold'] : null); ?>;
         var data = [
             {
                 domain: { x: [0, 1], y: [0, 1] },
@@ -393,7 +405,7 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                 gauge: {
                     axis: { range: [0, 100] },
                     steps: [
-                        { range: [0, 50], color: "lightgray" },
+                        { range: [0, humidityThreshold], color: "lightgray" },
                     ],
                     threshold: {
                         line: { color: "red", width: 4 },
@@ -404,7 +416,7 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
             }
         ];
 
-        var layout = { width: 300, height: 300, margin: { t: 0, b: 0 } };
+        var layout = { width: 450, height: 450, margin: { t: 0, b: 0 } };
         Plotly.newPlot('humDiv', data, layout);
 
     </script>
