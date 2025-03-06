@@ -41,6 +41,7 @@ function getPageName() {
                 <ul>
                     <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard' || getPageName() == 'enfant') ? 'current' : ''; ?>">Dashboard</a></li>
                     <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes') ? 'current' : ''; ?>">Recettes</a></li>
+                    <li><a href="livestream.php" id="<?php echo (getPageName() == 'livestream') ? 'current' : ''; ?>">Livestream</a></li>
                     <li><a href="profil.php" id="<?php echo (getPageName() == 'profil') ? 'current' : ''; ?>">Profil</a></li>
                     <!-- <li class="profile-link"><a href="profil.php">Profil</a></li> -->
                 </ul>
