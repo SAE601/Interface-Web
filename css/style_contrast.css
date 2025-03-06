@@ -5,7 +5,7 @@
     --primary-color: #FFD700; /* Jaune vif pour une visibilité accrue */
     --background-color: #000000; /* Noir pur pour un fort contraste */
     --text-color: #FFFFFF; /* Blanc pur pour un texte lisible */
-    --header-color: #000000; /* Fond du header en noir */
+    --header-color: #FF4500; /* Fond du header en noir */
     --button-color: #FF4500; /* Orange vif pour bien démarquer les boutons */
     --container-bg: noir; /* Bordures blanches pour plus de visibilité */
     --border-color: #FFD700;
@@ -92,7 +92,7 @@ h2 {
 }
 
 p {
-    color: #b0b0b0; /* Texte secondaire légèrement plus foncé */
+    color: rgb(248, 248, 248); /* Texte secondaire légèrement plus foncé */
 }
 
 a {
@@ -239,7 +239,7 @@ hr {
 header{
     top: 0;
     height: 120px;
-    background-color: #a7d9ff;
+    background-color: var(--header-color);
     display: flex;
     align-items: center;
     padding: 0 20px;
@@ -247,7 +247,7 @@ header{
     z-index: 1000; 
 }
 .header-title {
-    color: #ffffff;
+    color: var(--text-color);
     font-family: "FuturaBold", sans-serif;
     font-weight: bold;
     font-size:50px;
@@ -323,7 +323,7 @@ nav {
 .links a{
     text-align: center;
     text-decoration: none;
-    color:#ffffff;
+    color:var(--text-color);
     font-size:30px;
     cursor: pointer;
     padding-bottom: 0.3em; /* surlignage un peu plus bas*/
@@ -364,7 +364,7 @@ nav {
 body {
     font-family: "FuturaBold", sans-serif;
     font-weight: bold;
-    background-color: #e0ecf5;
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
 }
@@ -445,9 +445,9 @@ h3 {
 
 .theme-button {
     display: inline-block;
-    background-color: #ffffff; /* Couleur de fond */
-    color: rgb(0, 0, 0); /* Couleur du texte */
-    border: 5px solid #ccc; /* Bordure optionnelle */
+    background-color: var(--background-color); /* Couleur de fond */
+    color: var(--text-color); /* Couleur du texte */
+    border: 5px snow; /* Bordure optionnelle */
     border-radius: 10px; /* Coins arrondis */
     font-size: 28px;
     font-weight: bold;
@@ -460,9 +460,9 @@ h3 {
 }
 
 .theme-button:hover {
-    border-color: #afafaf;
+    border-color: var(--border-color);
     border-width: 6px; /* Couleur de fond au survol */
-    background-color:#fff;
+    background-color:var(--background-color);
 }
 
 /* Media query pour les écrans de moins de 1300px */
@@ -493,10 +493,11 @@ h3 {
         width: max-content;
         min-width: 200px; /* Largeur minimale */
         padding: 10px 20px;
-        background-color: #a4d5fa;
+        background-color: var(--header-color);
     }
     .links.active {
         display: flex; /* Affiche le menu */
+        z-index: 1000;
     }
 
     .profile-link {
