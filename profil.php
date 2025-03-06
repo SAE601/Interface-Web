@@ -68,6 +68,15 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
 <body>
 
     <?php include("header.php");?>
+    <!-- Script de la modal -->
+    <script>
+        document.querySelectorAll('button[data-mode]').forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                window.location.href = `profil.php?mode=${mode}`;
+            });
+        });
+    </script>
     <?php
     if (isset($_SESSION['message'])) {
         echo "<div class=\"dashboard-container\" ><p>" . $_SESSION['message'] . "</p></div>";

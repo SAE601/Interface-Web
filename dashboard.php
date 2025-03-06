@@ -21,23 +21,6 @@ $user = $stmt->fetch();
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 
 // ________________________________________________
-// Vérification des paramètres GET pour détécter un changement de mode
-if (isset($_GET['mode'])) {
-    $mode = $_GET['mode'];
-
-    // Mettre à jour la valeur du mode dans la base de données
-    $stmt = $pdo->prepare("UPDATE users SET mode = :mode WHERE id = :id");
-    $stmt->bindParam(':mode', $mode, PDO::PARAM_STR);
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Recharger la page après la mise à jour pour appliquer le nouveau mode
-    header("Location: dashboard.php");
-    exit;
-}
-
-
-// ________________________________________________
 // Récupérer l'heure actuelle dans le fuseau horaire 'Europe/Paris'
 $queryHour = "SELECT CURRENT_TIME AS time";
 $stmt = $pdo_optiplant->prepare($queryHour);
@@ -71,7 +54,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="fr">
 
 <head>
-    <script src="js\script.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Page d'Accueil</title>
@@ -114,28 +96,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <!-- page du haut -->
     <?php include("header.php"); ?>
-
-    <!-- Modale (page volante) -->
-    <div id="modal" class="modal1">
-        <div class="modal1-content">
-            <span class="close-modal1" id="close-modal">&times;</span>
-            <h2>Paramètres de couleurs</h2>
-
-            <div class="grid">
-                <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
-                <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
-                <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
-                <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
-
-                <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
-                <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
-                <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
-            </div>
-        </div>
-    </div>
-
-    </div>
-
+    <!-- Script de la modal -->
     <script>
         document.querySelectorAll('button[data-mode]').forEach(button => {
             button.addEventListener('click', function() {
@@ -144,7 +105,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
-    <button class="btn btn-dark" id="open-modal">[TEMP] Ouvre la modal [TEMP]</button>
+
     <div class="dashboard-container">
         <!-- Ligne 1 : Deux colonnes pour la météo -->
         <div class="row">
