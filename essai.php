@@ -74,6 +74,7 @@ $stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtSensorsWithData->execute();
 $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
 
+// Requête SQL pour récupérer le seuil d'humidité
 $sqlhumidityThreshold = "SELECT MIN(humidityThreshold) AS minHumidityThreshold
     FROM PLANTS inner join RECIPES on PLANTS.idPlant = RECIPES.idPlant
 	INNER JOIN TRAYS
@@ -94,6 +95,9 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/css/bootstrap.css" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
+    <script src="/RGraph/libraries/RGraph.common.core.js"></script>
+    <script src="/RGraph/libraries/RGraph.common.dynamic.js"></script>
+    <script src="/RGraph/libraries/RGraph.thermometer.js"></script>
     <?php
     // Prendre en compte le mode de couleur de l'utilisateur
     try {
@@ -206,6 +210,13 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                     </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <canvas id="cvs" width="100" height="250"></canvas>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
                 </div>
             </div>
         </div>
@@ -393,6 +404,7 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
             });
         });
         const humidityData = <?php echo json_encode(!empty($sensorsWithData) ? $sensorsWithData[0]['value'] : null); ?>;
+        const temperatureData = <?php echo json_encode(!empty($sensorsWithData) ? $sensorsWithData[2]['value'] : null); ?>;
         const humidityThreshold = <?php echo json_encode(!empty($humidityThreshold) ? $humidityThreshold[0]['minHumidityThreshold'] : null); ?>;
         var data = [
             {
@@ -418,6 +430,14 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
 
         var layout = { width: 450, height: 450, margin: { t: 0, b: 0 } };
         Plotly.newPlot('humDiv', data, layout);
+
+        new RGraph.Thermometer({
+        id: 'cvs',
+        min: 0,
+        max: 100,
+        value: temperatureData,
+        }).draw();
+
 
     </script>
 </body>
