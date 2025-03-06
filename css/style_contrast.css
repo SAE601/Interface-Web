@@ -445,9 +445,9 @@ h3 {
 
 .theme-button {
     display: inline-block;
-    background-color: var(--background-color); /* Couleur de fond */
-    color: var(--text-color); /* Couleur du texte */
-    border: 5px snow; /* Bordure optionnelle */
+    background-color: var(--text-color); /* Couleur de fond */
+    color: var(--background-color); /* Couleur du texte */
+    border: 5px solid #ccc; /* Bordure optionnelle */
     border-radius: 10px; /* Coins arrondis */
     font-size: 28px;
     font-weight: bold;
@@ -460,9 +460,9 @@ h3 {
 }
 
 .theme-button:hover {
-    border-color: var(--border-color);
+    border-color: #afafaf;
     border-width: 6px; /* Couleur de fond au survol */
-    background-color:var(--background-color);
+    background-color:var(--text-color);
 }
 
 /* Media query pour les écrans de moins de 1300px */

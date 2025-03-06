@@ -453,7 +453,7 @@ h3 {
     display: inline-block;
     background-color: var(--background-color); /* Couleur de fond */
     color: var(--text-color); /* Couleur du texte */
-    border: 5px var(--border-color); /* Bordure optionnelle */
+    border: 5px solid #ccc; /* Bordure optionnelle */
     border-radius: 10px; /* Coins arrondis */
     font-size: 28px;
     font-weight: bold;
@@ -466,7 +466,7 @@ h3 {
 }
 
 .theme-button:hover {
-    border-color: var(--border-color);
+    border-color: #afafaf;
     border-width: 6px; /* Couleur de fond au survol */
     background-color:var(--background-color);
 }
