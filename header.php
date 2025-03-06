@@ -62,3 +62,23 @@ function getPageName() {
         </div>
         <button class="theme-button" id="open-modal">Mode <i class="bi bi-universal-access-circle"></i></button>
 </header>
+<!-- Modale (page volante) -->
+<div id="modal" class="modal1">
+    <div class="modal1-content">
+        <span class="close-modal1" id="close-modal">&times;</span>
+        <h2>Paramètres de couleurs</h2>
+
+        <div class="grid">
+            <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
+            <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
+            <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
+            <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
+
+            <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
+            <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
+            <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
+        </div>
+    </div>
+</div>
+<!-- Script pour la modal -->
+<script src="js\script.js" defer></script>
