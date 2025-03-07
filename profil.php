@@ -133,7 +133,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
 
     <div class="dashboard-container">
         <h2>Changer le mode d'affichage</h2>
-        <form method="POST" action="update_mode.php" id="modeForm">
+        <form id="modeForm">
             <label for="mode">S√©lectionnez un mode :</label>
             <select name="mode" id="mode" required>
                 <?php
@@ -153,7 +153,8 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
         <!-- JavaScript pour soumettre automatiquement le formulaire -->
         <script>
             document.getElementById('mode').addEventListener('change', function() {
-                document.getElementById('modeForm').submit();
+                const mode = this.value;
+                window.location.href = `profil.php?mode=${mode}`;
             });
         </script>
     </div>
