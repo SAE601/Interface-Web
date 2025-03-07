@@ -50,7 +50,6 @@ if (isset($_GET['mode'])) {
                     toggleAnimation();
                 }
             }
-    </script>
          </script>
         <h1 class="header-title">SAE Ombrière</h1>
         <nav>
