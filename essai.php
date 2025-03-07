@@ -175,7 +175,6 @@ if($sensorsWithData[2]['value'] > 28){
                 <div class="row">
                     <div class="col-md-6">
                         <div>
-                            <h4>Nom de la plante :</h4>
                             <?php if (!empty($bac['plantName'])): ?>
                                 <h4>Nom de la plante :</h4>
                                 <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
@@ -185,7 +184,6 @@ if($sensorsWithData[2]['value'] > 28){
                             <?php endif; ?>
                         </div>
                         <div>
-                            <h4>Période actuelle de la plante :</h4>
                             <?php if (!empty($bac['periodName'])): ?>
                                 <h4>Période actuelle de la plante :</h4>
                                 <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
@@ -249,70 +247,63 @@ if($sensorsWithData[2]['value'] > 28){
                         <h5 class="card-title">Données d'Irrigation</h5>
                         <table class="table table-bordered table-striped">
                             <thead>
-                            <tr>
-                                <th>Date et Heure</th>
-                                <th>Recette</th>
-                                <th>Âge (en heures)</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php if (!empty($irrigations)): ?>
-                                <?php foreach ($irrigations as $index => $irrigation): ?>
-                                    <!-- Limitation à 5 dernières irrigations visibles par défaut -->
-                                    <tr id="row-<?php echo $index; ?>" class="<?php echo ($index >= 5) ? 'd-none' : ''; ?>">
-                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                        <td>
-                                            <a href="#"
-                                               class="recette-link"
-                                               data-id-recipe="<?php echo htmlspecialchars($irrigation['idRecipe']); ?>"
-                                               data-target="details-recipe-<?php echo $index; ?>">
-                                                <?php echo htmlspecialchars($irrigation['idRecipe']); ?>
-                                            </a>
-
-                                            <div id="details-recipe-<?php echo $index; ?>" class="recette-details" style="display: none;">
-                                                <p style="font-style: italic; color: gray;">Chargement...</p>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            $hoursAgo = (int)$irrigation['hoursAgo'];
-                                            echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
-                                            ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
                                 <tr>
                                     <th>Date et Heure</th>
                                     <th>Recette</th>
                                     <th>Âge (en heures)</th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody>
                                 <?php if (!empty($irrigations)): ?>
                                     <?php foreach ($irrigations as $index => $irrigation): ?>
-                                        <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
+                                        <!-- Limitation à 5 dernières irrigations visibles par défaut -->
+                                        <tr id="row-<?php echo $index; ?>" class="<?php echo ($index >= 5) ? 'd-none' : ''; ?>">
                                             <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                            <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                            <td>
+                                                <a href="#"
+                                                   class="recette-link"
+                                                   data-id-recipe="<?php echo htmlspecialchars($irrigation['idRecipe']); ?>"
+                                                   data-target="details-recipe-<?php echo $index; ?>">
+                                                    <?php echo htmlspecialchars($irrigation['idRecipe']); ?>
+                                                </a>
+
+                                                <div id="details-recipe-<?php echo $index; ?>" class="recette-details" style="display: none;">
+                                                    <p style="font-style: italic; color: gray;">Chargement...</p>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <?php
-                                                $hoursAgo = (int) $irrigation['hoursAgo'];
+                                                $hoursAgo = (int)$irrigation['hoursAgo'];
                                                 echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
                                                 ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
-                                    <tr>
-                                        <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
-                                    </tr>
+                                    <?php if (!empty($irrigations)): ?>
+                                        <?php foreach ($irrigations as $index => $irrigation): ?>
+                                            <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
+                                                <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                                <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                                <td>
+                                                    <?php
+                                                    $hoursAgo = (int) $irrigation['hoursAgo'];
+                                                    echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endif; ?>
-                                </tbody>
-                            </table>
-                            <?php if (count($irrigations) > 5): ?>
-                                <button class="btn btn-link mt-2" id="toggle-irrigations" data-showing="5">Voir toutes les irriguations</button>
-                            <?php endif; ?>
-                        </div>
+                            </tbody>
+                        </table>
+                        <?php if (count($irrigations) > 5): ?>
+                            <button class="btn btn-link mt-2" id="toggle-irrigations" data-showing="5">Voir toutes les irriguations</button>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -349,6 +340,7 @@ if($sensorsWithData[2]['value'] > 28){
                         </table>
                     </div>
                 </div>
+
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
@@ -388,6 +380,7 @@ if($sensorsWithData[2]['value'] > 28){
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- Footer -->
     <footer class="mt-auto py-3 bg-light">
@@ -558,5 +551,4 @@ if($sensorsWithData[2]['value'] > 28){
 
     </script>
 </body>
-
 </html>
