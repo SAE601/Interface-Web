@@ -173,55 +173,53 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
                     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     if ($users):
             ?>
-                        <table class="table table-striped table-dark">
-                            <thead>
-                                <tr>
-                                    <th>Photo de profil</th>
-                                    <th>Nom d'utilisateur</th>
-                                    <th>Dernière connexion</th>
-                                    <th>Rôle</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($users as $user): ?>
-                                    <tr>
-                                        <?php
-                                            // Afficher la photo de profil
-                                            $profile_photo = $user['profile_photo'] ?? 'images/nyquit1.jpg'; // Photo par défaut
-                                        ?>
-                                        <td>
-                                            <img src="<?= htmlspecialchars($profile_photo) ?>" alt="Photo de profil" class="profile-photo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                                        </td>
-                                        <td><?= htmlspecialchars($user['username']) ?></td>
-                                        <td>
-                                            <?php if ($user['last_login'] !== null): ?>
-                                                <?= htmlspecialchars($user['last_login']) ?>
-                                            <?php else: ?>
-                                                <!-- Affiche rien si last_login est NULL -->
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?= htmlspecialchars($user['lerole']) ?></td>
-                                        <?php if ($user['lerole'] === 'membre'): ?>
-                                            <td style="display: flex;">
-                                                <form method="POST" action="promote_user.php" style="display:inline; margin-right: 20px;">
-                                                    <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['id']) ?>">
-                                                    <button type="submit" class="btn btn-success"><i class="fas fa-crown"></i> Promouvoir</button>
-                                                </form>
-                                            </td>
-                                        <?php else: ?>
-                                            <td></td>
-                                        <?php endif; ?>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th>Photo de profil</th>
+                        <th>Nom d'utilisateur</th>
+                        <th>Dernière connexion</th>
+                        <th>Rôle</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user): ?>
+                        <tr>
+                        <?php
+                            // Afficher la photo de profil
+                            $profile_photo = $user['profile_photo'] ?? 'images/nyquit1.jpg'; // Photo par défaut
+                        ?>
+                            <td>
+                                <img src="<?= htmlspecialchars($profile_photo) ?>" alt="Photo de profil" class="profile-photo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                            </td>
+                            <td><?= htmlspecialchars($user['username']) ?></td>
+                            <td>
+                                <?php if ($user['last_login'] !== null): ?>
+                                    <?= htmlspecialchars($user['last_login']) ?>
+                                <?php else: ?>
+                                    <!-- Affiche rien si last_login est NULL -->
+                                <?php endif; ?>
+                            </td>
+                            <td><?= htmlspecialchars($user['lerole']) ?></td>
+                            <?php if ($user['lerole'] === 'membre'): ?>
+                                <td style="display: flex;">
+                                    <form method="POST" action="promote_user.php" style="display:inline; margin-right: 20px;">
+                                        <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['id']) ?>">
+                                        <button type="submit" class="btn btn-success"><i class="fas fa-crown"></i> Promouvoir</button>
+                                    </form>
+                                </td>
+                            <?php else: ?>
+                                <td></td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+            </table>
+            <?php else: ?>
+                <p>Aucun utilisateur trouvé.</p>
             <?php
-                    else:
-            ?>
-                        <p>Aucun utilisateur trouvé.</p>
-            <?php
-                    endif;
+                endif;
                 } catch (PDOException $e) {
                     echo "<p>Erreur lors de la récupération des utilisateurs : " . $e->getMessage() . "</p>";
                 }
