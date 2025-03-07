@@ -2,11 +2,11 @@
 
 /* Variables CSS adaptées pour les deutéranopes */
 :root {
-    --primary-color: #4A90E2;
+    --primary-color: #99d3ff;
     --background-color: #FFFFFF;
     --text-color: #000000;
-    --header-color: #4A90E2;
-    --button-color: #FF6F61;
+    --header-color: #99d3ff;
+    --button-color: #0248c1;
     --container-bg: #fff;
     --border-color: #ccc;
 }
@@ -117,7 +117,8 @@ a:hover {
 }
 
 .btn:hover, button:hover {
-    background-color: #FF3B2F;
+    background-color: #fff700;
+    color: rgb(0, 0, 0);
 }
 
 /* Messages d'erreur et de succès */

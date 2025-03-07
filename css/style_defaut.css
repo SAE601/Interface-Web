@@ -2,11 +2,11 @@
 
 /* Variables CSS adaptées pour un mode sombre */
 :root {
-    --primary-color: #1abc9c;
+    --primary-color: #79c5ff;
     --background-color: #f4f4f4;
     --text-color: #333;
-    --header-color: #a7d9ff;
-    --button-color: #007BFF;
+    --header-color: #79c5ff;
+    --button-color: #70d200;
     --container-bg: #fff;
     --border-color: #ccc;
 }
@@ -117,7 +117,7 @@ a:hover {
 }
 
 .btn:hover, button:hover {
-    background-color: #0056b3;
+    background-color: #1da402;
 }
 
 /* Messages d'erreur et de succès */
@@ -246,7 +246,7 @@ hr {
 header{
     top: 0;
     height: 120px;
-    background-color: #a7d9ff;
+    background-color: #79c5ff;
     display: flex;
     align-items: center;
     padding: 0 20px;
