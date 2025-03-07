@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+
 // Récupérer les informations de l'utilisateur
 $user_id = $_SESSION['user_id'];
 $sql = "SELECT * FROM users WHERE id = :user_id";
@@ -147,9 +148,11 @@ if($sensorsWithData[2]['value'] > 28){
 </head>
 
 <body>
-    <?php include("header.php");?>
+
+    <?php include 'header.php'; ?>
+
     <!-- Navigation des onglets -->
-    <div class="tab-content mt-3">
+    <div>
         <div class="bouton-centre-header">
             <a name="" id="tab1-btn" class="btn btn-primary" href="#tab1" role="button" data-toggle="tab">Sommaire</a>
             <a name="" id="tab2-btn" class="btn btn-primary" href="#tab2" role="button" data-toggle="tab">Photos</a>
@@ -174,6 +177,7 @@ if($sensorsWithData[2]['value'] > 28){
                         <div>
                             <h4>Nom de la plante :</h4>
                             <?php if (!empty($bac['plantName'])): ?>
+                                <h4>Nom de la plante :</h4>
                                 <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
                             <?php else: ?>
                                 <h4>Nom de la plante :</h4>
@@ -183,6 +187,7 @@ if($sensorsWithData[2]['value'] > 28){
                         <div>
                             <h4>Période actuelle de la plante :</h4>
                             <?php if (!empty($bac['periodName'])): ?>
+                                <h4>Période actuelle de la plante :</h4>
                                 <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
                             <?php else: ?>
                                 <h4>Période actuelle de la plante :</h4>
@@ -241,10 +246,42 @@ if($sensorsWithData[2]['value'] > 28){
             <div class="container">
                 <div class="card">
                     <div class="card-body">
-                        <div class="col-md-12">
-                            <h5 class="card-title">Données d'Irrigation</h5>
-                            <table class="table table-bordered table-striped">
-                                <thead>
+                        <h5 class="card-title">Données d'Irrigation</h5>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Date et Heure</th>
+                                <th>Recette</th>
+                                <th>Âge (en heures)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (!empty($irrigations)): ?>
+                                <?php foreach ($irrigations as $index => $irrigation): ?>
+                                    <!-- Limitation à 5 dernières irrigations visibles par défaut -->
+                                    <tr id="row-<?php echo $index; ?>" class="<?php echo ($index >= 5) ? 'd-none' : ''; ?>">
+                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                        <td>
+                                            <a href="#"
+                                               class="recette-link"
+                                               data-id-recipe="<?php echo htmlspecialchars($irrigation['idRecipe']); ?>"
+                                               data-target="details-recipe-<?php echo $index; ?>">
+                                                <?php echo htmlspecialchars($irrigation['idRecipe']); ?>
+                                            </a>
+
+                                            <div id="details-recipe-<?php echo $index; ?>" class="recette-details" style="display: none;">
+                                                <p style="font-style: italic; color: gray;">Chargement...</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $hoursAgo = (int)$irrigation['hoursAgo'];
+                                            echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                            ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                                 <tr>
                                     <th>Date et Heure</th>
                                     <th>Recette</th>
@@ -369,6 +406,58 @@ if($sensorsWithData[2]['value'] > 28){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ajout d'un gestionnaire de clic sur le bouton "Voir toutes les irrigations"
+            const toggleButton = document.getElementById('toggle-irrigations');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', function () {
+                    // Tous les éléments avec la classe "d-none" seront rendus visibles
+                    document.querySelectorAll('tr.d-none').forEach(function (row) {
+                        row.classList.remove('d-none');
+                    });
+
+                    // Masquer le bouton après avoir affiché toutes les lignes
+                    this.style.display = 'none';
+                });
+            }
+
+            // Gestion des clics sur les numéros des recettes pour charger dynamiquement les données
+            document.querySelectorAll('.recette-link').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Récupérer l'ID de la recette et la cible concernée
+                    let idRecipe = this.getAttribute('data-id-recipe');
+                    let targetId = this.getAttribute('data-target');
+                    let targetElement = document.getElementById(targetId);
+
+                    // Basculer l'affichage des détails récents si déjà visibles
+                    if (targetElement.style.display === 'block') {
+                        targetElement.style.display = 'none';
+                        return;
+                    }
+
+                    // Afficher temporairement un message de chargement
+                    targetElement.style.display = 'block';
+                    targetElement.innerHTML = '<p style="font-style: italic; color: gray;">Chargement...</p>';
+
+                    // Charge les données depuis get_recette_details.php
+                    fetch(`get_recette_details.php?id=${idRecipe}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            targetElement.innerHTML = data; // Injecter le contenu
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors du chargement des données de la recette:', error);
+                            targetElement.innerHTML =
+                                '<div class="alert alert-danger">Erreur lors du chargement. Veuillez réessayer.</div>';
+                        });
+                });
+            });
+        });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const button = document.getElementById('toggle-irrigations');

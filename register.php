@@ -62,6 +62,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/login.css"> <!-- Lien vers le fichier CSS externe -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Style pour la fenêtre modale */
         .modal {
@@ -169,7 +170,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
         <div>
             <input type="submit" value="S'inscrire">
-            <a href="index.php" class="btn">Page de connexion</a>
+            <a class="btn" href="index.php">
+                <i class="fas fa-arrow-left"></i> Page de connexion
+            </a>
         </div>
 
     </form>

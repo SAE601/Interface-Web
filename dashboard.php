@@ -71,7 +71,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="fr">
 
 <head>
-    <script src="js\script.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Page d'Accueil</title>
@@ -114,28 +113,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <!-- page du haut -->
     <?php include("header.php"); ?>
-
-    <!-- Modale (page volante) -->
-    <div id="modal" class="modal1">
-        <div class="modal1-content">
-            <span class="close-modal1" id="close-modal">&times;</span>
-            <h2>Paramètres de couleurs</h2>
-
-            <div class="grid">
-                <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
-                <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
-                <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
-                <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
-
-                <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
-                <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
-                <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
-            </div>
-        </div>
-    </div>
-
-    </div>
-
     <script>
         document.querySelectorAll('button[data-mode]').forEach(button => {
             button.addEventListener('click', function() {
@@ -144,7 +121,6 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             });
         });
     </script>
-    <button class="btn btn-dark" id="open-modal">[TEMP] Ouvre la modal [TEMP]</button>
     <div class="dashboard-container">
         <!-- Ligne 1 : Deux colonnes pour la météo -->
         <div class="row">
