@@ -32,10 +32,10 @@ if (isset($_GET['mode'])) {
                 $user = getCurrentUserData();
                 if($user != null) {
                     if($user['mode'] == 'darkside') {
-                        echo('<dotlottie-player id="sun-animation" class="sun" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>');
+                        echo('<dotlottie-player id="sun-animation" class="sun" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" alt="Animation Soleil" loop autoplay aria-hidden="true"></dotlottie-player>');
                     }
                     else {
-                        echo('<dotlottie-player id="sun-animation" class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>');
+                        echo('<dotlottie-player id="sun-animation" class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" alt="Animation Lune" loop autoplay aria-hidden="true"></dotlottie-player>');
                     }
                 }
             ?>
@@ -93,17 +93,18 @@ if (isset($_GET['mode'])) {
 <div id="modal" class="modal1">
     <div class="modal1-content">
         <span class="close-modal1" id="close-modal">&times;</span>
-        <h2>Paramètres de couleurs</h2>
+        <h2>Modes / Paramètres de couleurs</h2>
 
         <div class="grid">
-            <button class="btn btn-dark" data-mode="contrast">Mode contraste élevé</button>
-            <button class="btn btn-dark" data-mode="deuteranopie">Mode deuteranope</button>
-            <button class="btn btn-dark" data-mode="tritanopie">Mode tritanope</button>
-            <button class="btn btn-dark" data-mode="protanopie">Mode protanope</button>
-
-            <button class="btn btn-dark" data-mode="achromatopsie">Mode achromatope</button>
-            <button class="btn btn-dark" data-mode="default">Couleur par défaut</button>
-            <button class="btn btn-dark" data-mode="darkside">Mode darkside</button>
+            <button class="btn2 btn-dark" data-mode="default">Par défaut</button>
+            <button class="btn2 btn-dark" data-mode="darkside">Darkside</button>
+            <button class="btn2 btn-dark" data-mode="contrast">Contrasté</button>
+            <button class="btn2 btn-dark" data-mode="deuteranopie">Deuteranope</button>
+            <button class="btn2 btn-dark" data-mode="protanopie">Protanope</button>
+            <button class="btn2 btn-dark" data-mode="tritanopie">Tritanope</button>
+            <button class="btn2 btn-dark" data-mode="achromatopsie">Achromatope</button>
+            
+            
         </div>
     </div>
 </div>

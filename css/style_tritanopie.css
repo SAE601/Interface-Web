@@ -119,6 +119,23 @@ a:hover {
 .btn:hover, button:hover {
     background-color: #00bfc9;
 }
+.btn2, button {
+    max-width: 130px;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: var(--button-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn2:hover, button:hover {
+    background-color: #00bfc9;
+
+}
 
 /* Messages d'erreur et de succès */
 .error {
@@ -165,7 +182,7 @@ input[type="password"] {
 
 .modal1-content {
     position: relative;
-    width: 66.66vw;
+    width: 80vw;
     height: auto;
     max-height: 90vh;
     background-color: rgba(102, 102, 102, 0.9);
@@ -198,17 +215,32 @@ input[type="password"] {
 .modal1-content hr {
     color: black;
 }
-
+.modal1-content h2{
+    color: #fff;
+    text-align: center;
+    font-size: 2em;
+}
 /* Bouton de fermeture */
 .close-modal1 {
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 1.5em;
-    color: var(--text-color);
+    font-size: 2em;
+    color: white;
     cursor: pointer;
 }
-
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr); /* 4 colonnes */
+        grid-template-rows: repeat(3, auto);  /* 2 lignes */
+    }
+}
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); /* 4 colonnes */
+        grid-template-rows: repeat(4, auto);  /* 2 lignes */
+    }
+}
 hr {
     color: black;
 }
