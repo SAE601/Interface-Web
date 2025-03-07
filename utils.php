@@ -16,7 +16,7 @@
         }
     }
 
-    function linkModeStyle() {
+    function getCurrentUserData() {
         require('config.php');
         // Prendre en compte le mode de couleur de l'utilisateur
         try {
@@ -25,8 +25,17 @@
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return null;
+    }
 
+    function linkModeStyle() {
+        // Prendre en compte le mode de couleur de l'utilisateur
+        $user = getCurrentUserData();
+        if($user != null) {
             if ($user['mode'] == 'deuteranopie') {
                 echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
             } elseif ($user['mode'] == 'tritanopie') {
@@ -42,8 +51,6 @@
             } else {
                 echo '<link rel="stylesheet" href="css/style_defaut.css">';
             }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
         }
     }
 ?>

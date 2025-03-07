@@ -27,15 +27,32 @@ if (isset($_GET['mode'])) {
 </style>
 
 <header>
-        <div class="animation-container" role="button" tabindex="0" aria-label="Toggle animation" onclick="toggleAnimation()" onkeydown="handleKeyDown(event)">
-        <!-- <div class="animation-container" onclick="this.classList.toggle('active')"> -->
-            <dotlottie-player class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>
-            <dotlottie-player class="moon" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>
+        <div class="animation-container" role="button" tabindex="0" aria-label="Toggle animation" onclick="toggleSunAnimation()" onkeydown="handleKeyDown(event)">
+            <?php
+                $user = getCurrentUserData();
+                if($user != null) {
+                    if($user['mode'] == 'darkside') {
+                        echo('<dotlottie-player id="sun-animation" class="sun" src="https://lottie.host/adffd350-67c3-4f6d-90f3-a89c3df9df69/DCFnWViolJ.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>');
+                    }
+                    else {
+                        echo('<dotlottie-player id="sun-animation" class="sun" src="https://lottie.host/dee62ecf-3431-498d-95a2-a345afea39bb/fXRedDkWvw.lottie" background="transparent" speed="1" style="width: 120px; height: 120px" loop autoplay aria-hidden="true"></dotlottie-player>');
+                    }
+                }
+            ?>
         </div>
         <script>
-            function toggleAnimation() {
-                const container = document.querySelector('.animation-container');
-                container.classList.toggle('active');
+            let isPlaying = true; // L'animation démarre en mode "lecture"
+
+            function toggleSunAnimation() {
+                const sunAnimation = document.getElementById('sun-animation');
+
+                if (isPlaying) {
+                    sunAnimation.pause();
+                } else {
+                    sunAnimation.play();
+                }
+
+                isPlaying = !isPlaying; // On inverse l'état
             }
             function handleKeyDown(event) {
             // Vérifie si la touche pressée est "Enter" ou "Espace"
