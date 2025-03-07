@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo $e->getMessage();
         }
         header('Location: recettes.php?success='.$result);
+
     } catch (PDOException $e) {
         die('<div class="alert alert-danger">Erreur : ' . htmlspecialchars($e->getMessage()) . '</div>');
     }

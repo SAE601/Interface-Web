@@ -116,7 +116,11 @@ try {
     ?>
 </head>
 <body>
-<?php include("header.php");?>
+<?php include("header.php");
+
+if (isset($_GET['success'])): ?>
+<div class="alert alert-success"> Table recette modifiée avec succès !</div>
+<?php endif; ?>
 
 <div class="container mt-5">
     <!-- Bouton Retour -->
@@ -125,7 +129,6 @@ try {
             <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
         </div>
     </div>
-
     <h2 class="text-center mb-4">Liste des Recettes</h2>
 
     <!-- Liste des recettes -->
@@ -294,8 +297,6 @@ try {
     </div>
 </div>
 
-
-
 <script src="/js/bootstrap.js"></script>
 <!-- Script pour gérer le menu déroulant -->
 <script>
@@ -309,6 +310,15 @@ try {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(() => {
+            document.getElementsByClassName("alert")[0].style.display = "none";
+        }, 3000);
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('detailsModal');

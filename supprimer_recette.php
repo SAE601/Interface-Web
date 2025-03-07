@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->execute();
 
         // Rediriger après suppression
-        header('Location: recettes.php?deleted='.$result);
+        header('Location: recettes.php?success='.$result);
     } catch (PDOException $e) {
         die('<div class="alert alert-danger">Erreur : ' . htmlspecialchars($e->getMessage()) . '</div>');
     }
