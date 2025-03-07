@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("config.php");
+require_once("config.php");
 
 // Vérifie si l'utilisateur est connecté
 require_once("utils.php");
@@ -32,35 +32,8 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
     <script src="js/promote_script.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <?php
-
-    // Prendre en compte le mode de couleur de l'utilisateur
-    try {
-        $id = $_SESSION['user_id'];
-        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user['mode'] == 'deuteranopie') {
-            echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
-        } elseif ($user['mode'] == 'tritanopie') {
-            echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
-        } elseif ($user['mode'] == 'protanopie') {
-            echo '<link rel="stylesheet" href="css/style_protanopie.css">';
-        } elseif ($user['mode'] == 'achromatopsie') {
-            echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
-        } elseif ($user['mode'] == 'contrast') {
-            echo '<link rel="stylesheet" href="css/style_contrast.css">';
-        } elseif ($user['mode'] == 'darkside') {
-            echo '<link rel="stylesheet" href="css/style_darkside.css">';
-        } else {
-            echo '<link rel="stylesheet" href="css/style_defaut.css">';
-        }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-
+        // Prendre en compte le mode de couleur de l'utilisateur
+        linkModeStyle();
     ?>
 </head>
 
