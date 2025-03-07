@@ -134,6 +134,16 @@ if($sensorsWithData[2]['value'] > 28){
 <body>
 
     <?php include 'header.php'; ?>
+    <!-- Script de la modal -->
+    <script>
+        document.querySelectorAll('button[data-mode]').forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                const trays = <?php echo isset($_GET['trays']) ? $_GET['trays'] : 'null'; ?>;
+                window.location.href = `essai.php?mode=${mode}&trays=${trays}`;
+            });
+        });
+    </script>
 
     <!-- Navigation des onglets -->
     <div>

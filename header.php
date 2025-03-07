@@ -14,8 +14,13 @@ if (isset($_GET['mode'])) {
     $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Recharger la page après la mise à jour pour appliquer le nouveau mode
-    header("Location: ". getPageName());
+    // Récupérer tous les paramètres GET sauf "mode"
+    $queryParams = $_GET;
+    unset($queryParams['mode']);
+
+    $url = getPageName() . '?' . http_build_query($queryParams);
+
+    header("Location: $url");
     exit;
 }
 ?>
