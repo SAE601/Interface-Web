@@ -49,11 +49,10 @@ if (isset($_GET['mode'])) {
         <nav>
             <div class="links">
                 <ul>
-                    <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard.php') ? 'current' : ''; ?>">Dashboard</a></li>
-                    <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes.php') ? 'current' : ''; ?>">Recettes</a></li>
-                    <li><a href="livestream.php" id="<?php echo (getPageName() == 'livestream.php') ? 'current' : ''; ?>">Livestream</a></li>
-                    <li><a href="profil.php" id="<?php echo (getPageName() == 'profil.php') ? 'current' : ''; ?>">Profil</a></li>
-                    <!-- <li class="profile-link"><a href="profil.php">Profil</a></li> -->
+                    <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard.php' || getPageName() == 'dashboard') ? 'current' : ''; ?>">Dashboard</a></li>
+                    <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes.php'|| getPageName() == 'recettes') ? 'current' : ''; ?>">Recettes</a></li>
+                    <li><a href="livestream.php" id="<?php echo (getPageName() == 'livestream.php' || getPageName() == 'livestream') ? 'current' : ''; ?>">Livestream</a></li>
+                    <li><a href="profil.php" id="<?php echo (getPageName() == 'profil.php' || getPageName() == 'profil') ? 'current' : ''; ?>">Profil</a></li>
                 </ul>
             </div>
             <div class="menu-container">

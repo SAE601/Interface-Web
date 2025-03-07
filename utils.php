@@ -2,7 +2,7 @@
     function getPageName() {
         $url = $_SERVER['REQUEST_URI'];
 
-        if (preg_match('/\/([a-zA-Z0-9_-]+)\.php/', $url, $matches)) {
+        if (preg_match('/\/([^\/?]+)(?:\.php)?(?:\?.*)?$/', $url, $matches)) {
             return $matches[1];
         }
         return null;
