@@ -500,10 +500,11 @@ h3 {
         width: max-content;
         min-width: 200px; /* Largeur minimale */
         padding: 10px 20px;
-        background-color: #a4d5fa;
+        background-color: var(--header-color);
     }
     .links.active {
         display: flex; /* Affiche le menu */
+        z-index: 1000;
     }
 
     .profile-link {
