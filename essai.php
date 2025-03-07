@@ -18,6 +18,17 @@ $user = $stmt->fetch();
 
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 
+// ________________________________________________
+// Gestion des USERS
+
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch();
+
+$profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
+
 // Récupérer le paramètre 'trays'
 $idTray = isset($_GET['trays']) ? intval($_GET['trays']) : null;
 

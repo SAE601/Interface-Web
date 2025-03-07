@@ -4,9 +4,10 @@ require_once('config.php');
 session_start();
 
 // Vérifie si l'utilisateur est connecté
-require_once("utils.php");
-checkAndRedirect();
-
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
 // Récupérer les informations de l'utilisateur
 $user_id = $_SESSION['user_id'];
 $sql = "SELECT * FROM users WHERE id = :user_id";
@@ -69,7 +70,7 @@ try {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 30%;
+            max-width: 50%;
             margin: 30px auto
         }
         .btn-details {
@@ -85,21 +86,41 @@ try {
         }
     </style>
     <?php
-        // Prendre en compte le mode de couleur de l'utilisateur
-        linkModeStyle();
+    // Prendre en compte le mode de couleur de l'utilisateur
+    try {
+        $id = $_SESSION['user_id'];
+        $stmt = $pdo->prepare("SELECT mode FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user['mode'] == 'deuteranopie') {
+            echo '<link rel="stylesheet" href="css/style_deuteranopie.css">';
+        } elseif ($user['mode'] == 'tritanopie') {
+            echo '<link rel="stylesheet" href="css/style_tritanopie.css">';
+        } elseif ($user['mode'] == 'protanopie') {
+            echo '<link rel="stylesheet" href="css/style_protanopie.css">';
+        } elseif ($user['mode'] == 'achromatopsie') {
+            echo '<link rel="stylesheet" href="css/style_achromatopsie.css">';
+        } elseif ($user['mode'] == 'contrast') {
+            echo '<link rel="stylesheet" href="css/style_contrast.css">';
+        } elseif ($user['mode'] == 'darkside') {
+            echo '<link rel="stylesheet" href="css/style_darkside.css">';
+        } else {
+            echo '<link rel="stylesheet" href="css/style_defaut.css">';
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
     ?>
 </head>
 <body>
-<?php include("header.php");?>
-<!-- Script de la modal -->
-<script>
-        document.querySelectorAll('button[data-mode]').forEach(button => {
-            button.addEventListener('click', function() {
-                const mode = this.getAttribute('data-mode');
-                window.location.href = `profil.php?mode=${mode}`;
-            });
-        });
-    </script>
+<?php include("header.php");
+
+if (isset($_GET['success'])): ?>
+<div class="alert alert-success"> Table recette modifiée avec succès !</div>
+<?php endif; ?>
 
 <div class="container mt-5">
     <!-- Bouton Retour -->
@@ -108,7 +129,6 @@ try {
             <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
         </div>
     </div>
-
     <h2 class="text-center mb-4">Liste des Recettes</h2>
 
     <!-- Liste des recettes -->
@@ -135,8 +155,8 @@ try {
             <button
                     class="btn btn-primary btn-modifier"
                     data-id="<?= htmlspecialchars($recette['idRecipe']) ?>"
-                    data-period="<?= isset($recette['nomPeriode']) ? htmlspecialchars($recette['nomPeriode']) : 'Non défini'; ?>"
-                    data-plant="<?= isset($recette['nomPlant']) ? htmlspecialchars($recette['nomPlant']) : 'Non défini'; ?>"
+                    data-period="<?= isset($recette['idPeriod']) ? htmlspecialchars($recette['idPeriod']) : 'Non défini'; ?>"
+                    data-plant="<?= isset($recette['idPlant']) ? htmlspecialchars($recette['idPlant']) : 'Non défini'; ?>"
                     data-daily="<?= isset($recette['daily']) && $recette['daily'] ? 'Quotidien' : '1 jour sur 2'; ?>"
                     data-idtray="<?= isset($recette['idTray']) ? htmlspecialchars($recette['idTray']) : 'Non défini'; ?>"
                     data-watering="<?= isset($recette['watering']) ? htmlspecialchars($recette['watering']) : 'Non définie'; ?>"
@@ -149,8 +169,23 @@ try {
                     data-bs-target="#modifyModal">
                 Modifier
             </button>
+            <!-- Bouton Supprimer -->
+            <form action="supprimer_recette.php" method="POST" onsubmit="return confirm('Supprimer la reçette?');">
+                <input type="hidden" name="idRecipe" value="<?= htmlspecialchars($recette['idRecipe']) ?>">
+                <button type="submit"
+                        class="btn btn-primary btn-modifier">
+                    Supprimer
+                </button>
+            </form>
         </div>
     <?php endforeach; ?>
+
+    <button
+            class="btn btn-primary btn-ajouter"
+            data-bs-toggle="modal"
+            data-bs-target="#modifyModal">
+        Ajouter
+    </button>
 </div>
 
 <!-- Modal pour afficher les détails d'une recette -->
@@ -191,7 +226,7 @@ try {
         <div class="modal-content">
             <form id="modifyForm" method="post" action="update_recette.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modifyModalLabel">Modifier une Recette</h5>
+                    <h5 class="modal-title" id="modifyModalLabel"> Table Recette</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -200,13 +235,13 @@ try {
 
                     <!-- Période, menu déroulant -->
                     <div class="mb-3">
-                        <label for="name" class="form-label">Période</label>
+                        <label for="idPeriod" class="form-label">Période</label>
                         <select class="form-control" id="idPeriod" name="period" required>
                             <?php
                             // Récupérer les périodes depuis la base de données
                             $stmt = $pdo_optiplant->query("SELECT idPeriod, name FROM periods");
                             while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value="' . htmlspecialchars($period['idPeriod']) . '">' . htmlspecialchars($period['name']) . '</option>';
+                                echo '<option value="' . htmlspecialchars($period['idPeriod']) . '" >' . htmlspecialchars($period['name']) . '</option>';
                             }
                             ?>
                         </select>
@@ -214,10 +249,11 @@ try {
 
                     <!-- Plante, menu déroulant-->
                     <div class="mb-3">
-                        <label for="namePlant" class="form-label">Plante</label>
+                        <label for="plantName" class="form-label">Plante</label>
                         <select class="form-control" id="idPlant" name="plant" required>
                             <?php
                             // Récupérer les périodes depuis la base de données
+
                             $stmt = $pdo_optiplant->query("SELECT idPlant, plantName FROM plants");
                             while ($plant = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 echo '<option value="' . htmlspecialchars($plant['idPlant']) . '">' . htmlspecialchars($plant['plantName']) . '</option>';
@@ -225,22 +261,6 @@ try {
                             ?>
                         </select>
                     </div>
-
-
-                    <!-- Bacs, menu déroulant-->
-                    <div class="mb-3">
-                        <label for="nameTray" class="form-label">ID du Bac</label>
-                        <select class="form-control" id="idTray" name="tray" required>
-                            <?php
-                            // Récupérer les périodes depuis la base de données
-                            $stmt = $pdo_optiplant->query("SELECT idTray, nameTray FROM trays");
-                            while ($tray = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option value="' . htmlspecialchars($tray['idTray']) . '">' . htmlspecialchars($tray['nameTray']) . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-
 
                     <!-- Autres champs -->
                     <div class="mb-3">
@@ -269,7 +289,7 @@ try {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-success">Enregistrer</button>
                 </div>
             </form>
@@ -290,6 +310,15 @@ try {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(() => {
+            document.getElementsByClassName("alert")[0].style.display = "none";
+        }, 3000);
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('detailsModal');
@@ -342,28 +371,6 @@ try {
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const modifyModal = document.getElementById('modifyModal');
-
-        modifyModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-
-            // Récupérer les données depuis les attributs data-*
-            document.getElementById('recipeId').value = button.getAttribute('data-id');
-            document.getElementById('idPeriod').value = button.getAttribute('data-period');
-            document.getElementById('namePlant').value = button.getAttribute('data-plant');
-            document.getElementById('idTray').value = button.getAttribute('data-idtray');
-            document.getElementById('watering').value = button.getAttribute('data-watering');
-            document.getElementById('dailyWatering').value = button.getAttribute('data-daily-watering');
-            document.getElementById('nitrogen').value = button.getAttribute('data-nitrogen');
-            document.getElementById('phosphorus').value = button.getAttribute('data-phosphorus');
-            document.getElementById('potassium').value = button.getAttribute('data-potassium');
-            document.getElementById('humidityThreshold').value = button.getAttribute('data-humidity');
-        });
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
         // Cibler le modal et ajouter un listener à l'événement "show.bs.modal"
         const modifyModal = document.getElementById('modifyModal');
 
@@ -375,7 +382,6 @@ try {
             const id = button.getAttribute('data-id');
             const period = button.getAttribute('data-period');
             const plant = button.getAttribute('data-plant');
-            const tray = button.getAttribute('data-idtray');
             const watering = button.getAttribute('data-watering');
             const dailyWatering = button.getAttribute('data-daily-watering');
             const nitrogen = button.getAttribute('data-nitrogen');
@@ -387,7 +393,6 @@ try {
             document.getElementById('recipeId').value = id;
             document.getElementById('idPeriod').value = period;
             document.getElementById('idPlant').value = plant;
-            document.getElementById('idTray').value = tray;
             document.getElementById('watering').value = watering;
             document.getElementById('dailyWatering').value = dailyWatering;
             document.getElementById('nitrogen').value = nitrogen;
