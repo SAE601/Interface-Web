@@ -243,6 +243,9 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="js/meteo_script.js"></script>
+
+    <?php require_once("footer.php"); ?>
+
 </body>
 
 </html>
