@@ -15,7 +15,7 @@ if (isset($_GET['mode'])) {
     $stmt->execute();
 
     // Recharger la page après la mise à jour pour appliquer le nouveau mode
-    header("Location: ". getPageName() .".php");
+    header("Location: ". getPageName());
     exit;
 }
 ?>
