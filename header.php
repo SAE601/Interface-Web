@@ -1,13 +1,7 @@
 <?php 
 
-function getPageName() {
-    $url = $_SERVER['REQUEST_URI'];
-
-    if (preg_match('/\/([a-zA-Z0-9_-]+)\.php/', $url, $matches)) {
-        return $matches[1];
-    }
-    return null;
-}
+// Include getPageName
+require_once('utils.php');
 
 // ________________________________________________
 // Vérification des paramètres GET pour détécter un changement de mode
@@ -55,10 +49,10 @@ if (isset($_GET['mode'])) {
         <nav>
             <div class="links">
                 <ul>
-                    <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard' || getPageName() == 'enfant') ? 'current' : ''; ?>">Dashboard</a></li>
-                    <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes') ? 'current' : ''; ?>">Recettes</a></li>
-                    <li><a href="livestream.php" id="<?php echo (getPageName() == 'livestream') ? 'current' : ''; ?>">Livestream</a></li>
-                    <li><a href="profil.php" id="<?php echo (getPageName() == 'profil') ? 'current' : ''; ?>">Profil</a></li>
+                    <li><a href="dashboard.php" id="<?php echo (getPageName() == 'dashboard.php') ? 'current' : ''; ?>">Dashboard</a></li>
+                    <li><a href="recettes.php" id="<?php echo (getPageName() == 'recettes.php') ? 'current' : ''; ?>">Recettes</a></li>
+                    <li><a href="livestream.php" id="<?php echo (getPageName() == 'livestream.php') ? 'current' : ''; ?>">Livestream</a></li>
+                    <li><a href="profil.php" id="<?php echo (getPageName() == 'profil.php') ? 'current' : ''; ?>">Profil</a></li>
                     <!-- <li class="profile-link"><a href="profil.php">Profil</a></li> -->
                 </ul>
             </div>

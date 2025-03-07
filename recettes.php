@@ -4,10 +4,9 @@ include('config.php');
 session_start();
 
 // Vérifie si l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
+require_once("utils.php");
+checkAndRedirect();
+
 // Récupérer les informations de l'utilisateur
 $user_id = $_SESSION['user_id'];
 $sql = "SELECT * FROM users WHERE id = :user_id";

@@ -2,11 +2,9 @@
 session_start();
 include("config.php");
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit;
-}
+// Vérifie si l'utilisateur est connecté
+require_once("utils.php");
+checkAndRedirect();
 
 // Gestion des utilisateurs
 $user_id = $_SESSION['user_id'];

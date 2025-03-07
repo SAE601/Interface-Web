@@ -2,11 +2,9 @@
 session_start();
 include("config.php");
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+// Vérifie si l'utilisateur est connecté
+require_once("utils.php");
+checkAndRedirect();
 
 // Définir les photos disponibles
 $photos = ['images/nyquit1.jpg', 'images/nyquit2.jpg', 'images/nyquit3.jpg', 'images/nyquit4.jpg', 'images/nyquit5.jpg', 'images/nyquit6.jpg', 'images/nyquit7.jpg', 'images/nyquit8.jpg'];

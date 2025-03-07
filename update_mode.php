@@ -2,11 +2,9 @@
 session_start();
 include("config.php"); // Inclure la configuration de la base de données
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+// Vérifie si l'utilisateur est connecté
+require_once("utils.php");
+checkAndRedirect();
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mode'])) {

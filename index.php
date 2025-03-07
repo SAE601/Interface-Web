@@ -1,12 +1,21 @@
 <?php
 
+function redirect_user() {
+    if(isset($_SESSION['redirect_url'])) {
+        header('Location: '. $_SESSION['redirect_url']);
+    }
+    else {
+        header('Location: dashboard.php'); // Redirige vers le dashboard
+    }
+}
+
 include("config.php");
 
 session_start(); // Démarre la session
 
 // Vérifie si l'utilisateur est déjà connecté
 if (isset($_SESSION['user_id'])) {
-    header('Location: dashboard.php'); // Redirige vers le dashboard
+    redirect_user();
     exit(); // Arrête l'exécution du script
 }
 
@@ -22,17 +31,17 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
-        
+
         session_start();
         $_SESSION['user_id'] = $user['id'];
-    
-    
+
+
         $update_sql = "UPDATE users SET last_login = NOW() WHERE id = :user_id";
         $update_stmt = $pdo->prepare($update_sql);
         $update_stmt->execute(['user_id' => $user['id']]);
-    
-   
-        header('Location: dashboard.php');
+
+
+        redirect_user();
         exit();
     } else {
         $message = 'Identifiant ou mot de passe incorrect';
@@ -50,81 +59,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/login.css">
     <title>Accueil</title>
-
-    <!-- <style>
-    .buttons-container {
-        text-align: center;
-        margin-top: 50px;
-    }
-    .btn {
-        margin: 10px;
-        padding: 10px 20px;
-        background-color:rgb(95, 95, 96);
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    }
-    .btn:hover {
-        background-color:rgb(5, 60, 118);
-    }
-    body {  
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    }
-
-    .login-container {
-        max-width: 600px;
-        margin: 100px auto;
-        background-color: #fff;
-        padding: 20px 30px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-    }
-
-    h2 {
-        margin-top: 0;
-        color: #333;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 8px;
-        color: #555;
-    }
-
-    input[type="text"], input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    input[type="submit"] {
-        background-color: #007BFF;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 17px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #0056b3;
-    }
-
-    p {
-        color: red;
-        font-weight: bold;
-    }
-</style> -->
-
 </head>
 <body>
 

@@ -33,7 +33,7 @@
     $stmt = $bdd->prepare("UPDATE users SET lerole = 'admin' WHERE id = :id");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
-    // Rediriger vers le dashboard.
+    // Rediriger vers le profil.
     header('Location: profil.php');
     exit;
 
