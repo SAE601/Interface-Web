@@ -168,6 +168,7 @@ try {
             </button>
         </div>
     <?php endforeach; ?>
+
 </div>
 
 <!-- Modal pour afficher les détails d'une recette -->
@@ -201,6 +202,17 @@ try {
         </div>
     </div>
 </div>
+<script src="/js/bootstrap.js"></script>
+<!-- Script pour gérer le menu déroulant -->
+<script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+        // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+        document.querySelector('.menu-text').addEventListener('click', function() {
+            document.querySelector('.links').classList.toggle('active');
+        });
+</script>
 
 <!-- Modal pour modifier les information d'une recette -->
 <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
@@ -414,6 +426,11 @@ try {
         });
     });
 </script>
-
+<footer class="footer">
+        <div class="image-plant">
+            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 200px; height: 200px; " loop autoplay aria-hidden="true"></dotlottie-player>
+        </div>
+        <h3> &copy; 2025 Site Web SAE Ombrière. Tous droits réservés.</h3>
+    </footer>
 </body>
 </html>
