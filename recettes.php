@@ -318,6 +318,110 @@ try {
     });
 </script>
 
+<!-- Modal pour modifier les information d'une recette -->
+<div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="modifyForm" method="post" action="update_recette.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifyModalLabel">Modifier une Recette</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- ID recette (caché) -->
+                    <input type="hidden" name="idRecipe" id="recipeId" value="">
+
+                    <!-- Période, menu déroulant -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Période</label>
+                        <select class="form-control" id="idPeriod" name="period" required>
+                            <?php
+                            // Récupérer les périodes depuis la base de données
+                            $stmt = $pdo_optiplant->query("SELECT idPeriod, name FROM periods");
+                            while ($period = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($period['idPeriod']) . '">' . htmlspecialchars($period['name']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <!-- Plante, menu déroulant-->
+                    <div class="mb-3">
+                        <label for="namePlant" class="form-label">Plante</label>
+                        <select class="form-control" id="idPlant" name="plant" required>
+                            <?php
+                            // Récupérer les périodes depuis la base de données
+                            $stmt = $pdo_optiplant->query("SELECT idPlant, plantName FROM plants");
+                            while ($plant = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($plant['idPlant']) . '">' . htmlspecialchars($plant['plantName']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+
+                    <!-- Bacs, menu déroulant-->
+                    <div class="mb-3">
+                        <label for="nameTray" class="form-label">ID du Bac</label>
+                        <select class="form-control" id="idTray" name="tray" required>
+                            <?php
+                            // Récupérer les périodes depuis la base de données
+                            $stmt = $pdo_optiplant->query("SELECT idTray, nameTray FROM trays");
+                            while ($tray = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<option value="' . htmlspecialchars($tray['idTray']) . '">' . htmlspecialchars($tray['nameTray']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+
+                    <!-- Autres champs -->
+                    <div class="mb-3">
+                        <label for="watering" class="form-label">Arrosage </label>
+                        <input type="text" class="form-control" id="watering" name="watering">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dailyWatering" class="form-label">Arrosage Quotidien</label>
+                        <input type="text" class="form-control" id="dailyWatering" name="dailyWatering">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nitrogen" class="form-label">Azote</label>
+                        <input type="text" class="form-control" id="nitrogen" name="nitrogen">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phosphorus" class="form-label">Phosphore</label>
+                        <input type="text" class="form-control" id="phosphorus" name="phosphorus">
+                    </div>
+                    <div class="mb-3">
+                        <label for="potassium" class="form-label">Potassium</label>
+                        <input type="text" class="form-control" id="potassium" name="potassium">
+                    </div>
+                    <div class="mb-3">
+                        <label for="humidityThreshold" class="form-label">Seuil d'Humidité</label>
+                        <input type="text" class="form-control" id="humidityThreshold" name="humidity">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.js"></script>
+<!-- Script pour gérer le menu déroulant -->
+<script>
+    document.querySelector('.hamburger').addEventListener('click', function() {
+        document.querySelector('.links').classList.toggle('active');
+    });
+    // Permettre de cliquer aussi sur "Menu" pour ouvrir/fermer
+    document.querySelector('.menu-text').addEventListener('click', function() {
+        document.querySelector('.links').classList.toggle('active');
+    });
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -411,6 +515,5 @@ try {
         });
     });
 </script>
-
 </body>
 </html>

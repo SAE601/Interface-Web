@@ -18,14 +18,15 @@ $user = $stmt->fetch();
 
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 
-// ________________________________________________
-// Gestion des USERS
 
+// Récupérer les informations de l'utilisateur
 $user_id = $_SESSION['user_id'];
 $sql = "SELECT * FROM users WHERE id = :user_id";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch();
+
+$color_mode = $user['mode'];
 
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
 
@@ -82,6 +83,37 @@ $stmtSensorsWithData = $pdo_optiplant->prepare($sqlSensorsWithData);
 $stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtSensorsWithData->execute();
 $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
+
+// Requête SQL pour récupérer le seuil d'humidité
+$sqlhumidityThreshold = "SELECT MIN(humidityThreshold) AS minHumidityThreshold
+    FROM PLANTS inner join RECIPES on PLANTS.idPlant = RECIPES.idPlant
+	INNER JOIN TRAYS
+	ON TRAYS.idPlant = PLANTS.idPlant
+	WHERE TRAYS.idTray = :idTray";
+$stmthumidityThreshold = $pdo_optiplant->prepare($sqlhumidityThreshold);
+$stmthumidityThreshold->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmthumidityThreshold->execute();
+$humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
+
+// Requête SQL pour ajouter des alertes dans la table alerts
+if($sensorsWithData[0]['value'] < $humidityThreshold[0]['minHumidityThreshold']){
+    $sqlAlerts = "INSERT INTO `alerts`(`AlertType`, `dateTime`, `message`, `idTray`) VALUES (:alertType,NOW(),:message,:idTray)";
+    $stmtAlerts = $pdo_optiplant->prepare($sqlAlerts);
+    $stmtAlerts->execute([
+        "alertType" => "Humidity",
+        "message" => "Low humidity",
+        "idTray" => $idTray
+    ]);
+}
+if($sensorsWithData[2]['value'] > 28){
+    $sqlAlerts = "INSERT INTO `alerts`(`AlertType`, `dateTime`, `message`, `idTray`) VALUES (:alertType,NOW(),:message,:idTray)";
+    $stmtAlerts = $pdo_optiplant->prepare($sqlAlerts);
+    $stmtAlerts->execute([
+        "alertType" => "Temperature",
+        "message" => "High temperature",
+        "idTray" => $idTray
+    ]);
+}
 ?>
 
 <!DOCTYPE html>
@@ -92,6 +124,7 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
     <?php
         // Prendre en compte le mode de couleur de l'utilisateur
         linkModeStyle();
@@ -105,48 +138,86 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
     <!-- Navigation des onglets -->
     <div>
         <div class="bouton-centre-header">
-            <a name="" id="tab1-btn" class="btn btn-primary" href="#tab1" role="button" data-toggle="tab">Photos</a>
-            <a name="" id="tab2-btn" class="btn btn-primary" href="#tab2" role="button" data-toggle="tab">Summary</a>
-            <a name="" id="tab3-btn" class="btn btn-primary" href="#tab3" role="button" data-toggle="tab">Datas</a>
+            <a name="" id="tab1-btn" class="btn btn-primary" href="#tab1" role="button" data-toggle="tab">Sommaire</a>
+            <a name="" id="tab2-btn" class="btn btn-primary" href="#tab2" role="button" data-toggle="tab">Photos</a>
+            <a name="" id="tab3-btn" class="btn btn-primary" href="#tab3" role="button" data-toggle="tab">Données</a>
         </div>
     </div>
 
     <!-- Contenu des onglets -->
     <div class="tab-content mt-3">
         <!-- Onglet 1 -->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+        <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
             <div class="container">
                 <p>Contenu de l'onglet Photos</p>
             </div>
         </div>
 
         <!-- Onglet 2 -->
-        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
             <div class="container">
-                <div class="row align-items-center">
+                <div class="row">
                     <div class="col-md-6">
                         <div>
                             <?php if (!empty($bac['plantName'])): ?>
-                                <h3>Nom de la plante :</h3>
+                                <h4>Nom de la plante :</h4>
                                 <p><?php echo htmlspecialchars($bac['plantName']); ?></p>
                             <?php else: ?>
-                                <h3>Nom de la plante :</h3>
+                                <h4>Nom de la plante :</h4>
                                 <p class="text-muted">Plante non spécifiée pour ce bac.</p>
                             <?php endif; ?>
                         </div>
-                        <div class="mt-4">
+                        <div>
                             <?php if (!empty($bac['periodName'])): ?>
-                                <h3>Période actuelle de la plante :</h3>
+                                <h4>Période actuelle de la plante :</h4>
                                 <p><?php echo htmlspecialchars($bac['periodName']); ?></p>
                             <?php else: ?>
-                                <h3>Période actuelle de la plante :</h3>
+                                <h4>Période actuelle de la plante :</h4>
                                 <p class="text-muted">Période non spécifiée pour cette plante.</p>
                             <?php endif; ?>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-                            <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" background="transparent" speed="1" style="width: 300px; height: 300px" loop autoplay></dotlottie-player>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-auto" style="display: flex; flex-wrap: wrap">
+                                <?php
+                                switch ($bac['periodName']) {
+                                case 'Semis':?>
+                                    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                                    <dotlottie-player src="https://lottie.host/f3d3a4f4-e71a-4086-a12e-3269501f3ae3/04VPaSqE4w.lottie" speed="1" style="width: 400px; height: 200px;" loop autoplay></dotlottie-player>
+                                <?php
+                                break;
+
+                                case 'Developpement des racines' :
+                                ?>
+                                    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                                    <dotlottie-player src="https://lottie.host/a8ea48f4-8774-43f0-9ba0-890ac1dda071/hnxGZo4ZyZ.lottie" background="transparent" speed="1" style="width: 450px; height: 450px" loop autoplay></dotlottie-player>
+                                <?php
+                                break;
+
+                                case 'Croissance végétative' :
+                                ?>
+                                    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                                    <dotlottie-player src="https://lottie.host/935c3d58-6436-4629-92b0-aeda99cd32d9/KjGXI3aTlY.lottie" background="transparent" speed="1" style="width: 450px; height: 450px" loop autoplay></dotlottie-player>
+                                <?php
+                                break;
+
+                                case 'Floraison et fructification' :
+                                ?>
+                                    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+                                    <dotlottie-player src="https://lottie.host/ff40091b-80c4-4b5c-b1e6-204167316c10/sukIg9lbjv.lottie" background="transparent" speed="1" style="width: 450px; height: 450px" loop autoplay></dotlottie-player>
+                                    <?php
+                                    break;
+                                }
+                                ?>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                            <div id='tempDiv'></div>
+                    </div>
+                    <div class="col-md-6">
+                            <div id='humDiv'></div>
                     </div>
                 </div>
             </div>
@@ -154,37 +225,64 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Onglet 3 -->
         <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-            <div class="container py-4">
+            <div class="container">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Données d'Irrigation</h5>
                         <table class="table table-bordered table-striped">
                             <thead>
-                            <tr>
-                                <th>Date et Heure</th>
-                                <th>Recette</th>
-                                <th>Âge (en heures)</th>
-                            </tr>
+                                <tr>
+                                    <th>Date et Heure</th>
+                                    <th>Recette</th>
+                                    <th>Âge (en heures)</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <?php if (!empty($irrigations)): ?>
-                                <?php foreach ($irrigations as $index => $irrigation): ?>
-                                    <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
-                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                        <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
-                                        <td>
-                                            <?php
-                                            $hoursAgo = (int) $irrigation['hoursAgo'];
-                                            echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
-                                            ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
-                                </tr>
-                            <?php endif; ?>
+                                <?php if (!empty($irrigations)): ?>
+                                    <?php foreach ($irrigations as $index => $irrigation): ?>
+                                        <!-- Limitation à 5 dernières irrigations visibles par défaut -->
+                                        <tr id="row-<?php echo $index; ?>" class="<?php echo ($index >= 5) ? 'd-none' : ''; ?>">
+                                            <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                            <td>
+                                                <a href="#"
+                                                   class="recette-link"
+                                                   data-id-recipe="<?php echo htmlspecialchars($irrigation['idRecipe']); ?>"
+                                                   data-target="details-recipe-<?php echo $index; ?>">
+                                                    <?php echo htmlspecialchars($irrigation['idRecipe']); ?>
+                                                </a>
+
+                                                <div id="details-recipe-<?php echo $index; ?>" class="recette-details" style="display: none;">
+                                                    <p style="font-style: italic; color: gray;">Chargement...</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                $hoursAgo = (int)$irrigation['hoursAgo'];
+                                                echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <?php if (!empty($irrigations)): ?>
+                                        <?php foreach ($irrigations as $index => $irrigation): ?>
+                                            <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
+                                                <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
+                                                <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
+                                                <td>
+                                                    <?php
+                                                    $hoursAgo = (int) $irrigation['hoursAgo'];
+                                                    echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                         <?php if (count($irrigations) > 5): ?>
@@ -198,12 +296,12 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                         <h5 class="card-title">Données des Capteurs</h5>
                         <table class="table table-bordered table-striped">
                             <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Valeur</th>
-                                <th>Unité</th>
-                                <th>Fréquence</th>
-                            </tr>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Valeur</th>
+                                    <th>Unité</th>
+                                    <th>Fréquence</th>
+                                </tr>
                             </thead>
                             <tbody>
                             <?php if (!empty($sensorsWithData)): ?>
@@ -226,6 +324,7 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                         </table>
                     </div>
                 </div>
+
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
@@ -268,11 +367,11 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-light">
+    <footer class="mt-auto py-3 bg-light">
         <div class="container">
             <div class="row">
-                <div class="col-12 text-left">
-                    <a href="dashboard.php" class="btn btn-back">⬅ Retour au tableau de bord</a>
+                <div class="col-12 text-center">
+                    <a href="dashboard.php" class="btn btn-primary" role="button">⬅ Retour au tableau de bord</a>
                 </div>
             </div>
         </div>
@@ -283,6 +382,58 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ajout d'un gestionnaire de clic sur le bouton "Voir toutes les irrigations"
+            const toggleButton = document.getElementById('toggle-irrigations');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', function () {
+                    // Tous les éléments avec la classe "d-none" seront rendus visibles
+                    document.querySelectorAll('tr.d-none').forEach(function (row) {
+                        row.classList.remove('d-none');
+                    });
+
+                    // Masquer le bouton après avoir affiché toutes les lignes
+                    this.style.display = 'none';
+                });
+            }
+
+            // Gestion des clics sur les numéros des recettes pour charger dynamiquement les données
+            document.querySelectorAll('.recette-link').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Récupérer l'ID de la recette et la cible concernée
+                    let idRecipe = this.getAttribute('data-id-recipe');
+                    let targetId = this.getAttribute('data-target');
+                    let targetElement = document.getElementById(targetId);
+
+                    // Basculer l'affichage des détails récents si déjà visibles
+                    if (targetElement.style.display === 'block') {
+                        targetElement.style.display = 'none';
+                        return;
+                    }
+
+                    // Afficher temporairement un message de chargement
+                    targetElement.style.display = 'block';
+                    targetElement.innerHTML = '<p style="font-style: italic; color: gray;">Chargement...</p>';
+
+                    // Charge les données depuis get_recette_details.php
+                    fetch(`get_recette_details.php?id=${idRecipe}`)
+                        .then(response => response.text())
+                        .then(data => {
+                            targetElement.innerHTML = data; // Injecter le contenu
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors du chargement des données de la recette:', error);
+                            targetElement.innerHTML =
+                                '<div class="alert alert-danger">Erreur lors du chargement. Veuillez réessayer.</div>';
+                        });
+                });
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -332,7 +483,56 @@ $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
                 });
             });
         });
+        const humidityData = <?= !empty($sensorsWithData) ? json_encode($sensorsWithData[0]['value']) : null; ?>;
+        const temperatureData = <?= !empty($sensorsWithData) ? json_encode($sensorsWithData[2]['value']) : null; ?>;
+        const humidityThreshold = <?= !empty($humidityThreshold) ? json_encode($humidityThreshold[0]['minHumidityThreshold']) : null; ?>;
+        var dataHum = [
+            {
+                domain: { x: [0, 1], y: [0, 1] },
+                value: humidityData,
+                number: { suffix: "%" },
+                title: { text: "Humidité" },
+                type: "indicator",
+                mode: "gauge+number",
+                gauge: {
+                    axis: { range: [0, 100] },
+                    steps: [
+                        { range: [0, humidityThreshold], color: "lightgray" },
+                    ],
+                    threshold: {
+                        line: { color: "red", width: 4 },
+                        thickness: 0.75,
+                        value: 90
+                    }
+                }
+            }
+        ];
+
+        var layoutHum = { width: 400, height: 400, margin: { t: 0, b: 0 } };
+        Plotly.newPlot('humDiv', dataHum, layoutHum);
+
+        var dataTemp = [
+            {
+                domain: { x: [0, 1], y: [0, 1] },
+                value: temperatureData,
+                number: { suffix: "°C" },
+                title: { text: "Température du sol" },
+                type: "indicator",
+                mode: "gauge+number",
+                gauge: {
+                    axis: { range: [0, 100] },
+                    threshold: {
+                        line: { color: "red", width: 4 },
+                        thickness: 0.75,
+                        value: 90
+                    }
+                }
+            }
+        ];
+
+        var layoutTemp = { width: 400, height: 400, margin: { t: 0, b: 0 } };
+        Plotly.newPlot('tempDiv', dataTemp, layoutTemp);
+
     </script>
 </body>
-
 </html>

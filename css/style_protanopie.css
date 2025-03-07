@@ -248,16 +248,13 @@ header{
     justify-content: space-between;
 } 
 */
-.logo {
-    margin-right: 20px; 
-}
 .logo img {
     width: 100px; /* Taille de l'image */
     height: 100px; /* Garder la même valeur que la largeur pour un cercle parfait */
     border-radius: 50%; /* Transforme l'image en cercle */
     object-fit: cover; /* Rognage contrôlé pour s'adapter au cercle */
     object-position: top; /* Centre l'image */
-    border: 5px solid #ccc; /* Bordure optionnelle */
+    border: 3px solid #ccc; /* Bordure optionnelle */
 }
 .logo-text {
     font-size: 14px;
