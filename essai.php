@@ -54,7 +54,7 @@ $stmtIrrigation = $pdo_optiplant->prepare($sqlIrrigation);
 $stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtIrrigation->execute();
 $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
-var_dump($irrigations);
+
 
 // Requête SQL pour récupérer les alertes spécifiques au bac
 $sql = "SELECT message, dateTime FROM alerts WHERE idTray = :idTray ORDER BY dateTime DESC LIMIT 5";
@@ -62,7 +62,7 @@ $stmt = $pdo_optiplant->prepare($sql);
 $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-var_dump($alerts);
+
 
 // Requête SQL pour récupérer les informations des capteurs avec leurs dernières valeurs
 $sqlSensorsWithData = "SELECT sensor.idSensor, sensor.type, sensor.unit, sensor.freq, data.value
@@ -75,7 +75,7 @@ $stmtSensorsWithData = $pdo_optiplant->prepare($sqlSensorsWithData);
 $stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtSensorsWithData->execute();
 $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
-var_dump($sensorsWithData);
+
 // Requête SQL pour récupérer le seuil d'humidité
 $sqlhumidityThreshold = "SELECT MIN(humidityThreshold) AS minHumidityThreshold
     FROM PLANTS inner join RECIPES on PLANTS.idPlant = RECIPES.idPlant
