@@ -2,11 +2,11 @@
 
 /* Variables CSS adaptées pour la tritanopie */
 :root {
-    --primary-color: #A95600;
+    --primary-color: #00bfc9;
     --background-color: #F4F4F4;
     --text-color: #222;
-    --header-color: #A95600;
-    --button-color: #8B1E3F;
+    --header-color: #00bfc9;
+    --button-color: #ff3974;
     --container-bg: #fff;
     --border-color: #ccc;
 }
@@ -117,7 +117,7 @@ a:hover {
 }
 
 .btn:hover, button:hover {
-    background-color: #6F142F;
+    background-color: #00bfc9;
 }
 
 /* Messages d'erreur et de succès */

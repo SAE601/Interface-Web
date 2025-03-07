@@ -118,7 +118,8 @@ a:hover {
 }
 
 .btn:hover, button:hover {
-    background-color: #1565c0; /* Bleu encore plus foncé au survol */
+    background-color: #fff700;
+    color: rgb(0, 0, 0);
 }
 
 /* Messages d'erreur et de succès */
