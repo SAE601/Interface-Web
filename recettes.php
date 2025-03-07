@@ -116,9 +116,18 @@ try {
     ?>
 </head>
 <body>
-<?php include("header.php");
+<?php include("header.php");?>
+<!-- Script de la modal -->
+<script>
+        document.querySelectorAll('button[data-mode]').forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                window.location.href = `recettes.php?mode=${mode}`;
+            });
+        });
+</script>
 
-if (isset($_GET['success'])): ?>
+<?php if (isset($_GET['success'])): ?>
 <div class="alert alert-success"> Table recette modifiée avec succès !</div>
 <?php endif; ?>
 
