@@ -17,19 +17,7 @@ $stmt->execute(['user_id' => $user_id]);
 $user = $stmt->fetch();
 
 $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
-
-
-// Récupérer les informations de l'utilisateur
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT * FROM users WHERE id = :user_id";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['user_id' => $user_id]);
-$user = $stmt->fetch();
-
-$color_mode = $user['mode'];
-
-$profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par défaut
-
+// ________________________________________________
 // Récupérer le paramètre 'trays'
 $idTray = isset($_GET['trays']) ? intval($_GET['trays']) : null;
 
@@ -37,6 +25,7 @@ if (!$idTray) {
     die('<div class="alert alert-danger">Bac introuvable.</div>');
 }
 
+// ________________________________________________
 // Requête SQL pour récupérer les informations du bac
 $sql = "SELECT trays.*, 
                plants.plantName AS plantName, 
@@ -65,6 +54,7 @@ $stmtIrrigation = $pdo_optiplant->prepare($sqlIrrigation);
 $stmtIrrigation->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtIrrigation->execute();
 $irrigations = $stmtIrrigation->fetchAll(PDO::FETCH_ASSOC);
+var_dump($irrigations);
 
 // Requête SQL pour récupérer les alertes spécifiques au bac
 $sql = "SELECT message, dateTime FROM alerts WHERE idTray = :idTray ORDER BY dateTime DESC LIMIT 5";
@@ -72,18 +62,20 @@ $stmt = $pdo_optiplant->prepare($sql);
 $stmt->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmt->execute();
 $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+var_dump($alerts);
 
 // Requête SQL pour récupérer les informations des capteurs avec leurs dernières valeurs
 $sqlSensorsWithData = "SELECT sensor.idSensor, sensor.type, sensor.unit, sensor.freq, data.value
                        FROM sensor
                        LEFT JOIN data ON sensor.idSensor = data.idSensor
-                       WHERE sensor.idTray = :idTray 
+                       WHERE sensor.idTray = :idTray
                        ORDER BY sensor.type ASC";
+
 $stmtSensorsWithData = $pdo_optiplant->prepare($sqlSensorsWithData);
 $stmtSensorsWithData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmtSensorsWithData->execute();
 $sensorsWithData = $stmtSensorsWithData->fetchAll(PDO::FETCH_ASSOC);
-
+var_dump($sensorsWithData);
 // Requête SQL pour récupérer le seuil d'humidité
 $sqlhumidityThreshold = "SELECT MIN(humidityThreshold) AS minHumidityThreshold
     FROM PLANTS inner join RECIPES on PLANTS.idPlant = RECIPES.idPlant
@@ -96,23 +88,26 @@ $stmthumidityThreshold->execute();
 $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
 
 // Requête SQL pour ajouter des alertes dans la table alerts
-if($sensorsWithData[0]['value'] < $humidityThreshold[0]['minHumidityThreshold']){
-    $sqlAlerts = "INSERT INTO `alerts`(`AlertType`, `dateTime`, `message`, `idTray`) VALUES (:alertType,NOW(),:message,:idTray)";
-    $stmtAlerts = $pdo_optiplant->prepare($sqlAlerts);
-    $stmtAlerts->execute([
-        "alertType" => "Humidity",
-        "message" => "Low humidity",
-        "idTray" => $idTray
-    ]);
-}
-if($sensorsWithData[2]['value'] > 28){
-    $sqlAlerts = "INSERT INTO `alerts`(`AlertType`, `dateTime`, `message`, `idTray`) VALUES (:alertType,NOW(),:message,:idTray)";
-    $stmtAlerts = $pdo_optiplant->prepare($sqlAlerts);
-    $stmtAlerts->execute([
-        "alertType" => "Temperature",
-        "message" => "High temperature",
-        "idTray" => $idTray
-    ]);
+if(count($sensorsWithData) >= 3) {
+    if($sensorsWithData[0]['value'] < $humidityThreshold[0]['minHumidityThreshold']){
+        $sqlAlerts = "INSERT INTO `alerts`(`AlertType`, `dateTime`, `message`, `idTray`) VALUES (:alertType,NOW(),:message,:idTray)";
+        $stmtAlerts = $pdo_optiplant->prepare($sqlAlerts);
+        $stmtAlerts->execute([
+            "alertType" => "Humidity",
+            "message" => "Low humidity",
+            "idTray" => $idTray
+        ]);
+    }
+
+    if($sensorsWithData[2]['value'] > 28){
+        $sqlAlerts = "INSERT INTO `alerts`(`AlertType`, `dateTime`, `message`, `idTray`) VALUES (:alertType,NOW(),:message,:idTray)";
+        $stmtAlerts = $pdo_optiplant->prepare($sqlAlerts);
+        $stmtAlerts->execute([
+            "alertType" => "Temperature",
+            "message" => "High temperature",
+            "idTray" => $idTray
+        ]);
+    }
 }
 ?>
 
@@ -492,9 +487,9 @@ if($sensorsWithData[2]['value'] > 28){
                 });
             });
         });
-        const humidityData = <?= !empty($sensorsWithData) ? json_encode($sensorsWithData[0]['value']) : null; ?>;
-        const temperatureData = <?= !empty($sensorsWithData) ? json_encode($sensorsWithData[2]['value']) : null; ?>;
-        const humidityThreshold = <?= !empty($humidityThreshold) ? json_encode($humidityThreshold[0]['minHumidityThreshold']) : null; ?>;
+        const humidityData = <?= !empty($sensorsWithData) ? json_encode($sensorsWithData[0]['value']) : 'null'; ?>;
+        const temperatureData = <?= !empty($sensorsWithData) ? json_encode($sensorsWithData[2]['value']) : 'null'; ?>;
+        const humidityThreshold = <?= !empty($humidityThreshold) ? json_encode($humidityThreshold[0]['minHumidityThreshold']) : 'null'; ?>;
         var dataHum = [
             {
                 domain: { x: [0, 1], y: [0, 1] },
