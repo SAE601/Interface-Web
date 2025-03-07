@@ -27,7 +27,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     } else {
         // Vérifier les contraintes du mot de passe
         if (strlen($password) < 8 || !preg_match('/\d/', $password) || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[^a-zA-Z\d]/', $password)) {
-            $message = 'Le mot de passe doit contenir au moins une lettre, un chiffre, une majuscule et un caractère spécial';
+            $message = 'Le mot de passe doit contenir au moins 8 caractères, une lettre, un chiffre, une majuscule et un caractère spécial';
         } elseif (preg_match('/\s/', $password)) {
             $message = 'Le mot de passe ne doit pas contenir d\'espaces';
         } else {

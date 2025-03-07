@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($nouveau_mdp !== $confirmer_mdp) {
         $error = "Les nouveaux mots de passe ne correspondent pas.";
     } elseif (strlen($nouveau_mdp) < 8 || !preg_match('/\d/', $nouveau_mdp) || !preg_match('/[A-Z]/', $nouveau_mdp) || !preg_match('/[a-z]/', $nouveau_mdp) || !preg_match('/[^a-zA-Z\d]/', $nouveau_mdp)) {
-        $error = 'Le mot de passe doit contenir au moins une lettre, un chiffre, une majuscule et un caractère spécial';
+        $error = 'Le mot de passe doit contenir au moins 8 caractères, une lettre, un chiffre, une majuscule et un caractère spécial';
     } elseif (preg_match('/\s/', $nouveau_mdp)) {
         $error = 'Le mot de passe ne doit pas contenir d\'espaces.';
     } else {
