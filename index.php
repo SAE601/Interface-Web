@@ -47,9 +47,11 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/login.css">
     <title>Accueil</title>
 
-    <style>
+    <!-- <style>
     .buttons-container {
         text-align: center;
         margin-top: 50px;
@@ -74,7 +76,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     }
 
     .login-container {
-        max-width: 400px;
+        max-width: 600px;
         margin: 100px auto;
         background-color: #fff;
         padding: 20px 30px;
@@ -107,7 +109,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         color: #fff;
         border: none;
         padding: 10px 20px;
-        font-size: 16px;
+        font-size: 17px;
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s;
@@ -121,7 +123,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         color: red;
         font-weight: bold;
     }
-</style>
+</style> -->
 
 </head>
 <body>
@@ -146,7 +148,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
         <div>
             <input type="submit" value="Se connecter">
-            <a href="register.php" class="btn">S'inscrire</a>
+            <!-- <a href="register.php" class="btn">S'inscrire</a> -->
+            <a href="register.php" class="btn">
+                <i class="fas fa-user-plus"></i> Créer un compte
+            </a>
         </div>
     </form>
 </div>
