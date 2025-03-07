@@ -123,7 +123,6 @@ if($sensorsWithData[2]['value'] > 28){
     <title>Information sur le bac</title>
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="/css/bootstrap.css" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-3.0.0.min.js" charset="utf-8"></script>
     <?php
         // Prendre en compte le mode de couleur de l'utilisateur

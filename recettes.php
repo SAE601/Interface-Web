@@ -53,7 +53,6 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Les Recettes</title>
     <!-- Intégration de Bootstrap CSS -->
-    <link href="/css/bootstrap.css" rel="stylesheet">
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
@@ -281,7 +280,6 @@ try {
     </div>
 </div>
 
-<script src="/js/bootstrap.js"></script>
 <!-- Script pour gérer le menu déroulant -->
 <script>
     document.querySelector('.hamburger').addEventListener('click', function() {
@@ -385,7 +383,6 @@ try {
     </div>
 </div>
 
-<script src="/js/bootstrap.js"></script>
 <!-- Script pour gérer le menu déroulant -->
 <script>
     document.querySelector('.hamburger').addEventListener('click', function() {
