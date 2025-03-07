@@ -29,8 +29,10 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de bord</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/promote_script.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
     <?php
 
     // Prendre en compte le mode de couleur de l'utilisateur
@@ -54,8 +56,6 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
             echo '<link rel="stylesheet" href="css/style_contrast.css">';
         } elseif ($user['mode'] == 'darkside') {
             echo '<link rel="stylesheet" href="css/style_darkside.css">';
-        } elseif ($user['mode'] == 'enfant') {
-            echo '<link rel="stylesheet" href="css/style_enfant.css">';
         } else {
             echo '<link rel="stylesheet" href="css/style_defaut.css">';
         }
@@ -68,6 +68,16 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
 
 <body>
 
+    <?php include("header.php");?>
+    <!-- Script de la modal -->
+    <script>
+        document.querySelectorAll('button[data-mode]').forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.getAttribute('data-mode');
+                window.location.href = `profil.php?mode=${mode}`;
+            });
+        });
+    </script>
     <?php
     if (isset($_SESSION['message'])) {
         echo "<div class=\"dashboard-container\" ><p>" . $_SESSION['message'] . "</p></div>";
@@ -77,9 +87,13 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
 
     <div class="dashboard-container">
         <h2>Paramètres</h2>
-        <p>Vous pouvez gérer votre profil et modifier les paramètres de motb de passe de photo de profil etc.</p>
-        <a class="btn btn-primary" href="logout.php" role="button">Se déconnecter</a>
-        <a class="btn btn-primary" href="dashboard.php" role="button">Retour au Tableau de bord</a>
+        <p>Vous pouvez gérer votre profil et modifier les paramètres de mot de passe de photo de profil etc.</p>
+        <a class="btn logout-btn" href="logout.php" role="button">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </a>
+        <a class="btn btn-primary" href="dashboard.php" role="button">
+            <i class="fas fa-arrow-left"></i> Retour au Tableau de bord
+        </a>
     </div>
 
     <div class="dashboard-container" style='text-align: center'>
@@ -87,7 +101,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
         <!-- Afficher la photo de profil de l'utilisateur -->
         <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo">
         <!-- Bouton pour modifier la photo -->
-        <form action="modifier_photo.php" method="GET">
+        <form style="padding-top: 20px;" action="modifier_photo.php" method="GET">
             <button type="submit" class="modify-button">Modifier</button>
         </form>
     </div>
@@ -162,7 +176,6 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
                 <option value="achromatopsie" <?php echo ($mode === 'achromatopsie') ? 'selected' : ''; ?>>Achromatopsie</option>
                 <option value="contrast" <?php echo ($mode === 'contrast') ? 'selected' : ''; ?>>Contraste</option>
                 <option value="darkside" <?php echo ($mode === 'darkside') ? 'selected' : ''; ?>>Darkside</option>
-                <option value="enfant" <?php echo ($mode === 'enfant') ? 'selected' : ''; ?>>Enfant</option>
             </select>
         </form>
 
@@ -183,16 +196,18 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
             <?php
             try {
                 // Récupérer tous les utilisateurs depuis la base de données
-                $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login FROM users");
+                $stmt = $pdo->prepare("SELECT id, username, email, lerole, last_login, profile_photo FROM users");
                 $stmt->execute();
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 if ($users) {
                     echo "<table class='table table-striped table-dark'>";
-                    echo "<thead><tr><th>ID</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
+                    echo "<thead><tr><th>Photo de profil</th><th>Nom d'utilisateur</th><th>Dernière connexion</th><th>Rôle</th><th>Action</th></tr></thead>";
                     echo "<tbody>";
                     foreach ($users as $user) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($user['id']) . "</td>";
+                        // Afficher la photo de profil
+                        $profile_photo = $user['profile_photo'] ?? 'images/nyquit1.jpg'; // Photo par défaut
+                        echo "<td><img src='" . htmlspecialchars($profile_photo) . "' alt='Photo de profil' class='profile-photo' style='width: 50px; height: 50px; border-radius: 50%; object-fit: cover;'></td>";
                         echo "<td>" . htmlspecialchars($user['username']) . "</td>";
                         // Afficher la date et l'heure de dernière connexion si elle n'est pas NULL
                         echo "<td>";
@@ -210,7 +225,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
                                     <input type='hidden' name='user_id' value='" . htmlspecialchars($user['id']) . "'>
                                     <button type='submit' class='btn btn-success'>Promouvoir</button>
                                 </form>
-                              </td>";
+                            </td>";
                         } else {
                             echo "<td></td>"; // Pas de bouton pour les autres rôles
                         }
@@ -227,7 +242,12 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d�
             ?>
         </div>
     <?php endif; ?>
-
+    <footer class="footer">
+        <div class="image-plant">
+            <dotlottie-player src="https://lottie.host/1097792b-4eee-4f24-a968-b00fd8fe2892/SHmD24Bfp5.lottie" background="transparent" speed="1" style="width: 200px; height: 200px; " loop autoplay aria-hidden="true"></dotlottie-player>
+        </div>
+        <h3> &copy; 2025 Site Web SAE Ombrière. Tous droits réservés.</h3>
+    </footer>
 </body>
 
 </html>

@@ -32,12 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Tous les champs sont obligatoires.";
     } elseif ($nouveau_mdp !== $confirmer_mdp) {
         $error = "Les nouveaux mots de passe ne correspondent pas.";
-    } elseif (strlen($nouveau_mdp) < 8) {
-        $error = 'Le mot de passe doit contenir au moins 8 caractères.';
+    } elseif (strlen($nouveau_mdp) < 8 || !preg_match('/\d/', $nouveau_mdp) || !preg_match('/[A-Z]/', $nouveau_mdp) || !preg_match('/[a-z]/', $nouveau_mdp) || !preg_match('/[^a-zA-Z\d]/', $nouveau_mdp)) {
+        $error = 'Le mot de passe doit contenir au moins une lettre, un chiffre, une majuscule et un caractère spécial';
     } elseif (preg_match('/\s/', $nouveau_mdp)) {
         $error = 'Le mot de passe ne doit pas contenir d\'espaces.';
-    } elseif (!preg_match('/\d/', $nouveau_mdp)) {
-        $error = 'Le mot de passe doit contenir au moins un chiffre.';
     } else {
         // Récupérer l'ID de l'utilisateur connecté
         $id = $_SESSION['user_id'];
@@ -99,8 +97,6 @@ try {
         echo '<link rel="stylesheet" href="css/style_contrast.css">';
     } elseif ($user['mode'] == 'darkside') {
         echo '<link rel="stylesheet" href="css/style_darkside.css">';
-    }  elseif ($user['mode'] == 'enfant') {
-        echo '<link rel="stylesheet" href="css/style_enfant.css">';
     } else {
         echo '<link rel="stylesheet" href="css/style_defaut.css">';
     }
