@@ -84,6 +84,20 @@ $stmthumidityThreshold = $pdo_optiplant->prepare($sqlhumidityThreshold);
 $stmthumidityThreshold->bindParam(':idTray', $idTray, PDO::PARAM_INT);
 $stmthumidityThreshold->execute();
 $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
+
+// Requête SQL pour récupérer les données des capteurs avec leurs unités
+$sqlSensorData = "SELECT sensor.type AS sensorType, 
+                         sensor.unit AS sensorUnit, 
+                         data.value AS sensorValue, 
+                         data.dateTime AS recordedAt
+                  FROM sensor
+                  INNER JOIN data ON sensor.idSensor = data.idSensor
+                  WHERE sensor.idTray = :idTray
+                  ORDER BY recordedAt DESC";
+$stmtSensorData = $pdo_optiplant->prepare($sqlSensorData);
+$stmtSensorData->bindParam(':idTray', $idTray, PDO::PARAM_INT);
+$stmtSensorData->execute();
+$sensorData = $stmtSensorData->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -139,15 +153,16 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
             <a name="" id="tab3-btn" class="btn btn-primary" href="#tab3" role="button" data-toggle="tab">Datas</a>
         </div>
     </div>
+</div>
 
-    <!-- Contenu des onglets -->
-    <div class="tab-content mt-3">
-        <!-- Onglet 1 -->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-            <div class="container">
-                <p>Contenu de l'onglet Photos</p>
-            </div>
+<!-- Contenu des onglets -->
+<div class="tab-content mt-3">
+    <!-- Onglet 1 -->
+    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+        <div class="container">
+            <p>Contenu de l'onglet Photos</p>
         </div>
+    </div>
 
         <!-- Onglet 2 -->
         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
@@ -220,118 +235,124 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <!-- Onglet 3 -->
-        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-            <div class="container">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-12">
-                            <h5 class="card-title">Données d'Irrigation</h5>
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Date et Heure</th>
-                                    <th>Recette</th>
-                                    <th>Âge (en heures)</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php if (!empty($irrigations)): ?>
-                                    <?php foreach ($irrigations as $index => $irrigation): ?>
-                                        <tr class="irrigation-row <?php echo $index >= 5 ? 'd-none' : ''; ?>" id="row-<?php echo $index; ?>">
-                                            <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
-                                            <td><?php echo htmlspecialchars($irrigation['idRecipe']); ?></td>
-                                            <td>
-                                                <?php
-                                                $hoursAgo = (int) $irrigation['hoursAgo'];
-                                                echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
-                                                ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
-                                    </tr>
-                                <?php endif; ?>
-                                </tbody>
-                            </table>
-                            <?php if (count($irrigations) > 5): ?>
-                                <button class="btn btn-link mt-2" id="toggle-irrigations" data-showing="5">Voir toutes les irriguations</button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Données des Capteurs</h5>
+    <!-- Onglet 3 -->
+    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+        <div class="container py-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Données d'Irrigation</h4>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th>Type</th>
-                                <th>Valeur</th>
-                                <th>Unité</th>
-                                <th>Fréquence</th>
+                                <th>Date et Heure</th>
+                                <th>Recette</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php if (!empty($sensorsWithData)): ?>
-                                <?php foreach ($sensorsWithData as $sensor): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($sensor['type']); ?></td>
+                            <?php if (!empty($irrigations)): ?>
+                                <?php foreach ($irrigations as $index => $irrigation): ?>
+                                    <tr id="row-<?php echo $index; ?>">
+                                        <td><?php echo htmlspecialchars($irrigation['dateTime']); ?></td>
                                         <td>
-                                            <?php echo isset($sensor['value']) ? htmlspecialchars($sensor['value']) : '<span class="text-muted">N/A</span>'; ?>
+                                            <!-- Lien cliquable pour charger les détails de la recette -->
+                                            <a href="#"
+                                               class="recette-link"
+                                               data-id-recipe="<?php echo htmlspecialchars($irrigation['idRecipe']); ?>"
+                                               data-target="details-recipe-<?php echo $index; ?>">
+                                                <?php echo htmlspecialchars($irrigation['idRecipe']); ?>
+                                            </a>
+
+                                            <!-- Conteneur pour les détails de la recette (masqué par défaut) -->
+                                            <div id="details-recipe-<?php echo $index; ?>" class="recette-details" style="display: none;">
+                                                <!-- Un message sera temporairement affiché tant que les données ne sont pas chargées -->
+                                                <p style="font-style: italic; color: gray;">Chargement...</p>
+                                            </div>
                                         </td>
-                                        <td><?php echo htmlspecialchars($sensor['unit']); ?></td>
-                                        <td><?php echo htmlspecialchars($sensor['freq']); ?> secondes</td>
+                                        <td>
+                                            <?php
+                                            $hoursAgo = (int) $irrigation['hoursAgo'];
+                                            echo ($hoursAgo === 0) ? 'il y a moins d\'une heure' : "il y a {$hoursAgo} heures";
+                                            ?>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="4" class="text-center">Aucune donnée capteur disponible pour ce bac</td>
+                                    <td colspan="3" class="text-center">Aucune donnée trouvée pour les dernières 24 heures</td>
                                 </tr>
                             <?php endif; ?>
                             </tbody>
                         </table>
-                    </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Dernières Alertes</h5>
-                                <ul class="mb-0">
-                                    <?php if (!empty($alerts)): ?>
-                                        <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
+            </div>
+                                                                       
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Données Mesurées par les Capteurs</h5>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Type de Capteur</th>
+                            <th>Valeur Mesurée</th>
+                            <th>Unité</th>
+                            <th>Date et Heure</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if (!empty($sensorData)): ?>
+                            <?php foreach ($sensorData as $data): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($data['sensorType']); ?></td>
+                                    <td><?php echo htmlspecialchars($data['sensorValue']); ?></td>
+                                    <td><?php echo htmlspecialchars($data['sensorUnit']); ?></td>
+                                    <td><?php echo htmlspecialchars($data['recordedAt']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="text-center">Aucune donnée mesurée trouvée pour ce bac</td>
+                            </tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dernières Alertes</h5>
+                            <ul class="mb-0">
+                                <?php if (!empty($alerts)): ?>
+                                    <?php foreach (array_slice($alerts, 0, 3) as $alert): ?>
+                                        <li class="alert-item">
+                                            <?php echo htmlspecialchars($alert['message']); ?>
+                                            <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
+                                <?php endif; ?>
+                            </ul>
+
+                            <?php if (count($alerts) > 3): ?>
+                                <div class="collapse" id="allAlerts">
+                                    <ul class="mt-2">
+                                        <?php foreach (array_slice($alerts, 3) as $alert): ?>
                                             <li class="alert-item">
                                                 <?php echo htmlspecialchars($alert['message']); ?>
                                                 <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
                                             </li>
                                         <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <p class="text-muted">Aucune alerte pour ce bac pour le moment.</p>
-                                    <?php endif; ?>
-                                </ul>
-
-                                <?php if (count($alerts) > 3): ?>
-                                    <div class="collapse" id="allAlerts">
-                                        <ul class="mt-2">
-                                            <?php foreach (array_slice($alerts, 3) as $alert): ?>
-                                                <li class="alert-item">
-                                                    <?php echo htmlspecialchars($alert['message']); ?>
-                                                    <small class="text-muted">(<?php echo date('d/m/Y H:i', strtotime($alert['dateTime'])); ?>)</small>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                    <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
-                                        <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
-                                    </button>
-                                <?php endif; ?>
-                            </div>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-link mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#allAlerts" aria-expanded="false" aria-controls="allAlerts">
+                                    <span>Voir tout</span> <span style="font-weight: bold; font-size: 1.2em;">+</span>
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -382,25 +403,73 @@ $humidityThreshold = $stmthumidityThreshold->fetchAll(PDO::FETCH_ASSOC);
             document.querySelectorAll('.tab-pane').forEach(function(tab) {
                 if (!tab.classList.contains('active')) {
                     tab.style.display = 'none';
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Gestion des clics sur les numéros des recettes
+        document.querySelectorAll('.recette-link').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Récupération de l'ID de la recette et de la cible pour afficher les détails
+                let idRecipe = this.getAttribute('data-id-recipe');
+                let targetId = this.getAttribute('data-target');
+                let targetElement = document.getElementById(targetId);
+
+                // Si le conteneur est déjà visible, on masque
+                if (targetElement.style.display === 'block') {
+                    targetElement.style.display = 'none';
+                    return;
                 }
-            });
 
-            // Gérer le clic sur les boutons
-            document.querySelectorAll('[data-toggle="tab"]').forEach(function(button) {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    var target = this.getAttribute('href');
+                // Sinon, afficher temporairement un message de chargement
+                targetElement.style.display = 'block';
+                targetElement.innerHTML = '<p style="font-style: italic; color: gray;">Chargement...</p>';
 
-                    // Masquer tous les onglets
-                    document.querySelectorAll('.tab-pane').forEach(function(tab) {
-                        tab.style.display = 'none';
-                        tab.classList.remove('show', 'active');
+                // Requête AJAX pour récupérer les données de la recette
+                fetch(`get_recette_details.php?id=${idRecipe}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        // Actualiser le contenu du conteneur avec les données récupérées
+                        targetElement.innerHTML = data;
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du chargement des données de la recette:', error);
+                        targetElement.innerHTML =
+                            '<div class="alert alert-danger">Erreur lors du chargement. Veuillez réessayer.</div>';
                     });
+            });
+        });
+    });
+</script>
 
-                    // Afficher l'onglet cible
-                    document.querySelector(target).style.display = 'block';
-                    document.querySelector(target).classList.add('show', 'active');
+<script>
+    // JavaScript pour gérer l'affichage des onglets
+    document.addEventListener('DOMContentLoaded', function() {
+        // Masquer tous les onglets sauf le premier
+        document.querySelectorAll('.tab-pane').forEach(function(tab) {
+            if (!tab.classList.contains('active')) {
+                tab.style.display = 'none';
+            }
+        });
+
+        // Gérer le clic sur les boutons
+        document.querySelectorAll('[data-toggle="tab"]').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var target = this.getAttribute('href');
+
+                // Masquer tous les onglets
+                document.querySelectorAll('.tab-pane').forEach(function(tab) {
+                    tab.style.display = 'none';
+                    tab.classList.remove('show', 'active');
                 });
+
+                // Afficher l'onglet cible
+                document.querySelector(target).style.display = 'block';
+                document.querySelector(target).classList.add('show', 'active');
             });
         });
         const humidityData = <?php echo json_encode(!empty($sensorsWithData) ? $sensorsWithData[0]['value'] : null); ?>;
