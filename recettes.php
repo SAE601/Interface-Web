@@ -153,7 +153,7 @@ try {
                 Modifier
             </button>
             <!-- Bouton Supprimer -->
-            <form action="supprimer_recette.php" method="POST" onsubmit="return confirm('Supprimer la reçette?');">
+            <form action="delete-recipe.php" method="POST" onsubmit="return confirm('Supprimer la reçette?');">
                 <input type="hidden" name="idRecipe" value="<?= htmlspecialchars($recette['idRecipe']) ?>">
                 <button type="submit"
                         class="btn btn-primary btn-modifier">
@@ -207,7 +207,7 @@ try {
 <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="modifyForm" method="post" action="update_recette.php">
+            <form id="modifyForm" method="post" action="update-recipe.php">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modifyModalLabel"> Table Recette</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -295,7 +295,7 @@ try {
 <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="modifyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="modifyForm" method="post" action="update_recette.php">
+            <form id="modifyForm" method="post" action="update-recipe.php">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modifyModalLabel">Modifier une Recette</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

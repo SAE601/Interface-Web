@@ -72,7 +72,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
         <!-- Afficher la photo de profil de l'utilisateur -->
         <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Photo de profil" class="profile-photo">
         <!-- Bouton pour modifier la photo -->
-        <form style="padding-top: 20px;" action="modifier_photo.php" method="GET">
+        <form style="padding-top: 20px;" action="change-photo.php" method="GET">
             <button type="submit" class="modify-button">Modifier</button>
         </form>
     </div>
@@ -128,7 +128,7 @@ $profile_photo = $user['profile_photo'] ?? 'images\nyquit1.jpg'; // Photo par d√
         }
         ?>
         <br>
-        <a class="btn btn-primary" href="changemdp.php" role="button">Changer de mot de passe</a>
+        <a class="btn btn-primary" href="change-password.php" role="button">Changer de mot de passe</a>
     </div>
 
     <div class="dashboard-container">

@@ -60,7 +60,7 @@ if (isset($_GET['photo'])) {
         <h2>Choisir une nouvelle photo de profil</h2>
         <div class="photo-grid">
             <?php foreach ($photos as $photo): ?>
-                <a href="modifier_photo.php?photo=<?php echo urlencode($photo); ?>">
+                <a href="change-photo.php?photo=<?php echo urlencode($photo); ?>">
                     <img src="<?php echo htmlspecialchars($photo); ?>" alt="Photo" class="photo-item">
                 </a>
             <?php endforeach; ?>

@@ -134,7 +134,7 @@ if(count($sensorsWithData) >= 3) {
             button.addEventListener('click', function() {
                 const mode = this.getAttribute('data-mode');
                 const trays = <?php echo isset($_GET['trays']) ? $_GET['trays'] : 'null'; ?>;
-                window.location.href = `essai.php?mode=${mode}&trays=${trays}`;
+                window.location.href = `bac-info.php?mode=${mode}&trays=${trays}`;
             });
         });
     </script>
@@ -423,8 +423,8 @@ if(count($sensorsWithData) >= 3) {
                     targetElement.style.display = 'block';
                     targetElement.innerHTML = '<p style="font-style: italic; color: gray;">Chargement...</p>';
 
-                    // Charge les données depuis get_recette_details.php
-                    fetch(`get_recette_details.php?id=${idRecipe}`)
+                    // Charge les données depuis recipe-details.php
+                    fetch(`recipe-details.php?id=${idRecipe}`)
                         .then(response => response.text())
                         .then(data => {
                             targetElement.innerHTML = data; // Injecter le contenu
