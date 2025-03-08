@@ -187,7 +187,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="card-body">
                         <h5 class="card-title">Les Recettes</h5>
                         <p class="card-text">Cliquez pour accéder aux recettes </p>
-                        <a href="recettes.php" class="btn btn-success btn-lg shadow">Voir les Recettes</a>
+                        <a href="recettes.php" class="btn btn-success btn-lg shadow">+ d'infos</a>
                     </div>
                 </div>
             </div>
