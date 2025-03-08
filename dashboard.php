@@ -135,7 +135,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div id="bacInfo1">
-                        <a class="btn btn-dark" href="bac-info.php?trays=1">Info sur la BAC</a>
+                        <a class="btn btn-dark" href="bac-info.php?trays=1">+ d'infos</a>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div id="bacInfo2">
-                        <a class="btn btn-dark" href="bac-info.php?trays=2">Info sur la BAC</a>
+                        <a class="btn btn-dark" href="bac-info.php?trays=2">+ d'infos</a>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div id="bacInfo3">
-                        <a class="btn btn-dark" href="bac-info.php?trays=3">Info sur la BAC</a>
+                        <a class="btn btn-dark" href="bac-info.php?trays=3">+ d'infos</a>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@ $alerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </h5>
                     </div>
                     <div id="bacInfo4">
-                        <a class="btn btn-dark" href="bac-info.php?trays=4">Infos sur la BAC</a>
+                        <a class="btn btn-dark" href="bac-info.php?trays=4">+ d'infos</a>
                     </div>
                 </div>
             </div>
